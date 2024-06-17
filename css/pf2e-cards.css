@@ -1,0 +1,169 @@
+@font-face {
+    font-family: 'FF Good Pro Cond';
+    src: url('ff-good-pro-cond-regular.woff') format('woff');
+    font-weight: normal;
+    font-sytle: normal;
+}
+
+@font-face {
+    font-family: 'FF Good Pro Cond';
+    src: url('ff-good-pro-cond-bold.woff') format('woff');
+    font-weight: bold;
+    font-sytle: normal;
+}
+
+@font-face {
+    font-family: 'PF2E Actions';
+    src: url('pf2e-actions.woff') format('woff');
+    font-weight: normal;
+}
+
+body {
+    font-family: 'FF Good Pro Cond', sans-serif;
+    font-size: 5px;
+    font-weight: normal;
+
+    /* repeating background image */
+    background-image: url('parchment-background.jpg');
+}
+/* 700px width by 1000px height cards */
+.card-frame {
+    display: grid;
+    grid-template-columns: repeat(3, 74em); /* 700px */
+    grid-template-rows: repeat(3, 104em); /* 1000px */
+}
+
+.card {
+    position: relative;
+
+    width: auto;
+    height: auto;
+    border: 2em solid #472C2C;
+}
+
+.card-border {
+    position: absolute;
+    top: -2em;
+    left: -2em;
+    right: -2em;
+    bottom: -2em;
+
+    border: 6.0em solid #472C2C;
+    border-radius: 5.0em;
+    border-width: 4.0em;
+    padding: 3.2em 1.5em;
+
+    .title {
+        display: flex;
+        font-weight: bold;
+        text-transform: uppercase;
+
+        .name {
+            font-size: 4.2em;
+            flex-grow: 1;
+        }
+
+        .type {
+            font-size: 3.6em;
+            align-self: flex-end;
+        }
+    }
+
+    .illustration {
+        width: 62em;
+        height: 36em;
+        object-fit: cover; /* Crop the image */
+        object-position: center; /* Center the image within the container */
+        border: 0.4em solid black;
+        background-color: white;
+    }
+
+    .traits {
+        margin-top: 0.25em;
+
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+        font-size: 2.4em;
+        gap: 0.25em;
+
+        .trait-item {
+            min-width: 4em;
+            min-height: 1.5em;
+            padding: 0 0.5em;
+
+            color: white;
+
+            background-color: #472C2C;
+            border: 0.2em solid #C99D51;
+            &.uncommon {
+                background-color: #664E47;
+            }
+
+            display: flex;
+            span {
+                font-weight: bold;
+                text-transform: uppercase;
+
+                display: block;
+                flex-grow: 1;
+                text-align: center;
+                align-self: center;
+            }
+        }
+    }
+
+    .stats {
+        margin-top: 1.5em;
+
+        .stat-name {
+            font-size: 3.2em;
+            font-weight: bold;
+            margin-right: 0.2em;
+            line-height: 1.2em;
+        }
+        .stat-text {
+            font-size: 3.2em;
+            margin-right: 0.2em;
+            line-height: 1.2em;
+        }
+    }
+
+    hr {
+        margin-top: 2.0em;
+        border: 0.1em solid black;
+    }
+
+    .description {
+        font-size: 3.2em;
+
+        margin-top: 0.4em;
+        line-height: 1.2em;
+
+        span.icon {
+            font-family: 'PF2E Actions', sans-serif;
+            font-size: 1.3em;
+
+            &.free-action::before {
+                content: 'f';
+            }
+
+            &.action::before {
+                content: 'a';
+            }
+
+            &.activity::before {
+                content: 'd';
+            }
+
+            &.long-activity::before {
+                content: 't';
+            }
+
+            &.reaction::before {
+                content: 'r';
+            }
+        }
+    }
+}
