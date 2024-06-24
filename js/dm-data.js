@@ -1,4 +1,5 @@
 // DCs
+export const rollBetween = (min, max) => parseInt(Math.random() * (max - min + 1) + min)
 
 // untrained, trained, expert, master, legendary
 export const simpleDC = [10, 15, 20, 30, 40];
@@ -47,16 +48,42 @@ export const spellRankDC = [
   [10, 39],
 ];
 
-export const difficultyAdjustmentsForDCLabels = ['Incredibly easy', 'Very easy', 'Easy', 'Moderate', 'Hard', 'Very hard', 'Incredibly hard'];
+export const difficultyAdjustmentsForDCLabels = [
+  "Incredibly easy",
+  "Very easy",
+  "Easy",
+  "Moderate",
+  "Hard",
+  "Very hard",
+  "Incredibly hard",
+];
 export const difficultyAdjustmentsForDC = [-10, -5, -2, 0, 2, 5, 10];
 
-export const rarityAdjustmentsForDCLabels = ['Common', 'Uncommon', 'Rare', 'Unique'];
+export const rarityAdjustmentsForDCLabels = [
+  "Common",
+  "Uncommon",
+  "Rare",
+  "Unique",
+];
 export const rarityAdjustmentsForDC = [0, 2, 5, 10];
 
 // Creature Creation
 
-export const creatureSizeLabels = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan', 'Colossal'];
-export const creatureAttributeModifierScalesLabels = ['Extreme', 'High', 'Moderate', 'Low'];
+export const creatureSizeLabels = [
+  "Tiny",
+  "Small",
+  "Medium",
+  "Large",
+  "Huge",
+  "Gargantuan",
+  "Colossal",
+];
+export const creatureAttributeModifierScalesLabels = [
+  "Extreme",
+  "High",
+  "Moderate",
+  "Low",
+];
 export const creatureAttributeModifierScales = [
   [-1, 5, 3, 2, 0],
   [0, 5, 3, 2, 0],
@@ -86,7 +113,13 @@ export const creatureAttributeModifierScales = [
   [24, 13, 12, 9, 7],
 ];
 
-export const creaturePerceptionLabels = ['Extreme', 'High', 'Moderate', 'Low', 'Terrible'];
+export const creaturePerceptionLabels = [
+  "Extreme",
+  "High",
+  "Moderate",
+  "Low",
+  "Terrible",
+];
 export const creaturePerception = [
   [-1, 9, 8, 5, 2, 0],
   [0, 10, 9, 6, 3, 1],
@@ -116,35 +149,55 @@ export const creaturePerception = [
   [24, 46, 42, 38, 36, 32],
 ];
 
-// Format: level, extreme, high, moderate, low
-export const creatureSkillsLabels = ['Extreme', 'High', 'Moderate', 'Low'];
+export const creatureSkillsList = [
+  "Acrobatics",
+  "Arcana",
+  "Athletics",
+  "Crafting",
+  "Deception",
+  "Diplomacy",
+  "Intimidation",
+  "Lore",
+  "Medicine",
+  "Nature",
+  "Occultism",
+  "Performance",
+  "Religion",
+  "Society",
+  "Stealth",
+  "Survival",
+  "Thievery",
+  "Other",
+]
+// Format: level, extreme, high, moderate, low - max min
+export const creatureSkillsLabels = ["Extreme", "High", "Moderate", "Low"];
 export const creatureSkills = [
-  [-1, 8, 5, 4, 2, 1],
-  [0, 9, 6, 5, 3, 2],
-  [1, 10, 7, 6, 4, 3],
-  [2, 11, 8, 7, 5, 4],
-  [3, 13, 10, 9, 7, 5],
-  [4, 15, 12, 10, 8, 7],
-  [5, 16, 13, 12, 10, 8],
-  [6, 18, 15, 13, 11, 9],
-  [7, 20, 17, 15, 13, 11],
-  [8, 21, 18, 16, 14, 12],
-  [9, 23, 20, 18, 16, 13],
-  [10, 25, 22, 19, 17, 15],
-  [11, 26, 23, 21, 19, 16],
-  [12, 28, 25, 22, 20, 17],
-  [13, 30, 27, 24, 22, 19],
-  [14, 31, 28, 25, 23, 20],
-  [15, 33, 30, 27, 25, 21],
-  [16, 35, 32, 28, 26, 23],
-  [17, 36, 33, 30, 28, 24],
-  [18, 38, 35, 31, 29, 25],
-  [19, 40, 37, 33, 31, 27],
-  [20, 41, 38, 34, 32, 28],
-  [21, 43, 40, 36, 34, 29],
-  [22, 45, 42, 37, 35, 31],
-  [23, 46, 43, 38, 36, 32],
-  [24, 48, 45, 40, 38, 33],
+  [-1, 8, 8, 5, 5, 4, 4, 2, 1],
+  [0, 9, 9, 6, 6, 5, 5, 3, 2],
+  [1, 10, 10, 7, 7, 6, 6, 4, 3],
+  [2, 11, 11, 8, 8, 7, 7, 5, 4],
+  [3, 13, 13, 10, 10, 9, 9, 7, 5],
+  [4, 15, 15, 12, 12, 10, 10, 8, 7],
+  [5, 16, 16, 13, 13, 12, 12, 10, 8],
+  [6, 18, 18, 15, 15, 13, 13, 11, 9],
+  [7, 20, 20, 17, 17, 15, 15, 13, 11],
+  [8, 21, 21, 18, 18, 16, 16, 14, 12],
+  [9, 23, 23, 20, 20, 18, 18, 16, 13],
+  [10, 25, 25, 22, 22, 19, 19, 17, 15],
+  [11, 26, 26, 23, 23, 21, 21, 19, 16],
+  [12, 28, 28, 25, 25, 22, 22, 20, 17],
+  [13, 30, 30, 27, 27, 24, 24, 22, 19],
+  [14, 31, 31, 28, 28, 25, 25, 23, 20],
+  [15, 33, 33, 30, 30, 27, 27, 25, 21],
+  [16, 35, 35, 32, 32, 28, 28, 26, 23],
+  [17, 36, 36, 33, 33, 30, 30, 28, 24],
+  [18, 38, 38, 35, 35, 31, 31, 29, 25],
+  [19, 40, 40, 37, 37, 33, 33, 31, 27],
+  [20, 41, 41, 38, 38, 34, 34, 32, 28],
+  [21, 43, 43, 40, 40, 36, 36, 34, 29],
+  [22, 45, 45, 42, 42, 37, 37, 35, 31],
+  [23, 46, 46, 43, 43, 38, 38, 36, 32],
+  [24, 48, 48, 45, 45, 40, 40, 38, 33],
 ];
 
 export const creatureSafeItemLevels = [
@@ -176,7 +229,7 @@ export const creatureSafeItemLevels = [
   [24, 20],
 ];
 
-export const creatureACLabels = ['Extreme', 'High', 'Moderate', 'Low'];
+export const creatureACLabels = ["Extreme", "High", "Moderate", "Low"];
 export const creatureAC = [
   [-1, 18, 15, 14, 12],
   [0, 19, 16, 15, 13],
@@ -206,7 +259,13 @@ export const creatureAC = [
   [24, 54, 51, 50, 48],
 ];
 
-export const creatureSavingThrowsLabels = ['Extreme', 'High', 'Moderate', 'Low', 'Terrible'];
+export const creatureSavingThrowsLabels = [
+  "Extreme",
+  "High",
+  "Moderate",
+  "Low",
+  "Terrible",
+];
 export const creatureSavingThrows = [
   [-1, 9, 8, 5, 2, 0],
   [0, 10, 9, 6, 3, 1],
@@ -236,8 +295,8 @@ export const creatureSavingThrows = [
   [24, 46, 42, 38, 36, 32],
 ];
 
-// Format: level, high max, high min, moderate max, moderate min, low max, low min
-export const creatureHitPointsLabels = ['High', 'Moderate', 'Low'];
+// Format: level, high, moderate, low - max min
+export const creatureHitPointsLabels = ["High", "Moderate", "Low"];
 export const creatureHitPoints = [
   [-1, 9, 9, 8, 7, 6, 5],
   [0, 20, 17, 16, 14, 13, 11],
@@ -298,7 +357,12 @@ export const creatureResistancesAndWeaknesses = [
 ];
 
 // Format: level, extreme, high, moderate, low
-export const creatureAttackBonusesLabels = ['Extreme', 'High', 'Moderate', 'Low'];
+export const creatureAttackBonusesLabels = [
+  "Extreme",
+  "High",
+  "Moderate",
+  "Low",
+];
 export const creatureAttackBonuses = [
   [-1, 10, 8, 6, 4],
   [0, 10, 8, 6, 4],
@@ -330,8 +394,13 @@ export const creatureAttackBonuses = [
 
 // Format: level, then for each of extreme high moderate low:
 //  roll count, dice face, bonus
-export const creatureStrikeDamageLabels = ['Extreme', 'High', 'Moderate', 'Low'];
-export const creatureStrikeDamage = [
+export const creatureStrikeDamageLabels = [
+  "Extreme",
+  "High",
+  "Moderate",
+  "Low",
+];
+const creatureStrikeData = [
   [-1, 1, 6, 1, 1, 4, 1, 1, 4, 0, 1, 4, 0],
   [0, 1, 6, 3, 1, 6, 2, 1, 4, 2, 1, 4, 1],
   [1, 1, 8, 4, 1, 6, 3, 1, 6, 2, 1, 4, 2],
@@ -359,9 +428,49 @@ export const creatureStrikeDamage = [
   [23, 4, 12, 39, 4, 12, 24, 4, 10, 20, 4, 6, 19],
   [24, 4, 12, 42, 4, 12, 26, 4, 10, 22, 4, 6, 21],
 ];
+export const creatureStrikeCount = creatureStrikeData.map(data => [
+  data[0],
+  data[1],
+  data[4],
+  data[7],
+  data[10],
+]);
+export const creatureStrikeSides = creatureStrikeData.map(data => [
+  data[0],
+  data[2],
+  data[5],
+  data[8],
+  data[11],
+]);
+export const creatureStrikeBonuses = creatureStrikeData.map(data => [
+  data[0],
+  data[3],
+  data[6],
+  data[9],
+  data[12],
+]);
+
+export const creatureDamageTypesShort = ["B", "P", "S"];
+export const creatureDamageTypes = [
+  "Bludgeoning",
+  "Piercing",
+  "Slashing",
+  "Acid",
+  "Cold",
+  "Electricity",
+  "Fire",
+  "Sonic",
+  "Vitality",
+  "Void",
+  "Spirit",
+  "Mental",
+  "Poison",
+  "Bleed",
+  "Precision",
+]
 
 // Format: extreme DC, extreme modifier, high DC, high modifier, moderate DC, moderate modifier
-export const creatureSpellDCsLabels = ['Extreme', 'High', 'Moderate'];
+export const creatureSpellDCsLabels = ["Extreme", "High", "Moderate"];
 export const creatureSpellDCs = [
   [-1, 19, 11, 16, 8, 13, 5],
   [0, 19, 11, 16, 8, 13, 5],
@@ -393,12 +502,76 @@ export const creatureSpellDCs = [
 
 export const createDiceRoll = () => ({
   count: 1,
-  face: 4,
+  sides: 4,
   bonus: 0,
 });
 
+// For almost all stats: extreme-0, high-1, moderate-2, low-3
+// Stats with terrible-4: per, 
+// For health: high-0, moderate-1, low-2
+export const creatureRoadMaps = [
+  {
+    name: "None",
+  },
+  {
+    name: "Base - Brute",
+    per: [3],
+    str: [0, 1],
+    con: [1, 2],
+    dex: [3],
+    int: [3],
+    wis: [3],
+    ac: [2, 3],
+    fort: [1],
+    ref: [2, 3],
+    will: [2, 3],
+    hp: [0],
+    strikes: [
+      { name: "Melee", cost: 1, bonus: 0, damage: 1, type: "B" },
+    ]
+  },
+  {
+    name: "Class - Cleric (Warpriest)",
+    per: [2],
+    skills: [
+      { name: "Religion", value: [2] },
+      { name: "Other", value: [1, 2] },
+    ],
+    str: [1],
+    wis: [2],    
+    ac: [3],
+    ref: [3],
+    will: [1],
+  },
+  {
+    name: "Class - Fighter (Strength)",
+    skills: [
+      { name: ["Athletics", "Acrobatics"], value: [1] },
+    ],
+    str: [1],
+    ac: [1],
+    will: [3],
+    strikes: [
+      { name: "Melee", cost: 1, bonus: 1, damage: 1, type: "S" },
+    ]
+  },
+  {
+    name: "Class - Fighter (Dexterity)",
+    skills: [
+      { name: ["Athletics", "Acrobatics"], value: [1] },
+    ],
+    dex: [1],
+    ac: [1],
+    will: [3],
+    strikes: [
+      { name: "Ranged", cost: 1, bonus: 1, damage: 1, type: "P" },
+    ]
+  }
+]
+// Creature Template
+
 export const createCreatureTemplate = () => ({
-  name: '',
+  name: "",
   level: -1,
 
   // tiny, small, medium, large, huge, gargantuan, colossal
@@ -415,7 +588,7 @@ export const createCreatureTemplate = () => ({
   cha: 2,
 
   // extreme, high, moderate, low, terrible
-  perception: 2,
+  per: 2,
   // strings
   senses: [],
   // strings
@@ -432,9 +605,9 @@ export const createCreatureTemplate = () => ({
 
   // extreme, high, moderate, low, terrible
   fort: 2,
-  reflex: 2,
+  ref: 2,
   will: 2,
-  
+
   // high, moderate, low
   hp: 1,
 
@@ -447,24 +620,42 @@ export const createCreatureTemplate = () => ({
 
   speed: 25,
 
-  // name, action cost, damage
-  strikes: [],
+  // action cost, name, bonus, damage, damage type
+  strikes: [
+    {
+      name: "Strike",
+      cost: 1,
+      bonus: 2,
+      damage: 2,
+      type: "B",
+    },
+  ],
 
   spells: [],
 });
 
 export const createSkillTemplate = () => ({
-  name: '',
-  value: 0,
+  name: "",
+  value: 2,
 });
 
-export const createResistanceTemplate = () => ({
-  name: '',
+export const createWeaknessResistTemplate = () => ({
+  name: "",
   value: 0,
 });
 
 export const createStrikeTemplate = () => ({
-  name: '',
+  name: "",
   cost: 1,
-  damage: 0,
+  bonus: 2,
+  damage: 2,
+  type: ""
 });
+
+export const createSkillOutput = () => ({
+  name: "", value: 0
+})
+
+export const createWeaknessResistOutput = () => ({
+  name: "", value: 0
+})
