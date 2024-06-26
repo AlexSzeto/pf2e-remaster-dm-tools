@@ -12,48 +12,29 @@
 
     .four-column {
       display: grid;
-      grid-template-columns: 20em 24em 22em 22em;
+      grid-template-columns: 20em 25em 22em 22em;
       grid-gap: 1em;
     }
 
-    .current-text {      
-      display: inline-block;
-      background-color: white;
-      border: 1px solid rgb(118, 118, 118);
-      box-sizing: border-box;
-      vertical-align: middle;
+    label {
+      display: flex;
+      align-items: center;
+    }
+    .disabled-text {      
+      background-color: #fff;
+      display: flex;
+      align-items: center;
     }
 
-    select, .current-text {
-      font-family: 'FF Good Pro Cond', sans-serif;
-      font-size: 1em;      
+    select, .disabled-text {
       min-width: 15em;
-      padding: 0.5em;
-      margin: 0.125em 0.25em;
-      border-radius: 0.25em;
       min-height: 2.5em;
     }
 
     .label-text {
-      display: inline-block;
-      text-align: right;
       min-width: 4em;
-      text-transform: uppercase;
-      vertical-align: middle;
     }
-    
-    button {
-      font-family: 'FF Good Pro Cond', sans-serif;
-      font-size: 1em;
-      padding: 0.5em;
-      margin: 0.125em 0.25em;
-
-      background-color: #472C2C;
-      color: white;
-      border: none;
-      border-radius: 0.25em;
-    }
-    
+        
     .preview-image {
       max-width: 20em;
       max-height: 20em;

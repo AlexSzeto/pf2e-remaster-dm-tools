@@ -33,7 +33,7 @@ class App extends Component {
     };
   
     // Load data from decks.json
-    fetch("../decks.json")
+    fetch("../decks/decks.json")
       .then((response) => response.json())
       .then((decks) => {
         // Update state with loaded data
@@ -253,28 +253,25 @@ class App extends Component {
     </div>
     <div class="four-column">
       <div>
-        <h2>Current</h2>
+        <h2>Now Showing/Playing</h2>
         <div>
           <label>
             <span class="label-text">Image:</span>
-            <span class="current-text">${this.state.labels.image !== '' ? this.state.labels.image : "None"}</span>
+            <span class="disabled-text"><span>${this.state.labels.image !== '' ? this.state.labels.image : "None"}</span></span>
           </label>
         </div>
         <div>
           <label>
             <span class="label-text">BGM:</span>
-            <span class="current-text">${this.state.labels.bgm !== '' ? this.state.labels.bgm : "None"}</span>
+            <span class="disabled-text"><span>${this.state.labels.bgm !== '' ? this.state.labels.bgm : "None"}</span></span>
           </label>
         </div>
         <div>
           <label>
             <span class="label-text">Ambience:</span>
-            <span class="current-text">${this.state.labels.ambience !== '' ? this.state.labels.ambience : "None"}</span>
+            <span class="disabled-text"><span>${this.state.labels.ambience !== '' ? this.state.labels.ambience : "None"}</span></span>
           </label>
         </div>
-        <div>
-          <button onClick=${() => this.duckUnduckAudio()}>${this.state.duck ? "Unduck" : "Duck"}</button>
-        </div>        
       </div>
       <div>
         <h2>Next</h2>
@@ -290,9 +287,9 @@ class App extends Component {
                 <option value=${image.path}>${image.label}</option>
               `)}
             </select>
+            <button onClick=${() => this.clearImage()}>Clear</button>
+            <button onClick=${() => this.swapImage()}>Load</button>
           </label>
-          <button onClick=${() => this.clearImage()}>Clear</button>
-          <button onClick=${() => this.swapImage()}>Load</button>
         </div>
         <div>
           <label>
@@ -328,14 +325,19 @@ class App extends Component {
         </div>
       </div>
       <div>
-        <h2>Showing</h2>
+        <h2>DM Screen Image</h2>
         <img class="preview-image" src=${this.state.show.image} />
       </div>
       <div>
-        <h2>Next</h2>
+        <h2>Next Image Preview</h2>
         <img class="preview-image" src=${this.state.next.image} />
       </div>
     </div>
+    <h2>Controls</h2>
+    <div>
+      <button onClick=${() => this.duckUnduckAudio()}>${this.state.duck ? "Unduck" : "Duck"}</button>
+    </div>        
+
     `;
   }
 }

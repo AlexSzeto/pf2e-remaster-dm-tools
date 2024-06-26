@@ -66,7 +66,7 @@ for folder in folders:
       'path': file
     })
 # Path to the output JSON file
-output_file = './decks.json'
+output_file = './decks/decks.json'
 
 # Write the dictionary to the JSON file
 with open(output_file, 'w') as f:

@@ -20,7 +20,6 @@
 
 body {
     font-family: 'FF Good Pro Cond', sans-serif;
-    font-size: 5px;
     font-weight: normal;
 
     /* repeating background image */
@@ -52,7 +51,9 @@ body {
     border-radius: 5.0em;
     border-width: 4.0em;
     padding: 3.2em 1.5em;
+}
 
+.pf2e-stats {
     .title {
         display: flex;
         font-weight: bold;
@@ -101,6 +102,10 @@ body {
                 background-color: #664E47;
             }
 
+            &.size {
+                background-color: #478C42;
+            }
+
             display: flex;
             span {
                 font-weight: bold;
@@ -131,7 +136,9 @@ body {
     }
 
     hr {
-        margin-top: 2.0em;
+        &.divider {
+            margin-top: 2.0em;
+        }
         border: 0.1em solid black;
     }
 
@@ -140,30 +147,73 @@ body {
 
         margin-top: 0.4em;
         line-height: 1.2em;
+    }
+    
+    span.icon {
+        font-family: 'PF2E Actions', sans-serif;
+        font-size: 4.2em;
 
-        span.icon {
-            font-family: 'PF2E Actions', sans-serif;
-            font-size: 1.3em;
+        &.free::before {
+            content: 'f';
+        }
 
-            &.free-action::before {
-                content: 'f';
-            }
+        &.single::before {
+            content: 'a';
+        }
 
-            &.action::before {
-                content: 'a';
-            }
+        &.double::before {
+            content: 'd';
+        }
 
-            &.activity::before {
-                content: 'd';
-            }
+        &.turn::before {
+            content: 't';
+        }
 
-            &.long-activity::before {
-                content: 't';
-            }
-
-            &.reaction::before {
-                content: 'r';
-            }
+        &.reaction::before {
+            content: 'r';
         }
     }
 }
+
+.disabled-text {      
+    display: inline-block;
+    background-color: #EFEFEF;
+    border: 1px solid rgb(118, 118, 118);
+    box-sizing: border-box;
+
+    span {
+        vertical-align: middle;
+    }
+  }
+
+  select, input, .disabled-text {
+    font-family: 'FF Good Pro Cond', sans-serif;
+    font-size: 1em;      
+    border: 1px solid rgb(118, 118, 118);
+    margin: 0.125em 0.125em;
+    border-radius: 0.25em;
+    padding: 0.25em;
+  }
+
+  input {
+    box-sizing: border-box;
+  }
+
+  .label-text {
+    display: inline-block;
+    text-align: right;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  
+  button {
+    font-family: 'FF Good Pro Cond', sans-serif;
+    font-size: 1em;
+    padding: 0.5em;
+    margin: 0.125em 0.25em;
+
+    background-color: #472C2C;
+    color: white;
+    border: none;
+    border-radius: 0.25em;
+  }
