@@ -12,7 +12,7 @@ class App extends Component {
         bgms: [],
         ambiences: [],
       },
-      showLabel: {
+      labels: {
         image: '',
         bgm: '',
         ambience: ''
@@ -26,7 +26,10 @@ class App extends Component {
         image: '',
         bgm: '',
         ambience: ''
-      }
+      },
+      bgmControls: null,
+      ambienceControls: null,
+      duck: false,
     };
   
     // Load data from decks.json
@@ -82,8 +85,8 @@ class App extends Component {
   
   swapImage() {
     this.setState({
-      showLabel: {
-        ...this.state.showLabel,
+      labels: {
+        ...this.state.labels,
         image: this.state.deck.images.find(data => data.path === this.state.next.image).label,
       },
       show: {
@@ -100,8 +103,8 @@ class App extends Component {
 
   clearImage() {
     this.setState({
-      showLabel: {
-        ...this.state.showLabel,
+      labels: {
+        ...this.state.labels,
         image: '',
       },
       show: {
@@ -110,6 +113,127 @@ class App extends Component {
       },
     });
     this.setCookie('dm-image', this.state.next.image);
+  }
+
+  createAudioSource(path, fadeInDuration) {
+    let audioContext = new AudioContext();
+    let bufferSource = audioContext.createBufferSource();
+    let gainNode = audioContext.createGain();
+    bufferSource.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    let request = new XMLHttpRequest();
+    request.open('GET', path, true);
+    request.responseType = 'arraybuffer';
+    
+    request.onload = function() {
+        let audioData = request.response;
+        audioContext.decodeAudioData(audioData, function(buffer) {
+            bufferSource.buffer = buffer;
+            bufferSource.loop = true;
+            bufferSource.start(0);
+
+            const currentTime = audioContext.currentTime;
+            gainNode.gain.setValueAtTime(0, currentTime);
+            gainNode.gain.linearRampToValueAtTime(1, currentTime + fadeInDuration);            
+        });
+    };
+    
+    request.send();
+
+    const end = (duration) =>{
+      const currentTime = audioContext.currentTime;
+      gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime);
+      gainNode.gain.linearRampToValueAtTime(0, currentTime + duration);
+
+      // Schedule stop and cleanup after fade out completes
+      setTimeout(function() {
+        bufferSource.stop();
+        bufferSource.disconnect();
+        gainNode.disconnect();
+        bufferSource = null;
+        gainNode = null;
+        audioContext.close(); // Close the audio context if no longer needed
+      }, (currentTime + duration) * 1000); // Convert seconds to milliseconds      
+    }
+
+    const duck = (duration, duckVolume) => {
+      const currentTime = audioContext.currentTime;
+      gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime);
+      gainNode.gain.linearRampToValueAtTime(duckVolume, currentTime + duration);
+    }
+
+    const unduck = (duration) => {
+      const currentTime = audioContext.currentTime;
+      gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime);
+      gainNode.gain.linearRampToValueAtTime(1, currentTime + duration);
+    }
+
+    return {
+      end,
+      duck,
+      unduck
+    };
+  }
+
+  loadLoop(type) {
+    if(this.state[`${type}Controls`]) {
+      this.state[`${type}Controls`].end(4);
+    }
+
+    const timeOut = this.state[`${type}Controls`] ? 6000 : 0
+
+    setTimeout(() => {
+      this.setState({
+        labels: {
+          ...this.state.labels,
+          [type]: this.state.deck[`${type}s`].find(data => data.path === this.state.next[type]).label,
+        },
+        show: {
+          ...this.state.show,
+          [type]: this.state.next[type],
+        },
+        next: {
+          ...this.state.next,
+          [type]: '',
+        },
+        [`${type}Controls`]: this.createAudioSource(this.state.next[type], 8)
+      });
+    }, timeOut)
+  }
+
+  clearLoop(type) {
+    if(this.state[`${type}Controls`]) {
+      this.state[`${type}Controls`].end(4);
+    }
+    this.setState({
+      labels: {
+        ...this.state.labels,
+        [type]: '',
+      },
+      show: {
+        ...this.state.show,
+        [type]: '',
+      },
+      [`${type}Controls`]: null
+    });
+  }  
+
+  duckUnduckAudio() {
+    if(this.state.duck) {
+      if(this.state.bgmControls)
+        this.state.bgmControls.unduck(4);
+      if(this.state.ambienceControls)
+        this.state.ambienceControls.unduck(4);
+    } else {
+      if(this.state.bgmControls)
+        this.state.bgmControls.duck(1, 0.2);
+      if(this.state.ambienceControls)
+        this.state.ambienceControls.duck(1, 0.2);
+    }
+    this.setState({
+      duck: !this.state.duck
+    });
   }
 
   render() {
@@ -133,21 +257,24 @@ class App extends Component {
         <div>
           <label>
             <span class="label-text">Image:</span>
-            <span class="current-text">${this.state.showLabel.image !== '' ? this.state.showLabel.image : "None"}</span>
+            <span class="current-text">${this.state.labels.image !== '' ? this.state.labels.image : "None"}</span>
           </label>
         </div>
         <div>
           <label>
             <span class="label-text">BGM:</span>
-            <span class="current-text">${this.state.showLabel.bgm !== '' ? this.state.showLabel.bgm : "None"}</span>
+            <span class="current-text">${this.state.labels.bgm !== '' ? this.state.labels.bgm : "None"}</span>
           </label>
         </div>
         <div>
           <label>
             <span class="label-text">Ambience:</span>
-            <span class="current-text">${this.state.showLabel.ambience !== '' ? this.state.showLabel.ambience : "None"}</span>
+            <span class="current-text">${this.state.labels.ambience !== '' ? this.state.labels.ambience : "None"}</span>
           </label>
         </div>
+        <div>
+          <button onClick=${() => this.duckUnduckAudio()}>${this.state.duck ? "Unduck" : "Duck"}</button>
+        </div>        
       </div>
       <div>
         <h2>Next</h2>
@@ -170,29 +297,33 @@ class App extends Component {
         <div>
           <label>
             <select
+              name="bgm"
               value=${this.state.next.bgm}
+              onChange=${(e) => this.handleNextChange(e)}
             >
               <option value="">None</option>
               ${this.state.deck.bgms.map((bgm) => html`
                 <option value=${bgm.path}>${bgm.label}</option>
               `)}
             </select>
-          <button>Clear</button>
-          <button>Load</button>
+          <button onClick=${() => this.clearLoop("bgm")}>Clear</button>
+          <button onClick=${() => this.loadLoop("bgm")}>Load</button>
           </label>
         </div>
         <div>
           <label>
             <select
+              name="ambience"
               value=${this.state.next.ambience}
+              onChange=${(e) => this.handleNextChange(e)}
             >
               <option value="">None</option>
               ${this.state.deck.ambiences.map((ambience) => html`
                 <option value=${ambience.path}>${ambience.label}</option>
               `)}
             </select>
-          <button>Clear</button>
-          <button>Load</button>
+          <button onClick=${() => this.clearLoop("ambience")}>Clear</button>
+          <button onClick=${() => this.loadLoop("ambience")}>Load</button>
           </label>
         </div>
       </div>
