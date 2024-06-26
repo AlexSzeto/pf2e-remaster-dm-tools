@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DM Ware</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/pf2e.css">
+  <style>
+    body {
+      font-size: 18px;
+    }
+
+    .four-column {
+      display: grid;
+      grid-template-columns: 20em 24em 22em 22em;
+      grid-gap: 1em;
+    }
+
+    .current-text {      
+      display: inline-block;
+      background-color: white;
+      border: 1px solid rgb(118, 118, 118);
+      box-sizing: border-box;
+      vertical-align: middle;
+    }
+
+    select, .current-text {
+      font-family: 'FF Good Pro Cond', sans-serif;
+      font-size: 1em;      
+      min-width: 15em;
+      padding: 0.5em;
+      margin: 0.125em 0.25em;
+      border-radius: 0.25em;
+      min-height: 2.5em;
+    }
+
+    .label-text {
+      display: inline-block;
+      text-align: right;
+      min-width: 4em;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+    
+    button {
+      font-family: 'FF Good Pro Cond', sans-serif;
+      font-size: 1em;
+      padding: 0.5em;
+      margin: 0.125em 0.25em;
+
+      background-color: #472C2C;
+      color: white;
+      border: none;
+      border-radius: 0.25em;
+    }
+    
+    .preview-image {
+      max-width: 20em;
+      max-height: 20em;
+    }
+  </style>
+  <script type="importmap">
+    {
+        "imports": {
+            "preact": "https://esm.sh/preact@10.19.2",
+            "preact/": "https://esm.sh/preact@10.19.2/",
+            "htm/preact": "https://esm.sh/htm@3.1.1/preact?external=preact"
+        }
+    }
+  </script>    
+  <script type="module" src="js/dm-ware.js"></script></head>
+<body>
+</body>
+</html>
