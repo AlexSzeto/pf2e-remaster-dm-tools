@@ -619,8 +619,11 @@ class App extends Component {
       ...Object.keys(roadmap).reduce((stats, key) => {
         const value = roadmap[key];
         switch (key) {
-          case "name":            
+          case "name":
+          case "type":    
           case "strikes":
+          case "abilities":
+          case "spells":
             return { ...stats, [key]: value };
           case "skills":
             return { ...stats, [key]: value.map(skill => ({

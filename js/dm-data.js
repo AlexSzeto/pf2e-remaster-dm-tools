@@ -585,7 +585,7 @@ export const creatureRoadMaps = [
     ac: [1],
     will: [3],
     strikes: [
-      { name: "Melee", actions: 1, bonus: 1, damage: 1, type: "S" },
+      { name: "Melee", description: "sword", actions: 3, bonus: 1, damage: 1, type: "S" },
     ]
   },
   {
@@ -597,7 +597,29 @@ export const creatureRoadMaps = [
     ac: [1],
     will: [3],
     strikes: [
-      { name: "Ranged", actions: 1, bonus: 1, damage: 1, type: "P" },
+      { name: "Ranged", description: "bow", actions: 3, bonus: 1, damage: 1, type: "P" },
+    ]
+  },
+  {
+    name: "Class - Rogue",
+    skills: [
+      { name: "Stealth", value: [1] },
+      { name: "Thievery", value: [1] },      
+    ],
+    dex: [1],
+    ac: [1],
+    fort: [3],
+    ref: [1],
+    hp: [1, 2],
+    strikes: [
+      { name: "Melee", description: "dagger", actions: 3, bonus: 2, damage: 2, type: "P" },      
+      { name: "Sneak Attack", description: "", actions: 0, bonus: 0, damage: 1, type: "P" }
+    ],
+    abilities: [
+      { name: "Surprise Attack", type: 1, description: "" },
+      { name: "Deny Advantage", type: 1, description: "" },
+      { name: "Debilitating Strike", type: 1, description: "" },
+      { name: "Master Strike", type: 1, description: "" },
     ]
   }
 ]

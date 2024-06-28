@@ -191,6 +191,645 @@
             "newline": true
           }
         ]
-      }      
+      },
+      {
+        "name": "Skeleton Guard",
+        "type": "Creature -1",
+        "traits": [
+          "Medium",
+          "Mindless",
+          "Skeleton",
+          "Undead",
+          "Unholy"
+        ],
+        "description": "**Recall Knowledge** Undead (Religion) DC13",
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+2; darkvision"
+          },
+          {
+            "name": "Skills",
+            "text": "Athletics +3, Acrobatics +6",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+2",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+4"
+          },
+          {
+            "name": "Con",
+            "text": "0"
+          },
+          {
+            "name": "Int",
+            "text": "-5"
+          },
+          {
+            "name": "Wis",
+            "text": "0"
+          },
+          {
+            "name": "Cha",
+            "text": "0"
+          },
+          {
+            "name": "Items",
+            "text": "scimitar, shortbow (20 arrows)",
+            "newline": true
+          },
+          {
+            "name": "AC",
+            "text": "16",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+2"
+          },
+          {
+            "name": "Ref",
+            "text": "+8"
+          },
+          {
+            "name": "Will",
+            "text": "+2"
+          },
+          {
+            "name": "HP",
+            "text": "4",
+            "newline": true
+          },
+          {
+            "name": "Immunities",
+            "text": "bleed, death effects, disease, mental, paralyzed, poison, unconscious"
+          },
+          {
+            "name": "Resistances",
+            "text": "cold 5, electricity 5, fire 5, piercing 5, slashing 5"
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "scimitar +6 1d6+2 S",
+            "newline": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "claw +6 1d4+2 S",
+            "newline": true
+          },
+          {
+            "name": "Ranged",
+            "action": "single",
+            "text": "shortbow +6 (deadly d10, range inc 60ft, reload 0), 1d6 P",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Hyena",
+        "type": "Creature 1",
+        "traits": [
+          "Medium",
+          "Animal"
+        ],
+        "description": "**Recall Knowledge** Animal (Nature) DC15",
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+6; low-light vision, scent (imprecise) 30 ft"
+          },
+          {
+            "name": "Skills",
+            "text": "Acrobatics +6, Athletics +7, Stealth +6",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+3",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+3"
+          },
+          {
+            "name": "Con",
+            "text": "+2"
+          },
+          {
+            "name": "Int",
+            "text": "-4"
+          },
+          {
+            "name": "Wis",
+            "text": "+1"
+          },
+          {
+            "name": "Cha",
+            "text": "-2"
+          },
+          {
+            "name": "AC",
+            "text": "16",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+7"
+          },
+          {
+            "name": "Ref",
+            "text": "+8"
+          },
+          {
+            "name": "Will",
+            "text": "+4"
+          },
+          {
+            "name": "HP",
+            "text": "20",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "40",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "jaws +8 1d8+3 P, Knockdown",
+            "newline": true
+          },
+          {
+            "name": "Drag",
+            "text": "[single] Jaws Strike a prone enemy. If it hits, Strides 10ft, dragging the enemy along.",
+            "newline": true
+          },
+          {
+            "name": "Pack Attack",
+            "text": "Deals +1d4 to any creature within reach of 2+ hyena's allies.",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Jerod",
+        "type": "Wizard 3",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+7"
+          },
+          {
+            "name": "Languages",
+            "text": "Common, Dwarven, Elven",
+            "newline": true
+          },
+          {
+            "name": "Skills",
+            "text": "Arcana +9, Deception +8, Diplomacy +6, Intimidation +6, Society +9, Thievery +5",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+2",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "0"
+          },
+          {
+            "name": "Con",
+            "text": "+2"
+          },
+          {
+            "name": "Int",
+            "text": "+4"
+          },
+          {
+            "name": "Wis",
+            "text": "0"
+          },
+          {
+            "name": "Cha",
+            "text": "+1"
+          },
+          {
+            "name": "Items",
+            "text": "rapier (+1 potency), studded leather, glue bomb, healing potion (1), potion of emergency escape, ",
+            "newline": true
+          },
+          {
+            "name": "AC",
+            "text": "12",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+7"
+          },
+          {
+            "name": "Ref",
+            "text": "+5"
+          },
+          {
+            "name": "Will",
+            "text": "+7"
+          },
+          {
+            "name": "HP",
+            "text": "32",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "rapier +8 1d6+2 P",
+            "newline": true
+          },
+          {
+            "name": "Spells",
+            "text": "DC 19; **2nd** Blur, Laughing Fit; **1st** Charm, Grease; **Cantrips** Daze, Electric Arc, Sigil",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Dak Gorim",
+        "type": "Creature 4",
+        "traits": [
+          "Medium",
+          "Undead",
+          "Unholy",
+          "Vampire"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+12; darkvision"
+          },
+          {
+            "name": "Languages",
+            "text": "Common, Orcish",
+            "newline": true
+          },
+          {
+            "name": "Skills",
+            "text": "Acrobatics +11, Athletics +9, Intimidation +8, Society +5, Stealth +12",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+3",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+5"
+          },
+          {
+            "name": "Con",
+            "text": "+1"
+          },
+          {
+            "name": "Int",
+            "text": "-1"
+          },
+          {
+            "name": "Wis",
+            "text": "+3"
+          },
+          {
+            "name": "Cha",
+            "text": "+2"
+          },
+          {
+            "name": "AC",
+            "text": "20",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+11"
+          },
+          {
+            "name": "Ref",
+            "text": "+11"
+          },
+          {
+            "name": "Will",
+            "text": "+11"
+          },
+          {
+            "name": "HP",
+            "text": "40",
+            "newline": true
+          },
+          {
+            "name": "Immunities",
+            "text": "death effects, disease, paralyzed, poison, sleep"
+          },
+          {
+            "name": "Resistances",
+            "text": "Physical 5"
+          },
+          {
+            "name": "Weaknesses",
+            "text": "Vampire Vulerabilities"
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "claw +14 1d8+6 S, Grab",
+            "newline": true
+          },
+          {
+            "name": "Drink Blood",
+            "text": "[single] (divine) regain 5 HP.",
+            "newline": true
+          },
+          {
+            "name": "Sneak Attack",
+            "text": "Deal +1d6 precision to off-guard creatures",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Lumiere Haycrest",
+        "type": "Rogue 1",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+10"
+          },
+          {
+            "name": "Skills",
+            "text": "Stealth +7, Thievery +7, Diplomacy +6, Deception +6",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+3",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+4"
+          },
+          {
+            "name": "Con",
+            "text": "+1"
+          },
+          {
+            "name": "Int",
+            "text": "+3"
+          },
+          {
+            "name": "Wis",
+            "text": "+1"
+          },
+          {
+            "name": "Cha",
+            "text": "+4"
+          },
+          {
+            "name": "AC",
+            "text": "16",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+4"
+          },
+          {
+            "name": "Ref",
+            "text": "+10"
+          },
+          {
+            "name": "Will",
+            "text": "+7"
+          },
+          {
+            "name": "HP",
+            "text": "21",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "Dagger +7 1d6+2 P",
+            "newline": true
+          },
+          {
+            "name": "Sneak Attack",
+            "text": " 1d6",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Auric Ionar",
+        "type": "Creature 0",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+6"
+          },
+          {
+            "name": "Languages",
+            "text": "Common, Elven",
+            "newline": true
+          },
+          {
+            "name": "Skills",
+            "text": "Diplomacy +5, Lore +5",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "0",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+2"
+          },
+          {
+            "name": "Con",
+            "text": "+2"
+          },
+          {
+            "name": "Int",
+            "text": "+2"
+          },
+          {
+            "name": "Wis",
+            "text": "+1"
+          },
+          {
+            "name": "Cha",
+            "text": "+3"
+          },
+          {
+            "name": "AC",
+            "text": "13",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+3"
+          },
+          {
+            "name": "Ref",
+            "text": "+6"
+          },
+          {
+            "name": "Will",
+            "text": "+9"
+          },
+          {
+            "name": "HP",
+            "text": "15",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "Fist +4 1d4 B",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Stormhaven Guard",
+        "type": "Creature 0",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+3"
+          },
+          {
+            "name": "Languages",
+            "text": "Common",
+            "newline": true
+          },
+          {
+            "name": "Skills",
+            "text": "Athletics +2",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+2",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+1"
+          },
+          {
+            "name": "Con",
+            "text": "+2"
+          },
+          {
+            "name": "Int",
+            "text": "0"
+          },
+          {
+            "name": "Wis",
+            "text": "0"
+          },
+          {
+            "name": "Cha",
+            "text": "+2"
+          },
+          {
+            "name": "Items",
+            "text": "Longsword, Leather armor",
+            "newline": true
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+9"
+          },
+          {
+            "name": "Ref",
+            "text": "+6"
+          },
+          {
+            "name": "Will",
+            "text": "+6"
+          },
+          {
+            "name": "HP",
+            "text": "11",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "Longsword +6 1d8+2 S",
+            "newline": true
+          }
+        ]
+      }
     ]
 }
