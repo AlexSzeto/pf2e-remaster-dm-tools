@@ -24,7 +24,13 @@ const App = () => {
   return html`
     <input type="file" accept=".json" onChange=${loadData}></input>
     <div class="card-frame">
-      ${ cards.map((card, index) => html`<${Card} data=${card} />`) }
+      ${ cards.map((card, index) => html`
+        <div class="card">
+          <div class="card-border">        
+            <${Card} data=${card} />
+          </div>
+        </div>
+      `) }
     </div>
   `
 }

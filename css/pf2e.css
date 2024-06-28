@@ -54,14 +54,25 @@ body {
     left: -2em;
     right: -2em;
     bottom: -2em;
-
-    border: 6.0em solid #472C2C;
+    border: 2.0em solid #472C2C;
     border-radius: 5.0em;
     border-width: 4.0em;
     padding: 3.2em 1.5em;
 }
 
 .pf2e-stats {
+    .full-frame-image {
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    
     .title {
         display: flex;
         font-weight: bold;

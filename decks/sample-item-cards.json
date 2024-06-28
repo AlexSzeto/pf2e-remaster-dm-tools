@@ -1,5 +1,8 @@
 {
   "cards": [
+    {
+        "fullFrameImage": "./decks/wedding-curse/portrait-annabelle.png"
+    },
       {
           "name": "Gorge of Gluttons",
           "type": "Item 2",

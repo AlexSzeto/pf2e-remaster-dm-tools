@@ -10,15 +10,24 @@ const addMarkdownAndIconTo = (text) => text
 
 export const Card = ({data}) => html`
     <div class="pf2e-stats">
-      <div class="title">
-        <div class="name">${ data.name }</div>
-        ${ !!data.type
-          && html`<div class="type">${ data.type }</div>` 
-        }
-      </div>
+      ${ !!data.fullFrameImage
+        && html`<div class="full-frame-image" style="background-image: url('${ data.fullFrameImage }')" />`
+      }
+      ${ !!data.name || !!data.type 
+        && html`
+        <div class="title">
+          <div class="name">${ data.name }</div>
+          ${ !!data.type
+            && html`<div class="type">${ data.type }</div>` 
+          }
+        </div>
+        `
+      }
       ${ !!data.illustration
         ? html`<img class="illustration" src="${ data.illustration }" />` 
-        : html`<hr/>`
+        : (!!data.name || !!data.type)
+        ? html`<hr/>`
+        : ''
       }
       ${ !! data.traits
         && html`<div class="traits">
