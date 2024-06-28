@@ -221,12 +221,12 @@
           {
             "name": "Languages",
             "text": "Common, Dwarven",
-            "newLine": true
+            "newline": true
           },
           {
             "name": "Skills",
             "text": "Religion +7, Occultism +8",
-            "newLine": true
+            "newline": true
           },
           {
             "name": "Str",
@@ -256,8 +256,7 @@
           {
             "name": "Items",
             "text": "Warhammer, Chain Shirt, Wooden Shield",
-            "newline": true,
-            "italic": true
+            "newline": true
           },
           {
             "name": "AC",
@@ -290,6 +289,112 @@
             "name": "Melee",
             "action": "single",
             "text": "Warhammer +9 1d8+4 B",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Reaven",
+        "type": "Fighter 2",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+8; darkvision"
+          },
+          {
+            "name": "Languages",
+            "text": "Common, Dwarven",
+            "newline": true
+          },
+          {
+            "name": "Skills",
+            "text": "Acrobatics +8, Intimidation +7",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+4",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+3"
+          },
+          {
+            "name": "Con",
+            "text": "+3"
+          },
+          {
+            "name": "Int",
+            "text": "+1"
+          },
+          {
+            "name": "Wis",
+            "text": "+1"
+          },
+          {
+            "name": "Cha",
+            "text": "+1"
+          },
+          {
+            "name": "Items",
+            "text": "Battleaxe, Leather Armor",
+            "newline": true
+          },
+          {
+            "name": "AC",
+            "text": "18",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+8"
+          },
+          {
+            "name": "Ref",
+            "text": "+8"
+          },
+          {
+            "name": "Will",
+            "text": "+5"
+          },
+          {
+            "name": "HP",
+            "text": "28",
+            "newline": true
+          },
+          {
+            "name": "Bravery",
+            "text": "When you roll a success at a Will save against a fear effect, you get a critical success instead.",
+            "newline": true
+          },
+          {
+            "name": "Reactive Strike",
+            "text": "[reaction]",
+            "newline": true
+          },
+          {
+            "name": "Snagging Strike",
+            "text": "[single] Enemy is off-guard on hit, as long as they are in grab range.",
+            "newline": true
+          },
+          {
+            "name": "Lunge",
+            "text": "[single] You attack with 5ft increased range.",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "20",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "Axe +11 1d8+4 S",
             "newline": true
           }
         ]

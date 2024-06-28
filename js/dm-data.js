@@ -487,6 +487,20 @@ export const creatureDamageTypes = [
   "Precision",
 ]
 
+export const creatureSpellLevelLabels = [
+  "Cantrips",
+  "1st",
+  "2nd",
+  "3rd",
+  "4th",
+  "5th",
+  "6th",
+  "7th",
+  "8th",
+  "9th",
+  "10th"
+];
+
 // Format: extreme DC, extreme modifier, high DC, high modifier, moderate DC, moderate modifier
 export const creatureSpellDCsLabels = ["Extreme", "High", "Moderate"];
 export const creatureSpellDCs = [
@@ -560,6 +574,7 @@ export const creatureRoadMaps = [
     ac: [3],
     ref: [3],
     will: [1],
+    spellDC: [0, 1],
   },
   {
     name: "Class - Fighter (Strength)",
@@ -643,8 +658,8 @@ export const createCreatureTemplate = () => ({
   // action actions, name, bonus, damage, damage type
   strikes: [
     {
-      name: "Strike",
-      actions: 1,
+      name: "Melee",
+      actions: 3,
       description: "",
       bonus: 2,
       damage: 2,
@@ -652,6 +667,7 @@ export const createCreatureTemplate = () => ({
     },
   ],
 
+  spellDC: 2,
   spells: [],
 });
 
@@ -678,6 +694,11 @@ export const createStrikeTemplate = () => ({
   damage: 2,
   type: "B",
   description: "",
+});
+
+export const createSpellTemplate = () => ({
+  level: 0,
+  text: "",
 });
 
 export const createSkillOutput = () => ({

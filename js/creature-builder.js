@@ -29,6 +29,10 @@ import {
   actionCostLabels,
   createAbilityTemplate,
   actionCostIcons,
+  creatureSpellDCs,
+  creatureSpellDCsLabels,
+  creatureSpellLevelLabels,
+  createSpellTemplate,
 } from "./dm-data.js";
 import { Card } from "./card.js";
 
@@ -40,7 +44,7 @@ const dice = (data) => `${data.count}d${data.sides}${
     : ""
 }`;
 
-const bonusText = (data) => data > 0 ? `+${data}` : data;
+const bonusText = (data) => `${data > 0 ? '+' : ''}${data}`;
 
 class CreatureRoadMaps extends Component {
   constructor(props) {
@@ -331,7 +335,6 @@ class CreatureBuilder extends CreatureFormComponent {
           <h3>Basics:</h3>
           ${this.numberInput("level", "Level", -1, 24)}
           ${this.selectNumberInput("size", "Size", creatureSizeLabels)}
-          ${this.stringListInput("traits", "Traits")}
         </div>
         <div>
           <h3>Perception and Senses:</h3>
@@ -409,16 +412,7 @@ class CreatureBuilder extends CreatureFormComponent {
             },
             createStrikeTemplate
           )}
-          ${this.objectListInput(
-            "abilities",
-            "Abilities",
-            {
-              type: { prefix: " ", type: "select", options: ["Innate", "Combat"] },
-              name: { prefix: "", type: "text" },
-              description: { prefix: ": ", type: "longtext" },
-            },
-            createAbilityTemplate
-          )}          
+          ${this.selectNumberInput("spellDC", "Spell DC", creatureSpellDCsLabels)}
         </div>
       </form>
     `;
@@ -516,7 +510,7 @@ class CreatureEditor extends CreatureFormComponent {
 
         <div>
           <h3>Abilities:</h3>
-          ${this.numberInput("speed", "Speed", 0, 120)}
+          ${this.numberInput("speed", "Speed", 0, 1000)}
           ${this.objectListInput(
             "strikes",
             "Strikes",
@@ -540,7 +534,16 @@ class CreatureEditor extends CreatureFormComponent {
             },
             createAbilityTemplate
           )}
-
+          ${this.numberInput("spellDC", "Spell DC", 0, 100)}
+          ${this.objectListInput(
+            "spells",
+            "Spells",
+            {
+              level: { prefix: "Level: ", type: "select", options: creatureSpellLevelLabels },
+              text: { prefix: " ", type: "text" },
+            },
+            createSpellTemplate
+          )} 
         </div>
       </form>
     `;
@@ -638,7 +641,7 @@ class App extends Component {
     const template = this.state.data[1]
 
     const statValue = (value, table) =>
-      table.find((row) => row[0] === parseInt(template.level))[1 + value];
+      table.find((row) => row[0] === parseInt(template.level))[1 + parseInt(value)];
     const stat = (name, table) =>
       table.find((row) => row[0] === parseInt(template.level))[
         1 + parseInt(template[name])
@@ -687,8 +690,16 @@ class App extends Component {
       strikes: template.strikes.map((strike) => ({
         ...strike,
         bonus: statValue(strike.bonus, creatureAttackBonuses),
-        damage: `${statValue(strike.damage, creatureStrikeCount)}d${statValue(strike.damage, creatureStrikeSides)}+${statValue(strike.damage, creatureStrikeBonuses)}`
+        damage: `${
+          statValue(strike.damage, creatureStrikeCount)
+        }d${
+          statValue(strike.damage, creatureStrikeSides)
+        }${
+          bonusText(statValue(strike.damage, creatureStrikeBonuses)).replace("0", "")
+        }`
       })),
+
+      spellDC: stat("spellDC", creatureSpellDCs),
     };
     
     this.setData(2, output);
@@ -711,12 +722,12 @@ class App extends Component {
         {
           name: "Languages",
           text: creature.languages.join(", "),
-          newLine: true,
+          newline: true,
         },
         {
           name: "Skills",
           text: creature.skills.map(skill => `${skill.name} ${bonusText(skill.value)}`).join(", "),
-          newLine: true,
+          newline: true,
         },
         {
           name: "Str", 
@@ -747,7 +758,6 @@ class App extends Component {
           name: "Items",
           text: creature.items.join(", "),
           newline: true,
-          italic: true,
         },
         ...creature.abilities.filter(ability => ability.type === 0).map(ability => ({
           name: ability.name,
@@ -788,11 +798,6 @@ class App extends Component {
           name: "Weaknesses",
           text: creature.weaknesses.map(weakness => `${weakness.name} ${weakness.value}`).join(", "),
         },
-        ...creature.abilities.filter(ability => ability.type === 1).map(ability => ({
-          name: ability.name,
-          text: ability.description,
-          newline: true,
-        })),
         {
           name: "Speed",
           text: `${creature.speed}`,
@@ -802,6 +807,23 @@ class App extends Component {
           name: strike.name,
           action: actionCostIcons[strike.actions],
           text: `${strike.description} ${bonusText(strike.bonus)} ${strike.damage} ${strike.type}`,
+          newline: true,
+        })),
+        {
+          name: "Spells",
+          text: creature.spells.length > 0 ? 
+            `DC ${creature.spellDC}; ${creature
+              .spells
+              .sort((a, b) => b.level - a.level)
+              .map(spell => `**${creatureSpellLevelLabels[spell.level]}** ${spell.text}`)
+              .join("; ")
+            }`
+            : "",
+          newline: true,
+        },
+        ...creature.abilities.filter(ability => ability.type === 1).map(ability => ({
+          name: ability.name,
+          text: ability.description,
           newline: true,
         })),
       ].filter(stat => !!stat.text),
@@ -831,8 +853,7 @@ class App extends Component {
   }
 
   render() {
-    return html`
-      <h1>Creature Builder</h1>
+    const nav = html`
       <div class="column">
         ${ 
           this.state.step > 0
@@ -845,7 +866,11 @@ class App extends Component {
           ? html`<button onClick=${() => this.nextStep()}>Next</button>`
           : html`<button disabled>Next</button>`
         }
-      </div>
+      </div>    
+    `
+
+    return html`
+      <h1>Creature Builder</h1>
       ${
         this.state.step === 0
         && html`<h2>Select a Creature Roadmap</h2><${CreatureRoadMaps} onUpdate=${(data) => this.setData(0, data)} />`
@@ -862,6 +887,7 @@ class App extends Component {
         this.state.step === 3
         && html`<h2>Preview and Export</h2><${CreaturePreview} data=${this.state.data[3]} onUpdate=${(data) => this.setData(3, data)} />`
       }
+      ${nav}
     `;
   }
 }
