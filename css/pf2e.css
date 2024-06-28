@@ -32,6 +32,14 @@ body {
     grid-template-rows: repeat(3, 104em); /* 1000px */
 }
 
+.deck-card-frame {
+    font-size: 5px;
+    border: 1px dashed #472C2C;
+    padding: 2em;
+    width: 74em;
+    height: 104em;
+}
+
 .card {
     position: relative;
 
@@ -132,6 +140,10 @@ body {
             font-size: 3.2em;
             margin-right: 0.2em;
             line-height: 1.2em;
+
+            span.icon {
+                font-size: 1.3125em;
+            }
         }
     }
 
@@ -199,6 +211,20 @@ body {
     box-sizing: border-box;
   }
 
+  textarea {
+    font-family: 'FF Good Pro Cond', sans-serif;
+    font-size: 1em;      
+    border: 1px solid rgb(118, 118, 118);
+    border-radius: 0.25em;
+    padding: 0.25em;
+
+    margin: 0.5em 0;
+    display: block;
+    width: 20em;
+    height: 4em;
+    resize: none;    
+  }
+
   .label-text {
     display: inline-block;
     text-align: right;
@@ -216,4 +242,17 @@ body {
     color: white;
     border: none;
     border-radius: 0.25em;
+
+    &:disabled {
+        background-color: rgba(118, 118, 118, 0.25);
+        color: #664E47;
+    }
+
+    &:not(:disabled):hover {
+        background-color: #664E47;
+    }
+
+    &:not(:disabled):active {
+        background-color: #351a1a;
+    }
   }

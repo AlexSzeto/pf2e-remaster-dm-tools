@@ -1,5 +1,13 @@
 import { html } from "htm/preact";
 
+const addMarkdownAndIconTo = (text) => text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__(.*?)__/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    .replace(/\[(.*?)\]/g, '<span class="icon $1"></span>')
+    .replace(/\n/g, '<br>')
+
 export const Card = ({data}) => html`
     <div class="pf2e-stats">
       <div class="title">
@@ -9,7 +17,8 @@ export const Card = ({data}) => html`
         }
       </div>
       ${ !!data.illustration
-        && html`<img class="illustration" src="${ data.illustration }" />` 
+        ? html`<img class="illustration" src="${ data.illustration }" />` 
+        : html`<hr/>`
       }
       ${ !! data.traits
         && html`<div class="traits">
@@ -32,9 +41,8 @@ export const Card = ({data}) => html`
               <span class="stat-name">${ stat.name }</span>
               ${ !!stat.action && html`<span class=${`icon ${stat.action}`}> </span>`}
               <span class="stat-text" dangerouslySetInnerHTML=${{
-                __html: stat.text
-                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                  .replace(/\[(.*?)\]/g, '<span class="icon $1"></span>')
+                __html: addMarkdownAndIconTo(stat.text)
+
               }}></span>
             `) 
           }
@@ -44,10 +52,7 @@ export const Card = ({data}) => html`
         && html`
           <hr/>
           <div class="description" dangerouslySetInnerHTML=${{
-            __html: data.description
-              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\[(.*?)\]/g, '<span class="icon $1"></span>')
-              .replace(/\n/g, '<br>')
+            __html: addMarkdownAndIconTo(data.description)
           }}></div>`
       }
     </div>

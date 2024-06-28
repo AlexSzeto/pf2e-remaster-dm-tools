@@ -2,158 +2,178 @@
   "wedding-curse": {
     "images": [
       {
-        "label": "Annabelle",
-        "path": "./decks/wedding-curse/annabelle.png"
+        "label": "Location Archives",
+        "path": "./decks/wedding-curse/location-archives.png"
       },
       {
-        "label": "Archives",
-        "path": "./decks/wedding-curse/archives.png"
+        "label": "Location Catacombs Interior",
+        "path": "./decks/wedding-curse/location-catacombs-interior.png"
       },
       {
-        "label": "Auric",
-        "path": "./decks/wedding-curse/auric.png"
+        "label": "Location Lumi Room",
+        "path": "./decks/wedding-curse/location-lumi-room.png"
       },
       {
-        "label": "Catacombs Interior",
-        "path": "./decks/wedding-curse/catacombs-interior.png"
+        "label": "Location Manor Exterior",
+        "path": "./decks/wedding-curse/location-manor-exterior.png"
       },
       {
-        "label": "Daramir",
-        "path": "./decks/wedding-curse/daramir.png"
+        "label": "Location Manor Study",
+        "path": "./decks/wedding-curse/location-manor-study.png"
       },
       {
-        "label": "Dargon",
-        "path": "./decks/wedding-curse/dargon.png"
+        "label": "Location Ruins Body",
+        "path": "./decks/wedding-curse/location-ruins-body.png"
       },
       {
-        "label": "Edwin",
-        "path": "./decks/wedding-curse/edwin.png"
+        "label": "Location Ruins Catacomb Entrance",
+        "path": "./decks/wedding-curse/location-ruins-catacomb-entrance.png"
       },
       {
-        "label": "Fadon",
-        "path": "./decks/wedding-curse/fadon.png"
+        "label": "Location Ruins Clearing",
+        "path": "./decks/wedding-curse/location-ruins-clearing.png"
       },
       {
-        "label": "Jerod",
-        "path": "./decks/wedding-curse/jerod.png"
+        "label": "Location Ruins Keep",
+        "path": "./decks/wedding-curse/location-ruins-keep.png"
       },
       {
-        "label": "Kerissa",
-        "path": "./decks/wedding-curse/kerissa.png"
+        "label": "Location Ruins Random 1",
+        "path": "./decks/wedding-curse/location-ruins-random-1.png"
       },
       {
-        "label": "Kurnov Hawkridge",
-        "path": "./decks/wedding-curse/kurnov-hawkridge.png"
+        "label": "Location Ruins Random 2",
+        "path": "./decks/wedding-curse/location-ruins-random-2.png"
       },
       {
-        "label": "Lumi Room",
-        "path": "./decks/wedding-curse/lumi-room.png"
+        "label": "Location Ruins Random 3",
+        "path": "./decks/wedding-curse/location-ruins-random-3.png"
       },
       {
-        "label": "Lumiere Armored",
-        "path": "./decks/wedding-curse/lumiere-armored.png"
+        "label": "Location Ruins Sunset",
+        "path": "./decks/wedding-curse/location-ruins-sunset.png"
       },
       {
-        "label": "Lumiere Dress",
-        "path": "./decks/wedding-curse/lumiere-dress.png"
+        "label": "Location Stormhaven",
+        "path": "./decks/wedding-curse/location-stormhaven.png"
       },
       {
-        "label": "Manor Exterior",
-        "path": "./decks/wedding-curse/manor-exterior.png"
+        "label": "Location Tavern at Night",
+        "path": "./decks/wedding-curse/location-tavern-at-night.png"
       },
       {
-        "label": "Manor Study",
-        "path": "./decks/wedding-curse/manor-study.png"
+        "label": "Location Tea House",
+        "path": "./decks/wedding-curse/location-tea-house.png"
       },
       {
-        "label": "Rahul Kamal",
-        "path": "./decks/wedding-curse/rahul-kamal.png"
+        "label": "Location Warehouse Dock",
+        "path": "./decks/wedding-curse/location-warehouse-dock.png"
       },
       {
-        "label": "Reaven",
-        "path": "./decks/wedding-curse/reaven.png"
+        "label": "Location Warehouse Exterior",
+        "path": "./decks/wedding-curse/location-warehouse-exterior.png"
       },
       {
-        "label": "Ruins Body",
-        "path": "./decks/wedding-curse/ruins-body.png"
+        "label": "Location Warehouse Interior",
+        "path": "./decks/wedding-curse/location-warehouse-interior.png"
       },
       {
-        "label": "Ruins Catacomb Entrance",
-        "path": "./decks/wedding-curse/ruins-catacomb-entrance.png"
+        "label": "Portrait Annabelle",
+        "path": "./decks/wedding-curse/portrait-annabelle.png"
       },
       {
-        "label": "Ruins Clearing",
-        "path": "./decks/wedding-curse/ruins-clearing.png"
+        "label": "Portrait Auric",
+        "path": "./decks/wedding-curse/portrait-auric.png"
       },
       {
-        "label": "Ruins Random 1",
-        "path": "./decks/wedding-curse/ruins-random-1.png"
+        "label": "Portrait Burt",
+        "path": "./decks/wedding-curse/portrait-burt.png"
       },
       {
-        "label": "Ruins Random 2",
-        "path": "./decks/wedding-curse/ruins-random-2.png"
+        "label": "Portrait Dak Gorim",
+        "path": "./decks/wedding-curse/portrait-dak-gorim.png"
       },
       {
-        "label": "Ruins Random 3",
-        "path": "./decks/wedding-curse/ruins-random-3.png"
+        "label": "Portrait Daramir",
+        "path": "./decks/wedding-curse/portrait-daramir.png"
       },
       {
-        "label": "Ruins Random 4",
-        "path": "./decks/wedding-curse/ruins-random-4.png"
+        "label": "Portrait Dargon",
+        "path": "./decks/wedding-curse/portrait-dargon.png"
       },
       {
-        "label": "Stormhaven",
-        "path": "./decks/wedding-curse/stormhaven.png"
+        "label": "Portrait Edwin",
+        "path": "./decks/wedding-curse/portrait-edwin.png"
       },
       {
-        "label": "Tavern at Night",
-        "path": "./decks/wedding-curse/tavern-at-night.png"
+        "label": "Portrait Fadon",
+        "path": "./decks/wedding-curse/portrait-fadon.png"
       },
       {
-        "label": "Tea House",
-        "path": "./decks/wedding-curse/tea-house.png"
+        "label": "Portrait Jerod",
+        "path": "./decks/wedding-curse/portrait-jerod.png"
       },
       {
-        "label": "Vampire Warlord",
-        "path": "./decks/wedding-curse/vampire-warlord.png"
+        "label": "Portrait Kerissa",
+        "path": "./decks/wedding-curse/portrait-kerissa.png"
       },
       {
-        "label": "Verzok Exterior",
-        "path": "./decks/wedding-curse/verzok-exterior.png"
+        "label": "Portrait Kurnov Hawkridge",
+        "path": "./decks/wedding-curse/portrait-kurnov-hawkridge.png"
       },
       {
-        "label": "Warehouse Dock",
-        "path": "./decks/wedding-curse/warehouse-dock.png"
+        "label": "Portrait Lumiere Armored",
+        "path": "./decks/wedding-curse/portrait-lumiere-armored.png"
       },
       {
-        "label": "Warehouse Exterior",
-        "path": "./decks/wedding-curse/warehouse-exterior.png"
+        "label": "Portrait Lumiere Dress",
+        "path": "./decks/wedding-curse/portrait-lumiere-dress.png"
       },
       {
-        "label": "Warehouse Interior",
-        "path": "./decks/wedding-curse/warehouse-interior.png"
+        "label": "Portrait Rahul Kamal",
+        "path": "./decks/wedding-curse/portrait-rahul-kamal.png"
+      },
+      {
+        "label": "Portrait Reaven",
+        "path": "./decks/wedding-curse/portrait-reaven.png"
       }
     ],
     "bgms": [
       {
-        "label": "Catacombs Bgm",
-        "path": "./decks/wedding-curse/catacombs-bgm.mp3"
+        "label": "Arise Dak Gorim Bgm",
+        "path": "./decks/wedding-curse/arise-dak-gorim-bgm.mp3"
+      },
+      {
+        "label": "Gutting Hole Showdown Bgm",
+        "path": "./decks/wedding-curse/gutting-hole-showdown-bgm.mp3"
+      },
+      {
+        "label": "Heroes of Stormhaven Bgm",
+        "path": "./decks/wedding-curse/heroes-of-stormhaven-bgm.mp3"
       },
       {
         "label": "Highlands Battle Bgm",
         "path": "./decks/wedding-curse/highlands-battle-bgm.mp3"
       },
       {
-        "label": "Intrigue Bgm",
-        "path": "./decks/wedding-curse/intrigue-bgm.mp3"
+        "label": "Ode To Stormhaven Bgm",
+        "path": "./decks/wedding-curse/ode-to-stormhaven-bgm.mp3"
       },
       {
-        "label": "Stormhaven Bgm",
-        "path": "./decks/wedding-curse/stormhaven-bgm.mp3"
+        "label": "Tales of the Salty Dogs Bgm",
+        "path": "./decks/wedding-curse/tales-of-the-salty-dogs-bgm.mp3"
       },
       {
-        "label": "Tavern Bgm",
-        "path": "./decks/wedding-curse/tavern-bgm.mp3"
+        "label": "the Wedding Uncursed Bgm",
+        "path": "./decks/wedding-curse/the-wedding-uncursed-bgm.mp3"
+      },
+      {
+        "label": "Verzog Catacombs Bgm",
+        "path": "./decks/wedding-curse/verzog-catacombs-bgm.mp3"
+      },
+      {
+        "label": "Wavering Hearts Bgm",
+        "path": "./decks/wedding-curse/wavering-hearts-bgm.mp3"
       }
     ],
     "ambiences": [
@@ -184,6 +204,95 @@
       {
         "label": "Wagon Ruins Approach Ambience",
         "path": "./decks/wedding-curse/wagon-ruins-approach-ambience.mp3"
+      }
+    ],
+    "cards": [
+      {
+        "name": "Dagon",
+        "type": "Warpriest 2",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+8; darkvision"
+          },
+          {
+            "name": "Languages",
+            "text": "Common, Dwarven",
+            "newLine": true
+          },
+          {
+            "name": "Skills",
+            "text": "Religion +7, Occultism +8",
+            "newLine": true
+          },
+          {
+            "name": "Str",
+            "text": "+4",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+2"
+          },
+          {
+            "name": "Con",
+            "text": "+3"
+          },
+          {
+            "name": "Int",
+            "text": "+1"
+          },
+          {
+            "name": "Wis",
+            "text": "+3"
+          },
+          {
+            "name": "Cha",
+            "text": "+2"
+          },
+          {
+            "name": "Items",
+            "text": "Warhammer, Chain Shirt, Wooden Shield",
+            "newline": true,
+            "italic": true
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+8"
+          },
+          {
+            "name": "Ref",
+            "text": "+5"
+          },
+          {
+            "name": "Will",
+            "text": "+11"
+          },
+          {
+            "name": "HP",
+            "text": "28",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "20",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "Warhammer +9 1d8+4 B",
+            "newline": true
+          }
+        ]
       }
     ]
   }

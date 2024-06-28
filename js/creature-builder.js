@@ -26,7 +26,11 @@ import {
   creatureDamageTypes,
   createSkillOutput,
   createWeaknessResistOutput,
+  actionCostLabels,
+  createAbilityTemplate,
+  actionCostIcons,
 } from "./dm-data.js";
+import { Card } from "./card.js";
 
 const dice = (data) => `${data.count}d${data.sides}${
   data.bonus > 0 
@@ -36,6 +40,8 @@ const dice = (data) => `${data.count}d${data.sides}${
     : ""
 }`;
 
+const bonusText = (data) => data > 0 ? `+${data}` : data;
+
 class CreatureRoadMaps extends Component {
   constructor(props) {
     super(props);
@@ -43,34 +49,9 @@ class CreatureRoadMaps extends Component {
   }
 
   changeRoadMap = (e) => {
-    this.setState({ roadmap: e.target.value });
-    this.reroll();
-  };
-
-  reroll = () => {
-    const roadmap = creatureRoadMaps[this.state.roadmap];
-    const creature = {
-      ...createCreatureTemplate(),
-      ...Object.keys(roadmap).reduce((stats, key) => {
-        const value = roadmap[key];
-        switch (key) {
-          case "name":            
-          case "strikes":
-            return { ...stats, [key]: value };
-          case "skills":
-            return { ...stats, [key]: value.map(skill => ({
-              name: skill.name instanceof Array
-                ? skill.name[rollBetween(0, skill.name.length - 1)]
-                : skill.name,
-              value: skill.value[rollBetween(0, skill.value.length - 1)]
-            })) };
-          default:
-            return { ...stats, [key]: value[rollBetween(0, value.length - 1)] };
-        }
-      }, {}),
-    };
-
-    this.props.onUpdate(creature);
+    const roadmap = e.target.value
+    this.setState({ roadmap });
+    this.props.onUpdate( roadmap );
   };
 
   render() {
@@ -86,7 +67,6 @@ class CreatureRoadMaps extends Component {
               html`<option value=${index}>${roadmap.name}</option>`
           )}
         </select>
-        <button onClick=${this.reroll}>Reroll</button>
       </div>
     `;
   }
@@ -107,6 +87,7 @@ class CreatureFormComponent extends Component {
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
+    this.updateCreature()
   };
 
   handleListItemChange = (listName, index, e) => {
@@ -114,6 +95,7 @@ class CreatureFormComponent extends Component {
     const list = [...this.state[listName]];
     list[index] = value;
     this.setState({ [listName]: list });
+    this.updateCreature()
   };
 
   handleObjectListItemChange = (listName, index, e) => {
@@ -121,7 +103,12 @@ class CreatureFormComponent extends Component {
     const list = [...this.state[listName]];
     list[index][name] = value;
     this.setState({ [listName]: list });
+    this.updateCreature()
   };
+
+  updateCreature = () => {
+    requestAnimationFrame(() => this.props.onUpdate(this.state));
+  };  
 
   addListItem(listName, factory) {
     this.setState({ [listName]: [...this.state[listName], factory()] });
@@ -129,7 +116,7 @@ class CreatureFormComponent extends Component {
 
   labelWrap = (label, content) => html`
     <div>
-      <label> ${label}: ${content} </label>
+      <label><span class="label-text">${label}: </span>${content} </label>
     </div>
   `;
   listItemWrap = (content) => html` <div>${content}</div> `;
@@ -183,6 +170,10 @@ class CreatureFormComponent extends Component {
     this.labelWrap(
       label,
       html`
+        <button type="button" onClick=${() => this.addListItem(name, () => itemLabels[0])}>
+          Add ${label}
+        </button>
+        <div class="item-list">
         ${this.state[name].map((item, index) =>
           this.listItemWrap(html`
             <select
@@ -196,9 +187,7 @@ class CreatureFormComponent extends Component {
             </select>
           `)
         )}
-        <button type="button" onClick=${() => this.addListItem(name, () => "")}>
-          Add ${label}
-        </button>        
+        </div>
       `
     );
 
@@ -206,6 +195,10 @@ class CreatureFormComponent extends Component {
     this.labelWrap(
       label,
       html`
+        <button type="button" onClick=${() => this.addListItem(name, () => "")}>
+          Add ${label}
+        </button>
+        <div class="item-list">
         ${this.state[name].map((item, index) =>
           this.listItemWrap(html`
             <input
@@ -215,9 +208,7 @@ class CreatureFormComponent extends Component {
             />
           `)
         )}
-        <button type="button" onClick=${() => this.addListItem(name, () => "")}>
-          Add ${label}
-        </button>
+        </div>
       `
     );
 
@@ -225,6 +216,13 @@ class CreatureFormComponent extends Component {
     this.labelWrap(
       label,
       html`
+        <button
+          type="button"
+          onClick=${() => this.addListItem(name, objectFactory)}
+        >
+          Add ${label}
+        </button>
+        <div class="item-list">
         ${this.state[name].map((item, index) =>
           this.listItemWrap(html`
             ${Object.keys(definition).map((key) => {
@@ -260,6 +258,18 @@ class CreatureFormComponent extends Component {
                           />
                         `
                       );
+                case "longtext":
+                  return this.inlineWrap(
+                    prefix,
+                    html`
+                      <textarea
+                        name=${key}
+                        value=${item[key]}
+                        onInput=${(e) =>
+                          this.handleObjectListItemChange(name, index, e)}
+                      />
+                    `
+                  );
                 case "number":
                   const { min, max } = definition[key];
                   return this.inlineWrap(
@@ -297,12 +307,7 @@ class CreatureFormComponent extends Component {
             })}
           `)
         )}
-        <button
-          type="button"
-          onClick=${() => this.addListItem(name, objectFactory)}
-        >
-          Add ${label}
-        </button>
+        </div>
       `
     );
 
@@ -318,69 +323,6 @@ class CreatureBuilder extends CreatureFormComponent {
       "Low",
       ...(hasTerrible ? ["Terrible"] : []),
     ]);
-  
-  statValue = (value, table) =>
-    table.find((row) => row[0] === parseInt(this.state.level))[1 + value];
-  stat = (name, table) =>
-    table.find((row) => row[0] === parseInt(this.state.level))[
-      1 + parseInt(this.state[name])
-    ];
-
-  rollValue = (value, table) => {
-    const row = table.find((row) => row[0] === parseInt(this.state.level));
-    const max = row[1 + value * 2];
-    const min = row[1 + value * 2 + 1];
-    return rollBetween(min, max);
-  };
-  roll = (name, table) => this.rollValue(this.state[name], table);
-
-  mapWeaknessResistance = (name) => ({
-    name,
-    value: this.rollValue(0, creatureResistancesAndWeaknesses),
-  });
-
-  rerollCreature = (e) => {
-    e.preventDefault();
-    const output = {
-      ...this.state,
-
-      str: this.stat("str", creatureAttributeModifierScales),
-      dex: this.stat("dex", creatureAttributeModifierScales),
-      con: this.stat("con", creatureAttributeModifierScales),
-      int: this.stat("int", creatureAttributeModifierScales),
-      wis: this.stat("wis", creatureAttributeModifierScales),
-      cha: this.stat("cha", creatureAttributeModifierScales),
-
-      per: this.stat("per", creaturePerception),
-
-      skills: this.state.skills.map((skill) => ({
-        name: skill.name,
-        value: this.rollValue(skill.value, creatureSkills),
-      })),
-      ac: this.stat("ac", creatureAC),
-
-      fort: this.stat("fort", creatureSavingThrows),
-      ref: this.stat("ref", creatureSavingThrows),
-      will: this.stat("will", creatureSavingThrows),
-
-      hp: this.roll("hp", creatureHitPoints),
-
-      weaknesses: this.state.weaknesses.map(this.mapWeaknessResistance),
-      resistances: this.state.resistances.map(this.mapWeaknessResistance),
-
-      strikes: this.state.strikes.map((strike) => ({
-        ...strike,
-        bonus: this.statValue(strike.bonus, creatureAttackBonuses),
-        damage: {
-          count: this.statValue(strike.damage, creatureStrikeCount),
-          sides: this.statValue(strike.damage, creatureStrikeSides),
-          bonus: this.statValue(strike.damage, creatureStrikeBonuses),
-        },
-      })),
-    };
-    console.log(output);
-    this.props.onUpdate(output);
-  };
 
   render() {
     return html`
@@ -392,20 +334,22 @@ class CreatureBuilder extends CreatureFormComponent {
           ${this.stringListInput("traits", "Traits")}
         </div>
         <div>
+          <h3>Perception and Senses:</h3>
+          ${this.statWithRange("per", "Perception", true, true)}
+        </div>        
+        <div>
           <h3>Attribute Modifiers:</h3>
+          <div class="two-column">
           ${this.statWithRange("str", "Strength", true, false)}
           ${this.statWithRange("dex", "Dexterity", true, false)}
           ${this.statWithRange("con", "Constitution", true, false)}
           ${this.statWithRange("int", "Intelligence", true, false)}
           ${this.statWithRange("wis", "Wisdom", true, false)}
           ${this.statWithRange("cha", "Charisma", true, false)}
+          </div>
         </div>
         <div>
-          <h3>Perception and Senses:</h3>
-          ${this.statWithRange("per", "Perception", true, true)}
-        </div>
-        <div>
-          <h3>Languages and Skills:</h3>
+          <h3>Skills:</h3>
           ${this.objectListInput(
             "skills",
             "Skills",
@@ -422,11 +366,15 @@ class CreatureBuilder extends CreatureFormComponent {
         </div>
         <div>
           <h3>Defenses and Saves:</h3>
-          ${this.statWithRange("ac", "Armor Class", true, false)}
-          ${this.statWithRange("fort", "Fortitude", true, true)}
-          ${this.statWithRange("ref", "Reflex", true, true)}
-          ${this.statWithRange("will", "Will", true, true)}
-          ${this.statWithRange("hp", "Hit Points", false, false)}
+          <div class="column">
+            ${this.statWithRange("ac", "Armor Class", true, false)}
+            ${this.statWithRange("hp", "Hit Points", false, false)}
+          </div>
+          <div class="column">
+            ${this.statWithRange("fort", "Fortitude", true, true)}
+            ${this.statWithRange("ref", "Reflex", true, true)}
+            ${this.statWithRange("will", "Will", true, true)}
+          </div>
         </div>
         <div>
           <h3>Immunities, Weaknesses, and Resistances:</h3>
@@ -434,7 +382,6 @@ class CreatureBuilder extends CreatureFormComponent {
           ${this.selectListInput("resistances", "Resistances", creatureDamageTypes)}
           ${this.selectListInput("weaknesses", "Weaknesses", creatureDamageTypes)}
         </div>
-
         <div>
           <h3>Abilities:</h3>
           ${this.objectListInput(
@@ -442,7 +389,8 @@ class CreatureBuilder extends CreatureFormComponent {
             "Strikes",
             {
               name: { prefix: "", type: "text" },
-              cost: { prefix: "Actions: ", type: "number", min: 0, max: 3 },
+              actions: { prefix: "Actions: ", type: "select", options: actionCostLabels  },
+              description: { prefix: " ", type: "text" },
               bonus: {
                 prefix: "Attack Bonus: ",
                 type: "select",
@@ -461,9 +409,17 @@ class CreatureBuilder extends CreatureFormComponent {
             },
             createStrikeTemplate
           )}
+          ${this.objectListInput(
+            "abilities",
+            "Abilities",
+            {
+              type: { prefix: " ", type: "select", options: ["Innate", "Combat"] },
+              name: { prefix: "", type: "text" },
+              description: { prefix: ": ", type: "longtext" },
+            },
+            createAbilityTemplate
+          )}          
         </div>
-
-        <button onClick=${this.rerollCreature}>Reroll</button>
       </form>
     `;
   }
@@ -481,20 +437,16 @@ class CreatureEditor extends CreatureFormComponent {
       <form onSubmit=${this.handleSubmit}>
         <div>
           <h3>Basics:</h3>
+          <div class="column">          
           ${this.textInput("name", "Name")}
+          ${this.textInput("type", "Type")}
           ${this.numberInput("level", "Level", -1, 24)}
-          ${this.textInput("size", "Size")}
-          ${this.stringListInput("traits", "Traits")}
-          ${this.numberInput("speed", "Speed", 0, 120)}
+          </div>
         </div>
         <div>
-          <h3>Attribute Modifiers:</h3>
-          ${this.numberInput("str", "Strength", -100, 100)}
-          ${this.numberInput("dex", "Dexterity", -100, 100)}
-          ${this.numberInput("con", "Constitution", -100, 100)}
-          ${this.numberInput("int", "Intelligence", -100, 100)}
-          ${this.numberInput("wis", "Wisdom", -100, 100)}
-          ${this.numberInput("cha", "Charisma", -100, 100)}
+          <h3>Traits:</h3>
+          ${this.selectNumberInput("size", "Size", creatureSizeLabels)}
+          ${this.stringListInput("traits", "Traits")}
         </div>
         <div>
           <h3>Perception and Senses:</h3>
@@ -515,16 +467,29 @@ class CreatureEditor extends CreatureFormComponent {
           )}
         </div>
         <div>
+          <h3>Attribute Modifiers:</h3>
+          <div class="two-column">
+          ${this.numberInput("str", "Strength", -100, 100)}
+          ${this.numberInput("dex", "Dexterity", -100, 100)}
+          ${this.numberInput("con", "Constitution", -100, 100)}
+          ${this.numberInput("int", "Intelligence", -100, 100)}
+          ${this.numberInput("wis", "Wisdom", -100, 100)}
+          ${this.numberInput("cha", "Charisma", -100, 100)}
+          </div>
+        </div>
+        <div>
           <h3>Items:</h3>
           ${this.stringListInput("items", "Items")}
         </div>
         <div>
           <h3>Defenses and Saves:</h3>
+          <div class="column">
           ${this.numberInput("ac", "Armor Class", -100, 100)}
           ${this.numberInput("fort", "Fortitude", -100, 100)}
           ${this.numberInput("ref", "Reflex", -100, 100)}
           ${this.numberInput("will", "Will", -100, 100)}
           ${this.numberInput("hp", "Hit Points", 0, 100000)}
+          </div>
         </div>
         <div>
           <h3>Immunities, Weaknesses, and Resistances:</h3>
@@ -551,20 +516,32 @@ class CreatureEditor extends CreatureFormComponent {
 
         <div>
           <h3>Abilities:</h3>
+          ${this.numberInput("speed", "Speed", 0, 120)}
           ${this.objectListInput(
             "strikes",
             "Strikes",
             {
               name: { prefix: "", type: "text" },
-              cost: { prefix: "Actions: ", type: "number", min: 0, max: 3 },
+              actions: { prefix: "Actions: ", type: "select", options: actionCostLabels},
+              description: { prefix: " ", type: "text" },
               bonus: { prefix: "Attack Bonus: ", type: "number", min: -1000, max: 1000 },
               damage: {prefix: "Damage: ", type: "text" },
               type: { prefix: " ", type: "text" },
             },
             createStrikeTemplate
           )}
+          ${this.objectListInput(
+            "abilities",
+            "Abilities",
+            {
+              name: { prefix: "", type: "text" },
+              type: { prefix: " ", type: "select", options: ["Innate", "Combat"] },
+              description: { prefix: " ", type: "longtext" },
+            },
+            createAbilityTemplate
+          )}
+
         </div>
-        <button type="submit">Submit</button>
       </form>
     `;
   }
@@ -575,75 +552,43 @@ class CreaturePreview extends Component {
     super(props);
   }
 
-  labelWrap = (label, content) => html`
-    <div>
-      <span>${label}:</span>
-      <span>${content}</span>
-    </div>
-  `;
+  componentDidUpdate(prevProps) {
+    if (prevProps.data !== this.props.data) {
+      this.setState(this.props.data);
+    }
+  }
 
-  textStat = (name, label) =>
-    this.labelWrap(label, html` ${this.props.data[name]} `);
-  adjustStat = (name, label) =>
-    this.labelWrap(
-      label,
-      html`
-        ${this.props.data[name] >= 0
-          ? `+${this.props.data[name]}`
-          : this.props.data[name]}
-      `
-    );
-  lookupStat = (name, label, table) =>
-    this.labelWrap(label, html` ${table[this.props.data[name]]} `);
-  listStat = (name, label, render) =>
-    this.labelWrap(
-      label,
-      html`
-        <ul>
-          ${this.props.data[name].map((item) => html`<li>${render(item)}</li>`)}
-        </ul>
-      `
-    );
+  handleChange = (e) => {
+    try {
+      const data = JSON.parse(e.target.value);
+      this.props.onUpdate(data);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+  }
+
+  copyToClipboard = () => {
+    const copyText = document.getElementById("card-preview");
+    navigator.clipboard.writeText(copyText.value);
+  }
 
   render() {
     return !!this.props.data ? html`
       <div>
         <h3>Preview:</h3>
-        ${this.textStat("name", "Name")}
-        ${this.textStat("level", "Level")}
-        ${this.lookupStat("size", "Size", creatureSizeLabels)}
-        ${this.listStat("traits", "Traits", (item) => item)}
-        ${this.adjustStat("str", "Strength")}
-        ${this.adjustStat("dex", "Dexterity")}
-        ${this.adjustStat("con", "Constitution")}
-        ${this.adjustStat("int", "Intelligence")}
-        ${this.adjustStat("wis", "Wisdom")}
-        ${this.adjustStat("cha", "Charisma")}
-        ${this.adjustStat("per", "Perception")}
-        ${this.listStat("senses", "Senses", (item) => item)}
-        ${this.listStat("languages", "Languages", (item) => item)}
-        ${this.listStat(
-          "skills",
-          "Skills",
-          (item) => `${item.name}: ${item.value}`
-        )}
-        ${this.listStat("items", "Items", (item) => item)}
-        ${this.adjustStat("ac", "AC")} ${this.adjustStat("fort", "Fortitude")}
-        ${this.adjustStat("ref", "Reflex")} ${this.adjustStat("will", "Will")}
-        ${this.textStat("hp", "HP")}
-        ${this.listStat("immunities", "Immunities", (item) => item)}
-        ${this.listStat(
-          "resistances",
-          "Resistances",
-          (item) => `${item.name} ${item.value}`
-        )}
-        ${this.listStat(
-          "weaknesses",
-          "Weaknesses",
-          (item) => `${item.name} ${item.value}`
-        )}
-        ${this.textStat("speed", "Speed")}
-        ${this.listStat("strikes", "Strikes", (item) => `[${item.cost}] ${item.name} +${item.bonus} ${dice(item.damage)} ${item.type}`)}
+        <div class="column">
+          <div class="deck-card-frame">
+            <${Card} data=${this.props.data} />
+          </div>
+          <div>
+            <textarea
+              id="card-preview"
+              onInput=${this.handleChange}
+            >${JSON.stringify(this.props.data, null, 2)}</textarea>
+            <button onClick=${this.copyToClipboard}>Copy to Clipboard</button>
+          </div>
+        </div>
       </div>
     ` : html`<div>No data</div>`;
   }
@@ -664,32 +609,258 @@ class App extends Component {
     this.setState({ data: next });
   }
 
+  createCreatureFromRoadmap = () => {
+    const roadmap = creatureRoadMaps[this.state.data[0]];
+    const creature = roadmap ? {
+      ...createCreatureTemplate(),
+      ...Object.keys(roadmap).reduce((stats, key) => {
+        const value = roadmap[key];
+        switch (key) {
+          case "name":            
+          case "strikes":
+            return { ...stats, [key]: value };
+          case "skills":
+            return { ...stats, [key]: value.map(skill => ({
+              name: skill.name instanceof Array
+                ? skill.name[rollBetween(0, skill.name.length - 1)]
+                : skill.name,
+              value: skill.value[rollBetween(0, skill.value.length - 1)]
+            })) };
+          default:
+            return { ...stats, [key]: value[rollBetween(0, value.length - 1)] };
+        }
+      }, {}),
+    } : createCreatureTemplate();
+    this.setData(1, creature);
+  };
+
+  fillCreatureDetails = () => {
+    const template = this.state.data[1]
+
+    const statValue = (value, table) =>
+      table.find((row) => row[0] === parseInt(template.level))[1 + value];
+    const stat = (name, table) =>
+      table.find((row) => row[0] === parseInt(template.level))[
+        1 + parseInt(template[name])
+      ];  
+    const rollValue = (value, table) => {
+      const row = table.find((row) => row[0] === parseInt(template.level));
+      const max = row[1 + value * 2];
+      const min = row[1 + value * 2 + 1];
+      return rollBetween(min, max);
+    };
+    const roll = (name, table) => rollValue(template[name], table);
+    const mapWeaknessResistance = (name) => ({
+      name,
+      value: rollValue(0, creatureResistancesAndWeaknesses),
+    });
+
+    const output = {
+      ...template,
+
+      type: 'Creature',
+
+      str: stat("str", creatureAttributeModifierScales),
+      dex: stat("dex", creatureAttributeModifierScales),
+      con: stat("con", creatureAttributeModifierScales),
+      int: stat("int", creatureAttributeModifierScales),
+      wis: stat("wis", creatureAttributeModifierScales),
+      cha: stat("cha", creatureAttributeModifierScales),
+
+      per: stat("per", creaturePerception),
+
+      skills: template.skills.map((skill) => ({
+        name: skill.name,
+        value: rollValue(skill.value, creatureSkills),
+      })),
+      ac: stat("ac", creatureAC),
+
+      fort: stat("fort", creatureSavingThrows),
+      ref: stat("ref", creatureSavingThrows),
+      will: stat("will", creatureSavingThrows),
+
+      hp: roll("hp", creatureHitPoints),
+
+      weaknesses: template.weaknesses.map(mapWeaknessResistance),
+      resistances: template.resistances.map(mapWeaknessResistance),
+
+      strikes: template.strikes.map((strike) => ({
+        ...strike,
+        bonus: statValue(strike.bonus, creatureAttackBonuses),
+        damage: `${statValue(strike.damage, creatureStrikeCount)}d${statValue(strike.damage, creatureStrikeSides)}+${statValue(strike.damage, creatureStrikeBonuses)}`
+      })),
+    };
+    
+    this.setData(2, output);
+  }
+
+  createCardFromCreatureData = () => {
+    const creature = this.state.data[2];
+    const card = {
+      name: creature.name,
+      type: `${creature.type} ${creature.level}`,
+      traits: [
+        creatureSizeLabels[creature.size],
+        ...creature.traits
+      ],
+      stats: [
+        {
+          name: "Perception",
+          text: `${bonusText(creature.per)}${creature.senses.length > 0 ? `; ${creature.senses.join(", ")}` : ""}`,
+        },
+        {
+          name: "Languages",
+          text: creature.languages.join(", "),
+          newLine: true,
+        },
+        {
+          name: "Skills",
+          text: creature.skills.map(skill => `${skill.name} ${bonusText(skill.value)}`).join(", "),
+          newLine: true,
+        },
+        {
+          name: "Str", 
+          text: `${bonusText(creature.str)}`,
+          newline: true,
+        },
+        {
+          name: "Dex",
+          text: `${bonusText(creature.dex)}`,
+        },
+        {
+          name: "Con",
+          text: `${bonusText(creature.con)}`,
+        },
+        {
+          name: "Int",
+          text: `${bonusText(creature.int)}`,
+        },
+        {
+          name: "Wis",
+          text: `${bonusText(creature.wis)}`,
+        },
+        {
+          name: "Cha",
+          text: `${bonusText(creature.cha)}`,
+        },
+        {
+          name: "Items",
+          text: creature.items.join(", "),
+          newline: true,
+          italic: true,
+        },
+        ...creature.abilities.filter(ability => ability.type === 0).map(ability => ({
+          name: ability.name,
+          text: ability.description,
+          newline: true,
+        })),
+        {
+          name: "AC",
+          text: `${creature.ac}`,
+          hr: true,
+        },
+        {
+          name: "Fort",
+          text: `${bonusText(creature.fort)}`,
+        },
+        {
+          name: "Ref",
+          text: `${bonusText(creature.ref)}`,
+        },
+        {
+          name: "Will",
+          text: `${bonusText(creature.will)}`,
+        },
+        {
+          name: "HP",
+          text: `${creature.hp}`,
+          newline: true,
+        },
+        {
+          name: "Immunities",
+          text: creature.immunities.join(", "),
+        },
+        {
+          name: "Resistances",
+          text: creature.resistances.map(resistance => `${resistance.name} ${resistance.value}`).join(", "),
+        },
+        {
+          name: "Weaknesses",
+          text: creature.weaknesses.map(weakness => `${weakness.name} ${weakness.value}`).join(", "),
+        },
+        ...creature.abilities.filter(ability => ability.type === 1).map(ability => ({
+          name: ability.name,
+          text: ability.description,
+          newline: true,
+        })),
+        {
+          name: "Speed",
+          text: `${creature.speed}`,
+          hr: true,
+        },
+        ...creature.strikes.map(strike => ({
+          name: strike.name,
+          action: actionCostIcons[strike.actions],
+          text: `${strike.description} ${bonusText(strike.bonus)} ${strike.damage} ${strike.type}`,
+          newline: true,
+        })),
+      ].filter(stat => !!stat.text),
+    }
+    this.setData(3, card);
+    document.cookie = `card=${JSON.stringify(card)}`;
+  }
+
+  nextStep() {
+    const step = this.state.step + 1;
+    this.setState({ step });
+    switch (step) {
+      case 1:
+        this.createCreatureFromRoadmap();
+        break;
+      case 2:
+        this.fillCreatureDetails();
+        break;
+      case 3:
+        this.createCardFromCreatureData();
+        break;      
+    }
+  }
+
+  prevStep() {
+    this.setState({ step: this.state.step - 1 });
+  }
+
   render() {
     return html`
+      <h1>Creature Builder</h1>
+      <div class="column">
+        ${ 
+          this.state.step > 0
+          ? html`<button onClick=${() => this.prevStep()}>Back</button>`
+          : html`<button disabled>Back</button>`
+        }
+
+        ${
+          this.state.step < 3
+          ? html`<button onClick=${() => this.nextStep()}>Next</button>`
+          : html`<button disabled>Next</button>`
+        }
+      </div>
       ${
         this.state.step === 0
-        && html`<${CreatureRoadMaps} onUpdate=${(data) => this.setData(1, data)} />`
+        && html`<h2>Select a Creature Roadmap</h2><${CreatureRoadMaps} onUpdate=${(data) => this.setData(0, data)} />`
       }
       ${
         this.state.step === 1
-        && html`<${CreatureBuilder} data=${this.state.data[1]} onUpdate=${(data) => this.setData(2, data)} />`
+        && html`<h2>Choose Stats Range</h2><${CreatureBuilder} data=${this.state.data[1]} onUpdate=${(data) => this.setData(1, data)} />`
       }
       ${
         this.state.step === 2
-        && html`<${CreatureEditor} data=${this.state.data[2]} onUpdate=${(data) => this.setData(3, data)} />`
+        && html`<h2>Finalize Creature Design</h2><${CreatureEditor} data=${this.state.data[2]} onUpdate=${(data) => this.setData(2, data)} />`
       }
       ${
         this.state.step === 3
-        && html`<${CreaturePreview} data=${this.state.data[3]} />`
-      }
-      ${ 
-        this.state.step > 0
-        && html`<button onClick=${() => this.setState({ step: this.state.step - 1 })}>Back</button>`
-      }
-
-      ${
-        this.state.step < 3
-        && html`<button onClick=${() => this.setState({ step: this.state.step + 1 })}>Forward</button>`
+        && html`<h2>Preview and Export</h2><${CreaturePreview} data=${this.state.data[3]} onUpdate=${(data) => this.setData(3, data)} />`
       }
     `;
   }

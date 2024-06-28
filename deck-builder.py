@@ -65,6 +65,16 @@ for folder in folders:
       'label': parse_string(filename),
       'path': file
     })
+
+  # open the cards JSON file and add its data to the object
+  cards_file = os.path.join(decks_folder, folder + '-cards.json')
+  # Check if the cards_file exists
+  if os.path.isfile(cards_file):
+    with open(cards_file) as f:
+      decks[folder]['cards'] = json.load(f)['cards']
+  else:
+    print(f"Cards file {cards_file} does not exist.")
+
 # Path to the output JSON file
 output_file = './decks/decks.json'
 

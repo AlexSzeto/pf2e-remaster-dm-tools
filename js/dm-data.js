@@ -1,6 +1,24 @@
 // DCs
 export const rollBetween = (min, max) => parseInt(Math.random() * (max - min + 1) + min)
 
+export const actionCostLabels = [
+  "Non-Action",
+  "Free",
+  "Reaction",
+  "Single",
+  "Double",
+  "Full Turn",
+]
+
+export const actionCostIcons = [
+  undefined,
+  "free",
+  "reaction",
+  "single",
+  "double",
+  "turn"
+]
+
 // untrained, trained, expert, master, legendary
 export const simpleDC = [10, 15, 20, 30, 40];
 
@@ -527,7 +545,7 @@ export const creatureRoadMaps = [
     will: [2, 3],
     hp: [0],
     strikes: [
-      { name: "Melee", cost: 1, bonus: 0, damage: 1, type: "B" },
+      { name: "Melee", actions: 1, bonus: 0, damage: 1, type: "B" },
     ]
   },
   {
@@ -552,7 +570,7 @@ export const creatureRoadMaps = [
     ac: [1],
     will: [3],
     strikes: [
-      { name: "Melee", cost: 1, bonus: 1, damage: 1, type: "S" },
+      { name: "Melee", actions: 1, bonus: 1, damage: 1, type: "S" },
     ]
   },
   {
@@ -564,7 +582,7 @@ export const creatureRoadMaps = [
     ac: [1],
     will: [3],
     strikes: [
-      { name: "Ranged", cost: 1, bonus: 1, damage: 1, type: "P" },
+      { name: "Ranged", actions: 1, bonus: 1, damage: 1, type: "P" },
     ]
   }
 ]
@@ -620,11 +638,14 @@ export const createCreatureTemplate = () => ({
 
   speed: 25,
 
-  // action cost, name, bonus, damage, damage type
+  abilities: [],
+
+  // action actions, name, bonus, damage, damage type
   strikes: [
     {
       name: "Strike",
-      cost: 1,
+      actions: 1,
+      description: "",
       bonus: 2,
       damage: 2,
       type: "B",
@@ -635,21 +656,28 @@ export const createCreatureTemplate = () => ({
 });
 
 export const createSkillTemplate = () => ({
-  name: "",
+  name: "Acrobatics",
   value: 2,
 });
 
 export const createWeaknessResistTemplate = () => ({
-  name: "",
+  name: "Bludgeoning",
   value: 0,
 });
 
+export const createAbilityTemplate = () => ({
+  name: "Spells",
+  type: 1,
+  description: ""
+});
+
 export const createStrikeTemplate = () => ({
-  name: "",
-  cost: 1,
+  name: "Melee",
+  actions: 3,
   bonus: 2,
   damage: 2,
-  type: ""
+  type: "B",
+  description: "",
 });
 
 export const createSkillOutput = () => ({

@@ -1,162 +1,91 @@
 {
     "cards": [
-        {
-            "name": "Gorge of Gluttons",
-            "type": "Item 2",
-            "illustration": "test-item.jpg",
-            "traits": [
-                "Uncommon",
-                "Agile",
-                "Backstabber",
-                "Finesse",
-                "Goblin",
-                "Magical"
-            ],
-            "stats": [
-                {
-                    "name": "Price",
-                    "text": "35 gp"
-                },
-                {
-                    "name": "Bulk",
-                    "text": "L"            
-                },
-                {
-                    "name": "Hands",
-                    "text": "1"
-                },
-                {
-                    "name": "Damage",
-                    "text": "1d6 slashing",
-                    "newline": true
-                },
-                {
-                    "name": "Category",
-                    "text": "Martial Melee Weapon",
-                    "newline": true
-                },
-                {
-                    "name": "Group",
-                    "text": "Sword"
-                }        
-            ],
-            "description": "This weapon has a +1 potency rune (+1 item bonus to attack rolls with this weapon)\n**Activate** [action] Strike"
-        },
-        {
-            "name": "Skeleton Guard",
-            "type": "Creature -1",
-            "traits": [
-                "Medium",
-                "Mindless",
-                "Skeleton",
-                "Undead",
-                "Unholy"
-            ],
-            "stats": [
-              {
-                "name": "Perception",
-                "text": "+2; darkvision"
-              },
-              {
-                "name": "Languages",
-                "text": "Common, Necril",
-                "newline": true
-              },
-              {
-                "name": "Skills",
-                "text": "Acrobatics +6, Athletics +3",
-                "newline": true
-              },
-              {
-                "name": "Str",
-                "text": "16 (+3)",
-                "newline": true
-              },
-              {
-                "name": "Dex",
-                "text": "14 (+2)"
-              },
-              {
-                "name": "Con",
-                "text": "14 (+2)"
-              },
-              {
-                "name": "Int",
-                "text": "14 (+2)"
-              },
-              {
-                "name": "Wis",
-                "text": "14 (+2)"
-              },
-              {
-                "name": "Cha",
-                "text": "14 (+2)"
-              },
-              {
-                "name": "Items",
-                "text": "longsword",
-                "newline": true
-              },
-              {
-                "name":"Gorge of Gluttons",
-                "text": "sample noncombat ability text",
-                "newline": true
-              },
-              {
-                "name": "AC",
-                "text": "22",
-                "hr": true
-              },
-              {
-                "name": "Fort",
-                "text": "+6"                
-              },
-              {
-                "name": "Ref",
-                "text": "+14"              
-              },
-              {
-                "name": "Will",
-                "text": "+11"
-              },
-              {
-                "name": "HP",
-                "text": "55"
-              },
-              {
-                "name": "Turbulent Skies",
-                "text": "sample combat ability text",
-                "newline": true
-              },
-              {
-                "name": "Speed",
-                "text": "25 feet",
-                "hr": true
-              },
-              {
-                "name": "Melee",
-                "action": "single",
-                "text": "longsword +10 (deadly 1d8, magical, versatile P), Damage 1d8+3 slashing",
-                "newline": true
-              },
-              {
-                "name": "Ranged",
-                "action": "double",
-                "text": "longbow +10 (deadly 1d10, magical, propulsive, range increment 100 feet, reload 0), Damage 1d8+3 piercing",
-                "newline": true
-              },
-              {
-                "name": "Divine Innate Spells",
-                "action": "free",
-                "text": "4th (1/day) harm",
-                "newline": true
-              },
-              {
-                "name": "Divine Rituals",
-                "text": "DC 20; 3rd create undead, 2nd animate dead, 1st detect alignment",
-                "newline": true
-              }
-            ]
-        }
+      {
+        "name": "Dagon",
+        "type": "Warpriest 2",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+8; darkvision"
+          },
+          {
+            "name": "Languages",
+            "text": "Common, Dwarven",
+            "newLine": true
+          },
+          {
+            "name": "Skills",
+            "text": "Religion +7, Occultism +8",
+            "newLine": true
+          },
+          {
+            "name": "Str",
+            "text": "+4",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+2"
+          },
+          {
+            "name": "Con",
+            "text": "+3"
+          },
+          {
+            "name": "Int",
+            "text": "+1"
+          },
+          {
+            "name": "Wis",
+            "text": "+3"
+          },
+          {
+            "name": "Cha",
+            "text": "+2"
+          },
+          {
+            "name": "Items",
+            "text": "Warhammer, Chain Shirt, Wooden Shield",
+            "newline": true,
+            "italic": true
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+8"
+          },
+          {
+            "name": "Ref",
+            "text": "+5"
+          },
+          {
+            "name": "Will",
+            "text": "+11"
+          },
+          {
+            "name": "HP",
+            "text": "28",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "20",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "Warhammer +9 1d8+4 B",
+            "newline": true
+          }
+        ]
+      }
     ]
 }

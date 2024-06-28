@@ -1,5 +1,6 @@
 import { render, Component } from "preact";
 import { html } from "htm/preact";
+import { Card } from "./card.js";
 
 class App extends Component {
   constructor(props) {
@@ -20,16 +21,19 @@ class App extends Component {
       show: {
         image: '',
         bgm: '',
-        ambience: ''
+        ambience: '',
+        cards: []
       },
       next: {
         image: '',
         bgm: '',
         ambience: ''
       },
+      cards: [],
       bgmControls: null,
       ambienceControls: null,
       duck: false,
+      previewCard: null,
     };
   
     // Load data from decks.json
@@ -40,7 +44,8 @@ class App extends Component {
         this.setState({
           decks,
           deckId: Object.keys(decks)[0],
-          deck: decks[Object.keys(decks)[0]]
+          deck: decks[Object.keys(decks)[0]],
+          cards: decks[Object.keys(decks)[0]].cards,
         });
 
         const showImage = this.getCookie('dm-image');
@@ -236,6 +241,28 @@ class App extends Component {
     });
   }
 
+  addCardToShow() {
+    const card = this.state.cards[this.state.previewCard];
+    if (this.state.show.cards.includes(card)) {
+      return;
+    }
+    this.setState({
+      show: {
+        ...this.state.show,
+        cards: [...this.state.show.cards, card]
+      }
+    });
+  }
+
+  dismissCard(index) {
+    this.setState({
+      show: {
+        ...this.state.show,
+        cards: this.state.show.cards.filter((card, i) => i !== index)
+      }
+    });
+  }
+
   render() {
     return html`
     <div>
@@ -272,6 +299,12 @@ class App extends Component {
             <span class="disabled-text"><span>${this.state.labels.ambience !== '' ? this.state.labels.ambience : "None"}</span></span>
           </label>
         </div>
+
+        <h2>Controls</h2>
+        <div>
+          <button onClick=${() => this.duckUnduckAudio()}>${this.state.duck ? "Unduck" : "Duck"}</button>
+        </div>        
+
       </div>
       <div>
         <h2>Next</h2>
@@ -333,11 +366,29 @@ class App extends Component {
         <img class="preview-image" src=${this.state.next.image} />
       </div>
     </div>
-    <h2>Controls</h2>
+    <h2>Cards</h2>
     <div>
-      <button onClick=${() => this.duckUnduckAudio()}>${this.state.duck ? "Unduck" : "Duck"}</button>
-    </div>        
-
+      <label>
+        <select
+          name="card"
+          value=${this.state.previewCard}
+          onChange=${(e) => this.setState({ previewCard: e.target.value })}
+        >
+          ${this.state.cards.map((card, index) => html`
+            <option value=${index}>${card.name}</option>
+          `)}
+        </select>
+        <button onClick=${() => this.addCardToShow()}>Add</button>
+      </label>
+    </div>
+    <div class="dm-card-grid">
+      ${this.state.show.cards.map((card, index) => html`
+        <div class="deck-card-frame">
+          <button class="deck-card-dismiss" onClick=${() => this.dismissCard(index)}>X</button>
+          <${Card} data=${card} />
+        </div>
+      `)}
+    </div>
     `;
   }
 }

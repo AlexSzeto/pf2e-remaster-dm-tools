@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/pf2e.css">
   <style>
     body {
-      font-size: 18px;
+      font-size: 14px;
     }
 
     .four-column {
@@ -38,6 +38,27 @@
     .preview-image {
       max-width: 20em;
       max-height: 20em;
+    }
+
+    .dm-card-grid {
+      margin-top: 1em;
+      display: grid;
+      grid-template-columns: repeat(3, min-content);
+      grid-gap: 1em;
+    }
+
+    .deck-card-frame {
+      position: relative;
+    }
+
+    .deck-card-dismiss {
+      position: absolute;
+      font-size: 3em;
+      right: 0;
+      bottom: 0;
+      font-family: sans-serif;
+      width: 2em;
+      height: 2em;
     }
   </style>
   <script type="importmap">

@@ -26,7 +26,6 @@ const App = () => {
     <div class="card-frame">
       ${ cards.map((card, index) => html`<${Card} data=${card} />`) }
     </div>
-
   `
 }
 
