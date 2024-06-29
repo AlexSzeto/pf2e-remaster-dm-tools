@@ -28,7 +28,7 @@
                 "newline": true
             }
           ],
-          "description": "This explosive flask spreads a bone-deep chilling oil that harms the living and restores life to the undead or other creatures with the void healing ability.\nThe oil deals 1d8 void damage, or restores 1d8 Hit Points."
+          "description": "This explosive flask spreads a bone-deep chilling oil that harms the living and restores life to the undead or other creatures with the void healing ability.\nThe oil deals 1d8 void damage or healing, plus 2 splash damage or healing."
       },
       {
         "name": "Bloodthirst Blade",

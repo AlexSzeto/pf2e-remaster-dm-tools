@@ -1333,6 +1333,76 @@
             "newline": true
           }
         ]
+      },
+      {
+        "name": "Kerissa",
+        "type": "Commoner 1",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+7"
+          },
+          {
+            "name": "Skills",
+            "text": "Deception +7, Diplomacy +5",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "0",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "0"
+          },
+          {
+            "name": "Con",
+            "text": "0"
+          },
+          {
+            "name": "Int",
+            "text": "+2"
+          },
+          {
+            "name": "Wis",
+            "text": "+2"
+          },
+          {
+            "name": "Cha",
+            "text": "+4"
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+2"
+          },
+          {
+            "name": "Ref",
+            "text": "+2"
+          },
+          {
+            "name": "Will",
+            "text": "+6"
+          },
+          {
+            "name": "HP",
+            "text": "6",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          }
+        ]
       }
     ]
   }
