@@ -4,34 +4,35 @@ import { html } from "htm/preact";
 import { Card } from "./card.js";
 
 const App = () => {
-  const [cards, setCards] = useState(new Array(9).fill({ traits: [], stats: [] }));
+  const [cardPages, setPages] = useState([]);
+  const pageSize = 9;
 
   const loadData = (event) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const data = JSON.parse(event.target.result);
-      setCards(data.cards);
+      const pages = []
+      for (let i = 0; i < data.cards.length; i += pageSize) {
+        pages.push(data.cards.slice(i, i + pageSize));
+      }
+      setPages(pages);
     }
     reader.readAsText(event.target.files[0]);
   }
 
-  const setData = (index, data) => {
-    let newCards = [...cards];
-    newCards[index] = data;
-    setCards(newCards);
-  }
-
   return html`
     <input type="file" accept=".json" onChange=${loadData}></input>
-    <div class="card-frame">
-      ${ cards.map((card, index) => html`
-        <div class="card">
-          <div class="card-border">        
-            <${Card} data=${card} />
+    ${ cardPages.map((page, pageIndex) => html`
+      <div class="print-page-frame ${ pageIndex > 0 && 'page-break'}">
+        ${ page.map((card, cardIndex) => html`
+          <div class="card">
+            <div class="card-border">        
+              <${Card} data=${card} />
+            </div>
           </div>
-        </div>
-      `) }
-    </div>
+        `) }
+      </div>
+    `) }
   `
 }
 

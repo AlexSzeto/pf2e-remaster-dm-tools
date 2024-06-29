@@ -1,0 +1,64 @@
+{
+  "cards": [
+    {
+      "name": "Annabelle Haycrest",
+      "fullFrameImage": "./decks/wedding-curse/portrait-annabelle.png"
+    },
+    {
+      "name": "Auric Ionar",
+      "fullFrameImage": "./decks/wedding-curse/portrait-auric.png"
+    },
+    {
+      "name": "Burt",
+      "fullFrameImage": "./decks/wedding-curse/portrait-burt.png"
+    },
+    {
+      "name": "Dak Gorim",
+      "fullFrameImage": "./decks/wedding-curse/portrait-dak-gorim.png"
+    },
+    {
+      "name": "Daramir Ionar",
+      "fullFrameImage": "./decks/wedding-curse/portrait-daramir.png"
+    },
+    {
+      "name": "Dargon",
+      "fullFrameImage": "./decks/wedding-curse/portrait-dargon.png"
+    },
+    {
+      "name": "Edwin Haycrest",
+      "fullFrameImage": "./decks/wedding-curse/portrait-edwin.png"
+    },
+    {
+      "name": "Fadon Kanatos",
+      "fullFrameImage": "./decks/wedding-curse/portrait-fadon.png"
+    },
+    {
+      "name": "Jerod",
+      "fullFrameImage": "./decks/wedding-curse/portrait-jerod.png"
+    },
+    {
+      "name": "Kerissa",
+      "fullFrameImage": "./decks/wedding-curse/portrait-kerissa.png"
+    },
+    {
+      "name": "Kurnov Hawkridge",
+      "fullFrameImage": "./decks/wedding-curse/portrait-kurnov-hawkridge.png"
+    },
+    {
+      "name": "Lumiere Haycrest",
+      "fullFrameImage": "./decks/wedding-curse/portrait-lumiere-armored.png"
+    },
+    {
+      "name": "Lumiere Haycrest",
+      "fullFrameImage": "./decks/wedding-curse/portrait-lumiere-dress.png"
+    },
+    {
+      "name": "Rahul Kamal",
+      "fullFrameImage": "./decks/wedding-curse/portrait-rahul-kamal.png"
+    },
+    {
+      "name": "Reaven",
+      "fullFrameImage": "./decks/wedding-curse/portrait-reaven.png"
+    }    
+  ]
+}

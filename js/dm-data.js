@@ -559,7 +559,19 @@ export const creatureRoadMaps = [
     will: [2, 3],
     hp: [0],
     strikes: [
-      { name: "Melee", actions: 1, bonus: 0, damage: 1, type: "B" },
+      { name: "Melee", description: "club", actions: 3, bonus: 0, damage: 1, type: "B" },
+    ]
+  },
+  {
+    name: "Base - Sniper",
+    per: [1],
+    dex: [1],
+    fort: [3],
+    ref: [1],
+    hp: [1,2],
+    strikes: [
+      { name: "Melee", description: "club", actions: 3, bonus: 2, damage: 3, type: "B" },
+      { name: "Ranged", description: "bow", actions: 3, bonus: 1, damage: 0, type: "P" },
     ]
   },
   {

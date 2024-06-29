@@ -6,6 +6,8 @@
     <title>Pathfinder 2e Card Creator</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='css/pf2e.css'>
+    <link rel='stylesheet' type='text/css' media='print' href='css/pf2e.css'>
+    
     <style>
         body {
             font-size: 5px;
@@ -13,6 +15,65 @@
 
         input[type="file"] {
             font-size: 12px;
+        }
+
+        .page-break {
+            margin-top: 5em;
+        }
+
+        .card {
+            /* repeating background image */
+            background-image: url('css/parchment-background.jpg');                
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            z-index: -1;
+        }
+
+        @media screen {
+            .print-page-frame {
+                display: grid;
+                grid-template-columns: repeat(3, 74em); /* 700px */
+                grid-template-rows: repeat(3, 104em); /* 1000px */
+            }
+        }
+
+        @media print {
+
+            @page {
+                size: 7.5in 10.5in;
+                margin: 0;
+            }
+
+            body {
+                margin: auto;
+                padding: 0;
+            }
+            
+            input[type="file"] {
+                display: none;
+            }
+
+            /* 700px width by 1000px height cards */
+            .print-page-frame {
+                display: grid;
+                grid-template-columns: repeat(3, 2.5in); /* 700px */
+                grid-template-rows: repeat(3, 3.5in); /* 1000px */
+            }
+
+            .card-border {
+                border-radius: 4em;
+                border-width: 3em;
+                padding: 1.6em 0.75em;
+            }
+
+            .pf2e-stats {
+                font-size: 0.85mm;
+
+                .full-frame-image {
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+            }            
         }
     </style>
     <script type="importmap">

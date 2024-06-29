@@ -13,10 +13,10 @@ export const Card = ({data}) => html`
       ${ !!data.fullFrameImage
         && html`<div class="full-frame-image" style="background-image: url('${ data.fullFrameImage }')" />`
       }
-      ${ !!data.name || !!data.type 
+      ${ (!!data.name || !!data.type)
         && html`
         <div class="title">
-          <div class="name">${ data.name }</div>
+          <div class="name ${!!data.fullFrameImage && 'text-outline'}">${ data.name }</div>
           ${ !!data.type
             && html`<div class="type">${ data.type }</div>` 
           }
@@ -25,7 +25,7 @@ export const Card = ({data}) => html`
       }
       ${ !!data.illustration
         ? html`<img class="illustration" src="${ data.illustration }" />` 
-        : (!!data.name || !!data.type)
+        : (!!data.name || !!data.type) && !data.fullFrameImage
         ? html`<hr/>`
         : ''
       }

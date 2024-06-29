@@ -209,7 +209,7 @@
     "cards": [
       {
         "name": "Dagon",
-        "type": "Warpriest 2",
+        "type": "Cleric 2",
         "traits": [
           "Medium"
         ],
@@ -255,7 +255,7 @@
           },
           {
             "name": "Items",
-            "text": "Warhammer, Chain Shirt, Wooden Shield",
+            "text": "Warhammer, Chain Shirt, Wooden Shield, Religious Symbol",
             "newline": true
           },
           {
@@ -288,8 +288,12 @@
           {
             "name": "Melee",
             "action": "single",
-            "text": "Warhammer +9 1d8+4 B",
+            "text": "Warhammer +9 1d6+4 B",
             "newline": true
+          },
+          {
+            "name": "Spells",
+            "text": "DC 17; **Cleric Font** Harm (x4) **1st** Summon Undead **Cantrips** Daze, Divine Lance, Void Warp"
           }
         ]
       },
@@ -341,7 +345,7 @@
           },
           {
             "name": "Items",
-            "text": "Battleaxe, Leather Armor",
+            "text": "Battleaxe, Leather Armor, Oil of Potency",
             "newline": true
           },
           {
@@ -1034,6 +1038,93 @@
             "name": "Melee",
             "action": "single",
             "text": "Longsword +6 1d8+2 S",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Gutter Goon",
+        "type": "Creature 0",
+        "traits": [
+          "Medium"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+9"
+          },
+          {
+            "name": "Skills",
+            "text": "Stealth +5, Intimidation +3, Acrobatics +5",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+2",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+3"
+          },
+          {
+            "name": "Con",
+            "text": "+2"
+          },
+          {
+            "name": "Int",
+            "text": "0"
+          },
+          {
+            "name": "Wis",
+            "text": "0"
+          },
+          {
+            "name": "Cha",
+            "text": "0"
+          },
+          {
+            "name": "Items",
+            "text": "Club, Sling",
+            "newline": true
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+3"
+          },
+          {
+            "name": "Ref",
+            "text": "+9"
+          },
+          {
+            "name": "Will",
+            "text": "+6"
+          },
+          {
+            "name": "HP",
+            "text": "16",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "Club +6 1d4+1 B",
+            "newline": true
+          },
+          {
+            "name": "Ranged",
+            "action": "single",
+            "text": "Sling +8 1d4+3 P",
             "newline": true
           }
         ]
