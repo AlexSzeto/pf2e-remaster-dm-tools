@@ -1128,6 +1128,211 @@
             "newline": true
           }
         ]
+      },
+      {
+        "name": "Spider Swarm",
+        "type": "Creature 0",
+        "traits": [
+          "Large",
+          "Animal",
+          "Swarm"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+4"
+          },
+          {
+            "name": "Skills",
+            "text": "Acrobatics +5, Athletics +2, Stealth +5",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "-2",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+3"
+          },
+          {
+            "name": "Con",
+            "text": "0"
+          },
+          {
+            "name": "Int",
+            "text": "-5"
+          },
+          {
+            "name": "Wis",
+            "text": "0"
+          },
+          {
+            "name": "Cha",
+            "text": "-4"
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+4"
+          },
+          {
+            "name": "Ref",
+            "text": "+7"
+          },
+          {
+            "name": "Will",
+            "text": "+6"
+          },
+          {
+            "name": "HP",
+            "text": "12",
+            "newline": true
+          },
+          {
+            "name": "Immunities",
+            "text": "grabbed, precision, prone, restrained, swarm mind"
+          },
+          {
+            "name": "Resistances",
+            "text": "Bludgeoning 2, Piercing 5, Slashing 5"
+          },
+          {
+            "name": "Weaknesses",
+            "text": "area damage 5, splash damage 5"
+          },
+          {
+            "name": "Speed",
+            "text": "20",
+            "hr": true
+          },
+          {
+            "name": "Bite",
+            "action": "single",
+            "text": "Each enemy in swarm +6 1d4+2 B",
+            "newline": true
+          },
+          {
+            "name": "Spells",
+            "text": "DC 16; **Cantrips** ",
+            "newline": true
+          },
+          {
+            "name": "Spider Swarm Venom",
+            "text": "(poison) **Saving Throw** DC 14 Fortitude; **Maximum Duration** 4 rounds; **Stage 1** 1 poison damage and enfeebled 1 (1 round); **Stage 2** 1d4 poison damage and enfeebled 1 (1 round)",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Hunting Spider",
+        "type": "Creature 1",
+        "traits": [
+          "Medium",
+          "Animal"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+7; darkvision, web sense"
+          },
+          {
+            "name": "Skills",
+            "text": "Acrobatics +7, Athletics +5, Stealth +7",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+2",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+4"
+          },
+          {
+            "name": "Con",
+            "text": "+1"
+          },
+          {
+            "name": "Int",
+            "text": "-5"
+          },
+          {
+            "name": "Wis",
+            "text": "+2"
+          },
+          {
+            "name": "Cha",
+            "text": "-4"
+          },
+          {
+            "name": "AC",
+            "text": "17",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+6"
+          },
+          {
+            "name": "Ref",
+            "text": "+9"
+          },
+          {
+            "name": "Will",
+            "text": "+5"
+          },
+          {
+            "name": "HP",
+            "text": "16",
+            "newline": true
+          },
+          {
+            "name": "Spring Upon Prey",
+            "action": "reaction",
+            "text": "**Requirements** Initiative not  rolled; **Trigger** A creature touches the hunting spider's web while the spider is on it; **Effect** The hunting spider automatically notices the creature and Strides, Climbs, or Descends on a Web before it rolls initiative.",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "fangs +9 1d6+2 P",
+            "newline": true
+          },
+          {
+            "name": "Ranged",
+            "action": "single",
+            "text": "web +7 **Effect** Web Trap",
+            "newline": true
+          },
+          {
+            "name": "Descend on a Web",
+            "action": "single",
+            "text": " The hunting spider moves straight down a web line up to 40 feet. Striking the web (AC 20, Hardness 3, 5 HP) severs it, causing the spider to fall.",
+            "newline": true
+          },
+          {
+            "name": "Hunting Spider Venom",
+            "text": " (poison) **Saving Throw** DC 16 Fortitude; Maximum Duration 6 rounds; **Stage 1** 1d4 poison damage and off-guard (1 round); **Stage 2** 1d6 poison damage, clumsy 1, and off-guard (1 round); **Stage 3** 1d6 poison damage, clumsy 2, and off-guard (1 round)",
+            "newline": true
+          },
+          {
+            "name": "Web Trap",
+            "text": "A creature hit by the hunting spider's web Strike is immobilized and stuck to the nearest surface until it Escapes (DC 17).",
+            "newline": true
+          }
+        ]
       }
     ]
   }
