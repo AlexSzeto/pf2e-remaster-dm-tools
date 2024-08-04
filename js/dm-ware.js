@@ -1,6 +1,8 @@
 import { render, Component } from "preact";
 import { html } from "htm/preact";
 import { Card } from "./card.js";
+import { InitiativeListItem, InitiativeTracker } from "./initiative-tracker.js"
+import { getCookie, setCookie } from "./common.js";
 
 class App extends Component {
   constructor(props) {
@@ -34,6 +36,11 @@ class App extends Component {
       ambienceControls: null,
       duck: false,
       previewCard: null,
+      initiativeTracker: {
+        list: [],
+        active: 0,
+        inUse: false,
+      }
     };
   
     // Load data from decks.json
@@ -48,7 +55,7 @@ class App extends Component {
           cards: decks[Object.keys(decks)[0]].cards,
         });
 
-        const showImage = this.getCookie('dm-image');
+        const showImage = getCookie('dm-image');
         if (showImage) {
           this.setState({
             show: {
@@ -62,21 +69,6 @@ class App extends Component {
         console.error("Error loading data from decks.json:", error);
       });
   }
-  
-  getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-  };
-
-  setCookie = (name, value) => {
-    const date = new Date();
-    date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days expiration
-    const expires = "; expires=" + date.toUTCString();
-    
-    document.cookie = `${name}=${value || ""}${expires}; samesite=lax`;
-  };
   
   handleNextChange(e) {
     const { name, value } = e.target;
@@ -103,7 +95,7 @@ class App extends Component {
         image: '',
       }
     });
-    this.setCookie('dm-image', this.state.next.image);
+    setCookie('dm-image', this.state.next.image);
   }
 
   clearImage() {
@@ -117,7 +109,7 @@ class App extends Component {
         image: '',
       },
     });
-    this.setCookie('dm-image', this.state.next.image);
+    setCookie('dm-image', this.state.next.image);
   }
 
   createAudioSource(path, fadeInDuration) {
@@ -254,6 +246,21 @@ class App extends Component {
     });
   }
 
+  addCardToInitiative(index) {
+    const card = this.state.show.cards[index];
+    const initiativeTracker = { ...this.state.initiativeTracker };
+    initiativeTracker.list.push(new InitiativeListItem(card.name, 0, Number(card.stats.find(stat => stat.name === 'HP').text ?? '0')));
+    this.setState({
+      initiativeTracker
+    });
+  }
+
+  updateInitiateTracker(data) {
+    this.setState({
+      initiativeTracker: data
+    });
+  }
+
   dismissCard(index) {
     this.setState({
       show: {
@@ -366,6 +373,12 @@ class App extends Component {
         <img class="preview-image" src=${this.state.next.image} />
       </div>
     </div>
+
+    <h2>Initiative Tracker</h2>
+    <div>
+      <${InitiativeTracker} data=${this.state.initiativeTracker} updateData=${(data) => this.updateInitiateTracker(data)}/>
+    </div>
+
     <h2>Cards</h2>
     <div>
       <label>
@@ -384,7 +397,8 @@ class App extends Component {
     <div class="dm-card-grid">
       ${this.state.show.cards.map((card, index) => html`
         <div class="deck-card-frame">
-          <button class="deck-card-dismiss" onClick=${() => this.dismissCard(index)}>X</button>
+          <button class="deck-card-insert square" onClick=${() => this.addCardToInitiative(index)}><div>\uFF0B</div></button>
+          <button class="deck-card-dismiss square" onClick=${() => this.dismissCard(index)}><div>\u2716</div></button>
           <${Card} data=${card} />
         </div>
       `)}

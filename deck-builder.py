@@ -39,7 +39,7 @@ for folder in folders:
 
   # Split files into arrays based on file type
   # Store the files in the object
-  images = [f for f in files if f.endswith('.png')]
+  images = [f for f in files if (f.endswith('.png') or f.endswith('.jpg'))]
   decks[folder]['images'] = []
   for file in images:
     filename = os.path.splitext(os.path.basename(file))[0]

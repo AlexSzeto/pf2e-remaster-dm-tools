@@ -51,14 +51,59 @@
       position: relative;
     }
 
+    .deck-card-insert {
+      position: absolute;
+      bottom: 0.1em;
+      right: 2.2em;
+      font-size: 3em;
+    }
+
     .deck-card-dismiss {
       position: absolute;
+      right: 0.1em;
+      bottom: 0.1em;
       font-size: 3em;
-      right: 0;
-      bottom: 0;
-      font-family: sans-serif;
+    }
+
+    button.square {
       width: 2em;
       height: 2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .initiative-tracker-grid {
+      display: grid;
+      grid-template-columns: min-content min-content min-content min-content 2em 15em 2em 4em 4em 50em;
+      grid-gap: 0.1em;
+
+      .header-item {
+        font-size: 1.25em;
+        font-weight: bold;
+        min-width: 2em;
+        min-height: 2em;
+        display: flex;
+        align-items: flex-end;
+      }
+
+      .active-item {
+        .icon {
+          width: 1.5em;
+          height: 1.5em;
+          color: white;
+          background-color: #472C2C;
+          border-radius: 50%;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   </style>
   <script type="importmap">

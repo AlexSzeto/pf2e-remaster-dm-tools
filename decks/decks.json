@@ -78,6 +78,14 @@
         "path": "./decks/wedding-curse/location-warehouse-interior.png"
       },
       {
+        "label": "Map Stormhaven",
+        "path": "./decks/wedding-curse/map-stormhaven.png"
+      },
+      {
+        "label": "Map Uruzad",
+        "path": "./decks/wedding-curse/map-uruzad.jpg"
+      },
+      {
         "label": "Portrait Annabelle",
         "path": "./decks/wedding-curse/portrait-annabelle.png"
       },
@@ -136,6 +144,10 @@
       {
         "label": "Portrait Reaven",
         "path": "./decks/wedding-curse/portrait-reaven.png"
+      },
+      {
+        "label": "Wedding Invitation",
+        "path": "./decks/wedding-curse/wedding-invitation.jpg"
       }
     ],
     "bgms": [
