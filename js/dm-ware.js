@@ -1,7 +1,7 @@
 import { render, Component } from "preact";
 import { html } from "htm/preact";
 import { Card } from "./card.js";
-import { InitiativeListItem, InitiativeTracker } from "./initiative-tracker.js"
+import { InitiativeDisplay, InitiativeListItem, InitiativeTracker } from "./initiative-tracker.js"
 import { getCookie, setCookie } from "./common.js";
 
 class App extends Component {
@@ -62,6 +62,13 @@ class App extends Component {
               ...this.state.show,
               image: showImage,
             },
+          });
+        }
+
+        const initiativeTracker = getCookie('initiativeTracker');
+        if (initiativeTracker) {
+          this.setState({
+            initiativeTracker: JSON.parse(initiativeTracker),
           });
         }
       })
@@ -374,9 +381,9 @@ class App extends Component {
       </div>
     </div>
 
-    <h2>Initiative Tracker</h2>
+    <h2>Initiative Tracker (${this.state.initiativeTracker.inUse ? "Active" : "Inactive"})</h2>
     <div>
-      <${InitiativeTracker} data=${this.state.initiativeTracker} updateData=${(data) => this.updateInitiateTracker(data)}/>
+      <${InitiativeTracker} data=${this.state.initiativeTracker} updateData=${(data) => this.updateInitiateTracker(data)}/>      
     </div>
 
     <h2>Cards</h2>

@@ -24,6 +24,7 @@
         position: absolute;
         width: 98vw;
         height: 98vh;
+        transition: opacity 1s;
       }
       .responsive-image {
         width: 100%;
@@ -35,15 +36,73 @@
       .responsive-image.loaded {
         opacity: 1;
       }
+
+      .faded {
+        opacity: 0.2;
+      }
+
+      #initiative-display-container {
+        position: absolute;
+        font-size: 2em;
+        opacity: 0;
+        transition: opacity 1s;
+
+        &.active {
+          opacity: 1;
+        }
+      }
+
+      .initiative-display-grid {
+        display: grid;
+        grid-template-columns: 2em 15em;
+        grid-gap: 0.5em;
+
+        .active-item {
+          .icon {
+            width: 1.5em;
+            height: 1.5em;
+            color: white;
+            background-color: #472C2C;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .name, .npc-name {
+          font-size: 2em;
+          font-weight: bold;
+          color:#664E47;
+
+          &.active {
+            color: #472C2C;
+          }
+        }
+
+        .npc-name {
+          color: #999;
+
+          &.active {
+            color: #444;
+          }
+        }
+      }      
     </style>
   </head>
   <body>
-    <div class="image-frame">
+    <div id="crossfade-frame" class="image-frame">
       <img id="crossfade-image" class="responsive-image" />
     </div>
-    <div class="image-frame">
+    <div id="current-frame" class="image-frame">
       <img id="current-image" class="responsive-image" />
     </div>
+    <div id="initiative-display-container"></div>
     <script>
       const getCookie = (name) => {
         const value = `; ${document.cookie}`;
@@ -51,6 +110,26 @@
         if (parts.length === 2) return parts.pop().split(";").shift();
         return null;
       };
+
+      let trackingInitiative = false;
+      const updateInitiativeDisplay = () => {
+        const initiativeTracker = getCookie("initiativeTracker");
+        if(!!initiativeTracker) {
+          const active = JSON.parse(initiativeTracker).inUse;
+          if(trackingInitiative != active) {
+            trackingInitiative = active;
+            if(active) {
+              document.getElementById("initiative-display-container").classList.add('active');
+              document.getElementById("current-frame").classList.add('faded');
+              document.getElementById("crossfade-frame").classList.add('faded');
+            } else {
+              document.getElementById("initiative-display-container").classList.remove('active');
+              document.getElementById("current-frame").classList.remove('faded');
+              document.getElementById("crossfade-frame").classList.remove('faded');
+            }
+          }
+        }
+      }
 
       const loadCurrentImage = () => {
         const image = document.getElementById("current-image");
@@ -88,6 +167,17 @@
 
       loadCurrentImage();
       const checkInterval = setInterval(loadCurrentImage, 1000);
+      const initiativeInterval = setInterval(updateInitiativeDisplay, 1000);
     </script>
+    <script type="importmap">
+      {
+          "imports": {
+              "preact": "https://esm.sh/preact@10.19.2",
+              "preact/": "https://esm.sh/preact@10.19.2/",
+              "htm/preact": "https://esm.sh/htm@3.1.1/preact?external=preact"
+          }
+      }
+    </script>    
+    <script type="module" src="js/dm-screen.js"></script></head>    
   </body>
 </html>

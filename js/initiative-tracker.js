@@ -1,6 +1,7 @@
 import { Component } from "preact";
 import { html } from "htm/preact";
-import { getCookie, setCookie } from "./common.js";
+import { useState } from "preact/hooks";
+import { setCookie } from "./common.js";
 
 export class InitiativeListItem {
   constructor(name, initiative = 0, hp = 0, notes = '') {
@@ -35,9 +36,17 @@ export class InitiativeTracker extends Component {
       this.updateList(newList);
     } else {
       const { name, value } = e.target;    
-      const newList = [...this.state.list];
-      newList[index][name] = value;
-      this.updateList(newList);
+      if(name === 'initiative') {
+        const newList = this.state.list.map((item, i) => ({
+          ...item,
+          initiative: this.state.list[index].name === item.name ? value : item.initiative
+        }))
+        this.updateList(newList);
+      } else {
+        const newList = [...this.state.list];
+        newList[index][name] = value;
+        this.updateList(newList);
+      }
     }
   }
 
@@ -52,7 +61,6 @@ export class InitiativeTracker extends Component {
   }
 
   addListItem() {
-    console.log('addListItem');
     const newList = [...this.state.list];
     newList.push(new InitiativeListItem('New'));
     this.updateList(newList);
@@ -101,9 +109,13 @@ export class InitiativeTracker extends Component {
   endTracking() {
     this.setState({ 
       inUse: false,
-      active: 0,
-      list: this.state.list.filter(item => item.isPC)
     }, () => this.updateCookie());
+    setTimeout(() => {
+      this.setState({
+        active: 0,
+        list: this.state.list.filter(item => item.isPC)          
+      }, () => this.updateCookie());
+    }, 3000);
   }
 
   render() {
@@ -181,4 +193,33 @@ export class InitiativeTracker extends Component {
       </div>
   `
   }
+}
+
+export const InitiativeDisplay = ({data}) => {
+
+  const displayList = () => data.list.reduce((dispList, item, index) => {
+    if(index === 0 || item.isPC || data.list[index - 1].isPC) {
+      return [...dispList, {
+        name: item.isPC ? item.name : 'NPCs',
+        active: index === data.active,
+        nameClass: item.isPC ? 'name' : 'npc-name',
+      }]
+    } else if(index === data.active) {
+      dispList[dispList.length - 1].active = true;
+      return dispList;
+    } else {
+      return dispList;
+    }
+  }, []);
+
+  return html`
+    <div class="initiative-display-grid">
+      ${displayList().map((item, index) => html`
+        <div class="active-item">
+          ${item.active ? html`<div class="icon">\u279C</div>` : html`<div></div>`}
+        </div>
+        <div class=${item.active ? item.nameClass + " active" : item.nameClass}>${item.name}</div>
+      `)}
+    </div>
+  `
 }
