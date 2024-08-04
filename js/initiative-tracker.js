@@ -208,6 +208,8 @@ export class InitiativeTracker extends Component {
               <div>
                 ${consumable}
               </div>
+              <div class="consumable-spacer">
+              </div>
             `)}
           </div>
         `) }

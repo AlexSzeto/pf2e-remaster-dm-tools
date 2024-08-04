@@ -278,7 +278,7 @@ class App extends Component {
     const getConsumables = (type) => filterConsumables(card.stats.find(stat => stat.name === type)?.text.split(',') ?? []);
     const getSpells = () => {
       const spellString = card.stats.find(stat => stat.name === 'Spells')?.text ?? '';
-      const spellStringsByLevel = /\*\*(?:\d+(?:st|nd)|Cantrips)\*\*([^;]*)(?:;|$)/g;
+      const spellStringsByLevel = /\*\*(?:[\w\d\s]+)\*\*([^;]*)(?:;|$)/g;
       let spells = [];
       let match;
       while ((match = spellStringsByLevel.exec(spellString)) !== null) {
