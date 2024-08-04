@@ -243,6 +243,7 @@ class App extends Component {
   addCardToShow() {
     const card = this.state.cards[this.state.previewCard];
     if (this.state.show.cards.includes(card)) {
+      this.addCardToInitiative(this.state.show.cards.findIndex(c => c === card));
       return;
     }
     this.setState({
@@ -250,13 +251,48 @@ class App extends Component {
         ...this.state.show,
         cards: [...this.state.show.cards, card]
       }
-    });
+    }, () => this.addCardToInitiative(this.state.show.cards.length - 1));
   }
 
   addCardToInitiative(index) {
     const card = this.state.show.cards[index];
+
+    if(!card.stats.find(stat => stat.name === 'HP')) {
+      return;
+    }
+
+    const filterConsumables = consumables => {
+      const multiConsumables = /(.*)\s*\((\d+)\)/;
+      return consumables
+        .map(consumable => consumable.trim().toLowerCase())
+        .filter(consumable => consumable !== '')
+        .reduce((acc, consumable) => {
+          if(multiConsumables.test(consumable)) {
+            const match = multiConsumables.exec(consumable);
+            return [...acc, ...Array(Number(match[2])).fill(match[1])];
+          } else {
+            return [...acc, consumable]
+          }
+        }, [])
+    }
+    const getConsumables = (type) => filterConsumables(card.stats.find(stat => stat.name === type)?.text.split(',') ?? []);
+    const getSpells = () => {
+      const spellString = card.stats.find(stat => stat.name === 'Spells')?.text ?? '';
+      const spellStringsByLevel = /\*\*(?:\d+(?:st|nd)|Cantrips)\*\*([^;]*)(?:;|$)/g;
+      let spells = [];
+      let match;
+      while ((match = spellStringsByLevel.exec(spellString)) !== null) {
+        spells = [...spells, ...(match[1].split(','))];
+      }
+      return filterConsumables(spells);
+    }
     const initiativeTracker = { ...this.state.initiativeTracker };
-    initiativeTracker.list.push(new InitiativeListItem(card.name, 0, Number(card.stats.find(stat => stat.name === 'HP').text ?? '0')));
+    initiativeTracker.list.push(new InitiativeListItem(
+      card.name,
+      0,
+      Number(card.stats.find(stat => stat.name === 'HP').text ?? '0'),
+      [...getConsumables('Items'), ...getSpells()],
+    ));
     this.setState({
       initiativeTracker
     });

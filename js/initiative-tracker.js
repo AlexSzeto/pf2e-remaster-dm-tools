@@ -4,11 +4,12 @@ import { useState } from "preact/hooks";
 import { setCookie } from "./common.js";
 
 export class InitiativeListItem {
-  constructor(name, initiative = 0, hp = 0, notes = '') {
+  constructor(name, initiative = 0, hp = 0, consumables = [], notes = '') {
     this.name = name;
     this.initiative = initiative;
     this.hp = hp;
     this.notes = notes;
+    this.consumables = consumables;
     this.isPC = false;
   }
 }
@@ -63,6 +64,14 @@ export class InitiativeTracker extends Component {
   addListItem() {
     const newList = [...this.state.list];
     newList.push(new InitiativeListItem('New'));
+    this.updateList(newList);
+  }
+
+  removeConsumable(index, i) {
+    const newList = [...this.state.list];
+    const consumables = [...this.state.list[index].consumables];
+    consumables.splice(i, 1);
+    newList[index].consumables = consumables;
     this.updateList(newList);
   }
 
@@ -137,6 +146,7 @@ export class InitiativeTracker extends Component {
         <div class="header-item">HP</div>
         <div class="header-item">Initiative</div>
         <div class="header-item">Notes</div>
+        <div class="header-item">Consumables</div>
         ` : '' }
         ${ this.state.list.map((item, index) => html`
           <button
@@ -189,6 +199,17 @@ export class InitiativeTracker extends Component {
             value=${item.notes}
             onInput=${(e) => this.handleListItemChange(index, e)}
           ></input>
+          <div class="consumables">
+            ${item.consumables.map((consumable, i) => html`
+              <button
+                class="square small"
+                onClick=${() => this.removeConsumable(index, i)}
+              ><div>\u2716</div></button>
+              <div>
+                ${consumable}
+              </div>
+            `)}
+          </div>
         `) }
       </div>
   `

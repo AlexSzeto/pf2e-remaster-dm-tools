@@ -71,12 +71,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      &.small {
+        font-size: 0.4em;
+      }
     }
 
     .initiative-tracker-grid {
       display: grid;
-      grid-template-columns: min-content min-content min-content min-content 2em 15em 2em 4em 4em 50em;
+      grid-template-columns: min-content min-content min-content min-content 2em 15em 2em 4em 4em 10em 1fr;
       grid-gap: 0.1em;
+      align-items: center;
 
       .header-item {
         font-size: 1.25em;
@@ -85,6 +90,13 @@
         min-height: 2em;
         display: flex;
         align-items: flex-end;
+      }
+
+      .consumables {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
       }
 
       .active-item {
