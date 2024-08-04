@@ -25,7 +25,7 @@ export class InitiativeTracker extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data) {
-      this.setState(this.props.data);
+      this.setState(this.props.data, () => setCookie('initiativeTracker', JSON.stringify(this.state)))
     }
   }
   
