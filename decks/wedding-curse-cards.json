@@ -1381,6 +1381,88 @@
             "newline": true
           }
         ]
+      },
+      {
+        "name": "Burt",
+        "type": "Creature 10",
+        "traits": [
+          "Small",
+          "Halfling"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+24"
+          },
+          {
+            "name": "Skills",
+            "text": "Stealth +22, Thievery +22",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+5",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+7"
+          },
+          {
+            "name": "Con",
+            "text": "+5"
+          },
+          {
+            "name": "Int",
+            "text": "+5"
+          },
+          {
+            "name": "Wis",
+            "text": "+5"
+          },
+          {
+            "name": "Cha",
+            "text": "+7"
+          },
+          {
+            "name": "AC",
+            "text": "30",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+16"
+          },
+          {
+            "name": "Ref",
+            "text": "+22"
+          },
+          {
+            "name": "Will",
+            "text": "+19"
+          },
+          {
+            "name": "HP",
+            "text": "176",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "dagger +21 2d10+11 P",
+            "newline": true
+          },
+          {
+            "name": "Sneak Attack",
+            "text": " +25 2d12+13 P",
+            "newline": true
+          }
+        ]
       }
     ]      
 }

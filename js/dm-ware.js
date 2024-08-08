@@ -240,10 +240,12 @@ class App extends Component {
     });
   }
 
-  addCardToShow() {
+  addCardToView(andInitiatve = false) {
     const card = this.state.cards[this.state.previewCard];
     if (this.state.show.cards.includes(card)) {
-      this.addCardToInitiative(this.state.show.cards.findIndex(c => c === card));
+      if(andInitiatve) {
+        this.addCardToInitiative(this.state.show.cards.findIndex(c => c === card));
+      }
       return;
     }
     this.setState({
@@ -251,7 +253,11 @@ class App extends Component {
         ...this.state.show,
         cards: [...this.state.show.cards, card]
       }
-    }, () => this.addCardToInitiative(this.state.show.cards.length - 1));
+    }, () => {
+      if(andInitiatve) {
+        this.addCardToInitiative(this.state.show.cards.length - 1)
+      }
+    })
   }
 
   addCardToInitiative(index) {
@@ -434,7 +440,8 @@ class App extends Component {
             <option value=${index}>${card.name}</option>
           `)}
         </select>
-        <button onClick=${() => this.addCardToShow()}>Add</button>
+        <button onClick=${() => this.addCardToView()}>View</button>
+        <button onClick=${() => this.addCardToView(true)}>Add</button>
       </label>
     </div>
     <div class="dm-card-grid">
