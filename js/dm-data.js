@@ -628,12 +628,32 @@ export const creatureRoadMaps = [
       { name: "Sneak Attack", description: "", actions: 0, bonus: 0, damage: 1, type: "P" }
     ],
     abilities: [
-      { name: "Surprise Attack", type: 1, description: "" },
-      { name: "Deny Advantage", type: 1, description: "" },
-      { name: "Debilitating Strike", type: 1, description: "" },
+      { name: "Surprise Attack", type: 1, description: "if you roll Deception or Stealth for initiative, creatures that haven't acted are off-guard to you" },
+      { name: "Deny Advantage", type: 1, description: " You aren't off-guard to hidden, undetected, or flanking creatures of your level or lower, or creatures of your level or lower using surprise attack." },
+      { name: "Debilitating Strike", type: 1, description: "-10 ft speed penalty or enfeebled 1 on off-guard hit" },
       { name: "Master Strike", type: 1, description: "" },
     ]
-  }
+  },
+  {
+    name: "Class - Ranger",
+    skills: [
+      { name: "Nature", value: [2] },      
+      { name: "Survival", value: [1, 2 ] },
+    ],
+    str: [1, 2],
+    dex: [1, 2],
+    ac: [1],
+    strikes: [
+      { name: "Ranged", description: "bow", actions: 3, bonus: 2, damage: 1, type: "P" },      
+    ],
+    abilities: [
+      { name: "Hunt Prey", type: 1, description: "You gain a +2 circumstance bonus to Perception checks when you Seek your prey and a +2 circumstance bonus to Survival checks when you Track your prey." },
+      { name: "Hunter's Edge", type: 1, description: "+1d8 damage on prey or another edge" },
+      { name: "Nature's Edge", type: 1, description: "" },
+      { name: "Masterful Hunter", type: 1, description: "" },
+      { name: "Swift Prey", type: 1, description: "" },
+    ]
+  },
 ]
 // Creature Template
 

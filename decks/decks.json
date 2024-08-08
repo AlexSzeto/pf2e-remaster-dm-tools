@@ -10,6 +10,10 @@
         "path": "./decks/wedding-curse/location-catacombs-interior.png"
       },
       {
+        "label": "Location Greywater",
+        "path": "./decks/wedding-curse/location-greywater.png"
+      },
+      {
         "label": "Location Lumi Room",
         "path": "./decks/wedding-curse/location-lumi-room.png"
       },
@@ -116,6 +120,10 @@
       {
         "label": "Portrait Fadon",
         "path": "./decks/wedding-curse/portrait-fadon.png"
+      },
+      {
+        "label": "Portrait Iago",
+        "path": "./decks/wedding-curse/portrait-iago.png"
       },
       {
         "label": "Portrait Jerod",
@@ -305,7 +313,7 @@
           },
           {
             "name": "Spells",
-            "text": "DC 17; **Cleric Font** Harm (4); **1st** Summon Undead; **Cantrips** Daze, Divine Lance, Void Warp"
+            "text": "DC 17; **Cleric Font** Harm (x4) **1st** Summon Undead **Cantrips** Daze, Divine Lance, Void Warp"
           }
         ]
       },
@@ -657,7 +665,7 @@
           },
           {
             "name": "Items",
-            "text": "rapier (+1 potency), studded leather, glue bomb, healing potion (2), potion of emergency escape, ",
+            "text": "rapier (+1 potency), studded leather, glue bomb, healing potion (1), potion of emergency escape, ",
             "newline": true
           },
           {
@@ -1413,6 +1421,190 @@
             "name": "Speed",
             "text": "25",
             "hr": true
+          }
+        ]
+      },
+      {
+        "name": "Giant Rat",
+        "type": "Creature -1",
+        "traits": [
+          "Small",
+          "Animal"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+5; low-light vision, scent (imprecise) 30ft"
+          },
+          {
+            "name": "Skills",
+            "text": "Acrobatics +5, Athletics +2 (+4 to climb or swim), Stealth +5",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+1",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+3"
+          },
+          {
+            "name": "Con",
+            "text": "+2"
+          },
+          {
+            "name": "Int",
+            "text": "-4"
+          },
+          {
+            "name": "Wis",
+            "text": "+1"
+          },
+          {
+            "name": "Cha",
+            "text": "-3"
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+6"
+          },
+          {
+            "name": "Ref",
+            "text": "+7"
+          },
+          {
+            "name": "Will",
+            "text": "+3"
+          },
+          {
+            "name": "HP",
+            "text": "8",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "30, climb 10",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "jaws +7 (agile, finesse) **Damage** 1d6+1 piercing plus putrid plague",
+            "newline": true
+          },
+          {
+            "name": "Putrid Plague",
+            "text": "(disease) The sickened and unconscious conditions can't end or be reduced until the disease is cured. **Saving Throw** DC 14 Fortitude; **Stage 1** carrier with no ill effect (1d4 hours), **Stage 2** sickened (1 day), **Stage 3** sickened 1 and slowed 1 (1 day), **Stage 4** unconscious (1 day), **Stage 5** dead",
+            "newline": true
+          }
+        ]
+      },
+      {
+        "name": "Bulo (Ratomancer)",
+        "type": "Creature 2",
+        "traits": [
+          "Small",
+          "Halfling"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+8"
+          },
+          {
+            "name": "Skills",
+            "text": "Nature +7, Survival +7, Stealth +5, Athletics +8, Thievery +5",
+            "newline": true
+          },
+          {
+            "name": "Str",
+            "text": "+3",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "+4"
+          },
+          {
+            "name": "Con",
+            "text": "+3"
+          },
+          {
+            "name": "Int",
+            "text": "+1"
+          },
+          {
+            "name": "Wis",
+            "text": "+4"
+          },
+          {
+            "name": "Cha",
+            "text": "+1"
+          },
+          {
+            "name": "Items",
+            "text": "bo staff",
+            "newline": true
+          },
+          {
+            "name": "AC",
+            "text": "14",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+8"
+          },
+          {
+            "name": "Ref",
+            "text": "+11"
+          },
+          {
+            "name": "Will",
+            "text": "+8"
+          },
+          {
+            "name": "HP",
+            "text": "30",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "staff (parry, reach, trip) +11 1d8+3 B",
+            "newline": true
+          },
+          {
+            "name": "Hunt Prey",
+            "text": "[single] You gain a +2 circumstance bonus to Perception checks when you Seek your prey and a +2 circumstance bonus to Survival checks when you Track your prey.",
+            "newline": true
+          },
+          {
+            "name": "Hunter's Edge",
+            "text": "+1d8 precision damage on 1st hit on prey each round",
+            "newline": true
+          },
+          {
+            "name": "Call Reinforcement",
+            "text": "[single] You whistle and summon a giant rat from one of the hiding spots (up to available reinforcement limit).",
+            "newline": true
+          },
+          {
+            "name": "Change Companion",
+            "text": "[single] You whistle and call one of the giant rat allies to attention, immediately becoming your animal companion.",
+            "newline": true
           }
         ]
       }
