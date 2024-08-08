@@ -98,6 +98,10 @@
         "path": "./decks/wedding-curse/portrait-auric.png"
       },
       {
+        "label": "Portrait Bulo",
+        "path": "./decks/wedding-curse/portrait-bulo.png"
+      },
+      {
         "label": "Portrait Burt",
         "path": "./decks/wedding-curse/portrait-burt.png"
       },
@@ -120,10 +124,6 @@
       {
         "label": "Portrait Fadon",
         "path": "./decks/wedding-curse/portrait-fadon.png"
-      },
-      {
-        "label": "Portrait Iago",
-        "path": "./decks/wedding-curse/portrait-iago.png"
       },
       {
         "label": "Portrait Jerod",
