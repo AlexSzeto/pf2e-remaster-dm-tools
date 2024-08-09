@@ -176,8 +176,16 @@
         "path": "./decks/wedding-curse/highlands-battle-bgm.mp3"
       },
       {
+        "label": "Intoxicaing Fragrance Bgm",
+        "path": "./decks/wedding-curse/intoxicaing-fragrance-bgm.mp3"
+      },
+      {
         "label": "Ode To Stormhaven Bgm",
         "path": "./decks/wedding-curse/ode-to-stormhaven-bgm.mp3"
+      },
+      {
+        "label": "Slow Death March Bgm",
+        "path": "./decks/wedding-curse/slow-death-march-bgm.mp3"
       },
       {
         "label": "Tales of the Salty Dogs Bgm",
@@ -212,6 +220,10 @@
       {
         "label": "Fragrant Teahouse Ambience",
         "path": "./decks/wedding-curse/fragrant-teahouse-ambience.mp3"
+      },
+      {
+        "label": "Greywater Ambience",
+        "path": "./decks/wedding-curse/greywater-ambience.mp3"
       },
       {
         "label": "Ruins Ambience",
