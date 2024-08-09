@@ -438,7 +438,7 @@
           },
           {
             "name": "Items",
-            "text": "rapier (+1 potency), studded leather, glue bomb, healing potion (1), potion of emergency escape, ",
+            "text": "dagger (+1 potency), studded leather, glue bomb, healing potion (1), potion of emergency escape, ",
             "newline": true
           },
           {
@@ -471,12 +471,12 @@
           {
             "name": "Melee",
             "action": "single",
-            "text": "rapier +8 1d6+2 P",
+            "text": "dagger +8 1d4+3 P",
             "newline": true
           },
           {
             "name": "Spells",
-            "text": "DC 19; **2nd** Blur, Laughing Fit; **1st** Charm, Grease; **Cantrips** Daze, Electric Arc, Sigil",
+            "text": "DC 19; **2nd** Blur, Laughing Fit; **1st** Charm, Command, Enfeeble; **Cantrips** Daze, Frostbite, Electric Arc, Sigil, Tangle Vine",
             "newline": true
           }
         ]
@@ -835,6 +835,83 @@
           }
         ]
       },
+      {
+        "name": "Gutter Enforcer",
+        "type": "Creature 0",
+        "traits": [
+          "Medium",
+          "Human"
+        ],
+        "stats": [
+          {
+            "name": "Perception",
+            "text": "+3"
+          },
+          {
+            "name": "Str",
+            "text": "+3",
+            "newline": true
+          },
+          {
+            "name": "Dex",
+            "text": "0"
+          },
+          {
+            "name": "Con",
+            "text": "+2"
+          },
+          {
+            "name": "Int",
+            "text": "0"
+          },
+          {
+            "name": "Wis",
+            "text": "0"
+          },
+          {
+            "name": "Cha",
+            "text": "+2"
+          },
+          {
+            "name": "Items",
+            "text": "gutting cleaver (uncommon bastard sword), leather armor",
+            "newline": true
+          },
+          {
+            "name": "AC",
+            "text": "15",
+            "hr": true
+          },
+          {
+            "name": "Fort",
+            "text": "+9"
+          },
+          {
+            "name": "Ref",
+            "text": "+3"
+          },
+          {
+            "name": "Will",
+            "text": "+3"
+          },
+          {
+            "name": "HP",
+            "text": "24",
+            "newline": true
+          },
+          {
+            "name": "Speed",
+            "text": "25",
+            "hr": true
+          },
+          {
+            "name": "Melee",
+            "action": "single",
+            "text": "cleaver +6 1d8+2 (1d12+2 2H) S",
+            "newline": true
+          }
+        ]
+      },      
       {
         "name": "Gutter Goon",
         "type": "Creature 0",
@@ -1294,7 +1371,7 @@
           },
           {
             "name": "Skills",
-            "text": "Nature +7, Survival +7, Stealth +5, Athletics +8, Thievery +5",
+            "text": "Nature +7, Survival +7, Stealth +5, Athletics +8, Deception +5",
             "newline": true
           },
           {
