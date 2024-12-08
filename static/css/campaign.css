@@ -1,0 +1,9 @@
+.subsection {
+  padding: 0 1em;
+}
+
+.vertical-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25em;
+}

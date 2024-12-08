@@ -8,9 +8,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      decks: {},
-      deckId: null,
-      deck: {
+      campaign: {
+        name: '',
+        description: '',
         images: [],
         bgms: [],
         ambiences: [],
@@ -43,38 +43,41 @@ class App extends Component {
       }
     };
   
-    // Load data from decks.json
-    fetch("../decks/decks.json")
-      .then((response) => response.json())
-      .then((decks) => {
-        // Update state with loaded data
-        this.setState({
-          decks,
-          deckId: Object.keys(decks)[0],
-          deck: decks[Object.keys(decks)[0]],
-          cards: decks[Object.keys(decks)[0]].cards,
+    // Get current campaign from cookie
+    const currentCampaign = getCookie("currentCampaign");
+
+    // If current campaign is set, load it
+    if (currentCampaign) {
+      fetch(`/campaign/${currentCampaign}`)
+        .then((response) => response.json())
+        .then((campaign) => {
+          // Update state with loaded data
+          this.setState({
+            campaign,
+            cards: campaign.cards,
+          });
+
+          const showImage = getCookie('dm-image');
+          if (showImage) {
+            this.setState({
+              show: {
+                ...this.state.show,
+                image: showImage,
+              },
+            });
+          }
+
+          const initiativeTracker = getCookie('initiativeTracker');
+          if (initiativeTracker) {
+            this.setState({
+              initiativeTracker: JSON.parse(initiativeTracker),
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error loading data from campaigns.json:", error);
         });
-
-        const showImage = getCookie('dm-image');
-        if (showImage) {
-          this.setState({
-            show: {
-              ...this.state.show,
-              image: showImage,
-            },
-          });
-        }
-
-        const initiativeTracker = getCookie('initiativeTracker');
-        if (initiativeTracker) {
-          this.setState({
-            initiativeTracker: JSON.parse(initiativeTracker),
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error loading data from decks.json:", error);
-      });
+    }
   }
   
   handleNextChange(e) {
@@ -91,7 +94,7 @@ class App extends Component {
     this.setState({
       labels: {
         ...this.state.labels,
-        image: this.state.deck.images.find(data => data.path === this.state.next.image).label,
+        image: this.state.campaign.images.find(data => data.path === this.state.next.image).label,
       },
       show: {
         ...this.state.show,
@@ -191,7 +194,7 @@ class App extends Component {
       this.setState({
         labels: {
           ...this.state.labels,
-          [type]: this.state.deck[`${type}s`].find(data => data.path === this.state.next[type]).label,
+          [type]: this.state.campaign[`${type}s`].find(data => data.path === this.state.next[type]).label,
         },
         show: {
           ...this.state.show,
@@ -322,17 +325,8 @@ class App extends Component {
   render() {
     return html`
     <div>
-      <h2>Deck Manager</h2>
-      <label>
-        <span class="label-text">Deck:</span>
-        <select
-          value=${this.state.deckId}
-        >
-          ${Object.keys(this.state.decks).map((deckId) => html`
-            <option value=${deckId}>${deckId}</option>
-          `)}
-        </select>
-      </label>
+      <h2>${this.state.name}</h2>
+      <h3>${this.state.description}</h3>
     </div>
     <div class="four-column">
       <div>
@@ -372,7 +366,7 @@ class App extends Component {
               onChange=${(e) => this.handleNextChange(e)}
             >
               <option value="">None</option>
-              ${this.state.deck.images.map((image) => html`
+              ${this.state.campaign.images.map((image) => html`
                 <option value=${image.path}>${image.label}</option>
               `)}
             </select>
@@ -388,7 +382,7 @@ class App extends Component {
               onChange=${(e) => this.handleNextChange(e)}
             >
               <option value="">None</option>
-              ${this.state.deck.bgms.map((bgm) => html`
+              ${this.state.campaign.bgms.map((bgm) => html`
                 <option value=${bgm.path}>${bgm.label}</option>
               `)}
             </select>
@@ -404,7 +398,7 @@ class App extends Component {
               onChange=${(e) => this.handleNextChange(e)}
             >
               <option value="">None</option>
-              ${this.state.deck.ambiences.map((ambience) => html`
+              ${this.state.campaign.ambiences.map((ambience) => html`
                 <option value=${ambience.path}>${ambience.label}</option>
               `)}
             </select>
@@ -446,9 +440,9 @@ class App extends Component {
     </div>
     <div class="dm-card-grid">
       ${this.state.show.cards.map((card, index) => html`
-        <div class="deck-card-frame">
-          <button class="deck-card-insert square" onClick=${() => this.addCardToInitiative(index)}><div>\uFF0B</div></button>
-          <button class="deck-card-dismiss square" onClick=${() => this.dismissCard(index)}><div>\u2716</div></button>
+        <div class="campaign-card-frame">
+          <button class="campaign-card-insert square" onClick=${() => this.addCardToInitiative(index)}><div>\uFF0B</div></button>
+          <button class="campaign-card-dismiss square" onClick=${() => this.dismissCard(index)}><div>\u2716</div></button>
           <${Card} data=${card} />
         </div>
       `)}

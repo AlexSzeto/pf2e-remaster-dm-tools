@@ -1,0 +1,115 @@
+body {
+  font-size: 14px;
+}
+
+.four-column {
+  display: grid;
+  grid-template-columns: 20em 25em 22em 22em;
+  grid-gap: 1em;
+}
+
+label {
+  display: flex;
+  align-items: center;
+}
+.disabled-text {      
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+select, .disabled-text {
+  min-width: 15em;
+  min-height: 2.5em;
+}
+
+.label-text {
+  min-width: 4em;
+}
+    
+.preview-image {
+  max-width: 20em;
+  max-height: 20em;
+}
+
+.dm-card-grid {
+  margin-top: 1em;
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
+  grid-gap: 1em;
+}
+
+.campaign-card-frame {
+  position: relative;
+}
+
+.campaign-card-insert {
+  position: absolute;
+  bottom: 0.1em;
+  right: 2.2em;
+  font-size: 3em;
+}
+
+.campaign-card-dismiss {
+  position: absolute;
+  right: 0.1em;
+  bottom: 0.1em;
+  font-size: 3em;
+}
+
+button.square {
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.small {
+    font-size: 0.4em;
+  }
+}
+
+.initiative-tracker-grid {
+  display: grid;
+  grid-template-columns: min-content min-content min-content min-content 2em 15em 2em 4em 4em 10em 1fr;
+  grid-gap: 0.1em;
+  align-items: center;
+
+  .header-item {
+    font-size: 1.25em;
+    font-weight: bold;
+    min-width: 2em;
+    min-height: 2em;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .consumables {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+
+    .consumable-spacer {
+      width: 0.25em;
+    }
+  }
+
+  .active-item {
+    .icon {
+      width: 1.5em;
+      height: 1.5em;
+      color: white;
+      background-color: #472C2C;
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
