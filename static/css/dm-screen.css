@@ -113,3 +113,52 @@ button.square {
     justify-content: center;
   }
 }
+
+.screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  .modal {
+    position: fixed;
+    top: 25vh;
+    bottom: 25vh;
+    left: 25vw;
+    right: 25vw;
+    background-color: white;
+    padding: 1em;
+    border-radius: 1em;
+  
+    overflow-y: hidden;
+  }
+
+  .image-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+    row-gap: 1em;
+    column-gap: 0.25em;
+  
+    width: 100%;
+    height: 100%;
+  
+    overflow-x: hidden;
+    overflow-y: scroll;
+  
+    .image-container {
+      display: flex;
+      flex-direction: column;
+      
+      .description {
+        text-align: center;
+      }
+
+      img {
+        width: 100%;
+      }  
+    }
+  }  
+}
