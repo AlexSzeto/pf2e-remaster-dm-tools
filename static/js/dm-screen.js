@@ -1,8 +1,8 @@
 import { render, Component } from "preact";
 import { html } from "htm/preact";
-import { Card } from "./card.js";
-import { InitiativeDisplay, InitiativeListItem, InitiativeTracker } from "./initiative-tracker.js"
-import { getCookie, setCookie } from "./common.js";
+import { Card } from "./components/card.js";
+import { InitiativeListItem, InitiativeTracker } from "./components/initiative-tracker.js"
+import { campaignResource, getCookie, setCookie } from "./common/util.js";
 
 class App extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class App extends Component {
       campaign: {
         name: '',
         description: '',
+        filename: '',
         images: [],
         bgms: [],
         ambiences: [],
@@ -325,8 +326,8 @@ class App extends Component {
   render() {
     return html`
     <div>
-      <h2>${this.state.name}</h2>
-      <h3>${this.state.description}</h3>
+      <h2>${this.state.campaign.name}</h2>
+      <h3>${this.state.campaign.description}</h3>
     </div>
     <div class="four-column">
       <div>
@@ -409,11 +410,11 @@ class App extends Component {
       </div>
       <div>
         <h2>DM Screen Image</h2>
-        <img class="preview-image" src=${this.state.show.image} />
+        <img class="preview-image" src="${campaignResource(this.state.campaign.filename, this.state.show.image)}" />
       </div>
       <div>
         <h2>Next Image Preview</h2>
-        <img class="preview-image" src=${this.state.next.image} />
+        <img class="preview-image" src="${campaignResource(this.state.campaign.filename, this.state.next.image)}" />
       </div>
     </div>
 

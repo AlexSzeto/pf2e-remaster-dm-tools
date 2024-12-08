@@ -1,7 +1,7 @@
 import { Component } from "preact";
 import { html } from "htm/preact";
 import { useState } from "preact/hooks";
-import { setCookie } from "./common.js";
+import { setCookie } from "../common/util.js";
 
 export class InitiativeListItem {
   constructor(name, initiative = 0, hp = 0, consumables = [], notes = '') {

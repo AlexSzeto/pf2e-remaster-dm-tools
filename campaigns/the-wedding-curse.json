@@ -5,239 +5,239 @@
   "images": [
     {
       "label": "Location Archives",
-      "path": "./decks/wedding-curse/location-archives.png"
+      "path": "location-archives.png"
     },
     {
       "label": "Location Catacombs Interior",
-      "path": "./decks/wedding-curse/location-catacombs-interior.png"
+      "path": "location-catacombs-interior.png"
     },
     {
       "label": "Location Greywater",
-      "path": "./decks/wedding-curse/location-greywater.png"
+      "path": "location-greywater.png"
     },
     {
       "label": "Location Lumi Room",
-      "path": "./decks/wedding-curse/location-lumi-room.png"
+      "path": "location-lumi-room.png"
     },
     {
       "label": "Location Manor Exterior",
-      "path": "./decks/wedding-curse/location-manor-exterior.png"
+      "path": "location-manor-exterior.png"
     },
     {
       "label": "Location Manor Study",
-      "path": "./decks/wedding-curse/location-manor-study.png"
+      "path": "location-manor-study.png"
     },
     {
       "label": "Location Ruins Body",
-      "path": "./decks/wedding-curse/location-ruins-body.png"
+      "path": "location-ruins-body.png"
     },
     {
       "label": "Location Ruins Catacomb Entrance",
-      "path": "./decks/wedding-curse/location-ruins-catacomb-entrance.png"
+      "path": "location-ruins-catacomb-entrance.png"
     },
     {
       "label": "Location Ruins Clearing",
-      "path": "./decks/wedding-curse/location-ruins-clearing.png"
+      "path": "location-ruins-clearing.png"
     },
     {
       "label": "Location Ruins Keep",
-      "path": "./decks/wedding-curse/location-ruins-keep.png"
+      "path": "location-ruins-keep.png"
     },
     {
       "label": "Location Ruins Random 1",
-      "path": "./decks/wedding-curse/location-ruins-random-1.png"
+      "path": "location-ruins-random-1.png"
     },
     {
       "label": "Location Ruins Random 2",
-      "path": "./decks/wedding-curse/location-ruins-random-2.png"
+      "path": "location-ruins-random-2.png"
     },
     {
       "label": "Location Ruins Random 3",
-      "path": "./decks/wedding-curse/location-ruins-random-3.png"
+      "path": "location-ruins-random-3.png"
     },
     {
       "label": "Location Ruins Sunset",
-      "path": "./decks/wedding-curse/location-ruins-sunset.png"
+      "path": "location-ruins-sunset.png"
     },
     {
       "label": "Location Stormhaven",
-      "path": "./decks/wedding-curse/location-stormhaven.png"
+      "path": "location-stormhaven.png"
     },
     {
       "label": "Location Tavern at Night",
-      "path": "./decks/wedding-curse/location-tavern-at-night.png"
+      "path": "location-tavern-at-night.png"
     },
     {
       "label": "Location Tea House",
-      "path": "./decks/wedding-curse/location-tea-house.png"
+      "path": "location-tea-house.png"
     },
     {
       "label": "Location Warehouse Dock",
-      "path": "./decks/wedding-curse/location-warehouse-dock.png"
+      "path": "location-warehouse-dock.png"
     },
     {
       "label": "Location Warehouse Exterior",
-      "path": "./decks/wedding-curse/location-warehouse-exterior.png"
+      "path": "location-warehouse-exterior.png"
     },
     {
       "label": "Location Warehouse Interior",
-      "path": "./decks/wedding-curse/location-warehouse-interior.png"
+      "path": "location-warehouse-interior.png"
     },
     {
       "label": "Map Stormhaven",
-      "path": "./decks/wedding-curse/map-stormhaven.png"
+      "path": "map-stormhaven.png"
     },
     {
       "label": "Map Uruzad",
-      "path": "./decks/wedding-curse/map-uruzad.jpg"
+      "path": "map-uruzad.jpg"
     },
     {
       "label": "Portrait Annabelle",
-      "path": "./decks/wedding-curse/portrait-annabelle.png"
+      "path": "portrait-annabelle.png"
     },
     {
       "label": "Portrait Auric",
-      "path": "./decks/wedding-curse/portrait-auric.png"
+      "path": "portrait-auric.png"
     },
     {
       "label": "Portrait Bulo",
-      "path": "./decks/wedding-curse/portrait-bulo.png"
+      "path": "portrait-bulo.png"
     },
     {
       "label": "Portrait Burt",
-      "path": "./decks/wedding-curse/portrait-burt.png"
+      "path": "portrait-burt.png"
     },
     {
       "label": "Portrait Dak Gorim",
-      "path": "./decks/wedding-curse/portrait-dak-gorim.png"
+      "path": "portrait-dak-gorim.png"
     },
     {
       "label": "Portrait Daramir",
-      "path": "./decks/wedding-curse/portrait-daramir.png"
+      "path": "portrait-daramir.png"
     },
     {
       "label": "Portrait Dargon",
-      "path": "./decks/wedding-curse/portrait-dargon.png"
+      "path": "portrait-dargon.png"
     },
     {
       "label": "Portrait Edwin",
-      "path": "./decks/wedding-curse/portrait-edwin.png"
+      "path": "portrait-edwin.png"
     },
     {
       "label": "Portrait Fadon",
-      "path": "./decks/wedding-curse/portrait-fadon.png"
+      "path": "portrait-fadon.png"
     },
     {
       "label": "Portrait Jerod",
-      "path": "./decks/wedding-curse/portrait-jerod.png"
+      "path": "portrait-jerod.png"
     },
     {
       "label": "Portrait Kerissa",
-      "path": "./decks/wedding-curse/portrait-kerissa.png"
+      "path": "portrait-kerissa.png"
     },
     {
       "label": "Portrait Kurnov Hawkridge",
-      "path": "./decks/wedding-curse/portrait-kurnov-hawkridge.png"
+      "path": "portrait-kurnov-hawkridge.png"
     },
     {
       "label": "Portrait Lumiere Armored",
-      "path": "./decks/wedding-curse/portrait-lumiere-armored.png"
+      "path": "portrait-lumiere-armored.png"
     },
     {
       "label": "Portrait Lumiere Dress",
-      "path": "./decks/wedding-curse/portrait-lumiere-dress.png"
+      "path": "portrait-lumiere-dress.png"
     },
     {
       "label": "Portrait Rahul Kamal",
-      "path": "./decks/wedding-curse/portrait-rahul-kamal.png"
+      "path": "portrait-rahul-kamal.png"
     },
     {
       "label": "Portrait Reaven",
-      "path": "./decks/wedding-curse/portrait-reaven.png"
+      "path": "portrait-reaven.png"
     },
     {
       "label": "Wedding Invitation",
-      "path": "./decks/wedding-curse/wedding-invitation.jpg"
+      "path": "wedding-invitation.jpg"
     }
   ],
   "bgms": [
     {
       "label": "Arise Dak Gorim Bgm",
-      "path": "./decks/wedding-curse/arise-dak-gorim-bgm.mp3"
+      "path": "arise-dak-gorim-bgm.mp3"
     },
     {
       "label": "Gutting Hole Showdown Bgm",
-      "path": "./decks/wedding-curse/gutting-hole-showdown-bgm.mp3"
+      "path": "gutting-hole-showdown-bgm.mp3"
     },
     {
       "label": "Heroes of Stormhaven Bgm",
-      "path": "./decks/wedding-curse/heroes-of-stormhaven-bgm.mp3"
+      "path": "heroes-of-stormhaven-bgm.mp3"
     },
     {
       "label": "Highlands Battle Bgm",
-      "path": "./decks/wedding-curse/highlands-battle-bgm.mp3"
+      "path": "highlands-battle-bgm.mp3"
     },
     {
       "label": "Intoxicaing Fragrance Bgm",
-      "path": "./decks/wedding-curse/intoxicaing-fragrance-bgm.mp3"
+      "path": "intoxicaing-fragrance-bgm.mp3"
     },
     {
       "label": "Ode To Stormhaven Bgm",
-      "path": "./decks/wedding-curse/ode-to-stormhaven-bgm.mp3"
+      "path": "ode-to-stormhaven-bgm.mp3"
     },
     {
       "label": "Slow Death March Bgm",
-      "path": "./decks/wedding-curse/slow-death-march-bgm.mp3"
+      "path": "slow-death-march-bgm.mp3"
     },
     {
       "label": "Tales of the Salty Dogs Bgm",
-      "path": "./decks/wedding-curse/tales-of-the-salty-dogs-bgm.mp3"
+      "path": "tales-of-the-salty-dogs-bgm.mp3"
     },
     {
       "label": "the Wedding Uncursed Bgm",
-      "path": "./decks/wedding-curse/the-wedding-uncursed-bgm.mp3"
+      "path": "the-wedding-uncursed-bgm.mp3"
     },
     {
       "label": "Verzog Catacombs Bgm",
-      "path": "./decks/wedding-curse/verzog-catacombs-bgm.mp3"
+      "path": "verzog-catacombs-bgm.mp3"
     },
     {
       "label": "Wavering Hearts Bgm",
-      "path": "./decks/wedding-curse/wavering-hearts-bgm.mp3"
+      "path": "wavering-hearts-bgm.mp3"
     }
   ],
   "ambiences": [
     {
       "label": "Archives Ambience",
-      "path": "./decks/wedding-curse/archives-ambience.mp3"
+      "path": "archives-ambience.mp3"
     },
     {
       "label": "Catacombs Ambience",
-      "path": "./decks/wedding-curse/catacombs-ambience.mp3"
+      "path": "catacombs-ambience.mp3"
     },
     {
       "label": "Dock Ambience",
-      "path": "./decks/wedding-curse/dock-ambience.mp3"
+      "path": "dock-ambience.mp3"
     },
     {
       "label": "Fragrant Teahouse Ambience",
-      "path": "./decks/wedding-curse/fragrant-teahouse-ambience.mp3"
+      "path": "fragrant-teahouse-ambience.mp3"
     },
     {
       "label": "Greywater Ambience",
-      "path": "./decks/wedding-curse/greywater-ambience.mp3"
+      "path": "greywater-ambience.mp3"
     },
     {
       "label": "Ruins Ambience",
-      "path": "./decks/wedding-curse/ruins-ambience.mp3"
+      "path": "ruins-ambience.mp3"
     },
     {
       "label": "Tavern Ambience",
-      "path": "./decks/wedding-curse/tavern-ambience.mp3"
+      "path": "tavern-ambience.mp3"
     },
     {
       "label": "Wagon Ruins Approach Ambience",
-      "path": "./decks/wedding-curse/wagon-ruins-approach-ambience.mp3"
+      "path": "wagon-ruins-approach-ambience.mp3"
     }
   ],
   "cards": [

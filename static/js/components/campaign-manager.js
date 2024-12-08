@@ -1,6 +1,6 @@
 import { Component } from 'preact'
 import { html } from 'htm/preact'
-import { getCookie, setCookie } from '../common.js'
+import { getCookie, setCookie } from '../common/util.js'
 
 export class CampaignManager extends Component {
   constructor(props) {

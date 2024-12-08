@@ -33,7 +33,7 @@ import {
   creatureSpellDCsLabels,
   creatureSpellLevelLabels,
   createSpellTemplate,
-} from "./dm-data.js";
+} from "./common/dm-data.js";
 import { Card } from "./card.js";
 
 const dice = (data) => `${data.count}d${data.sides}${

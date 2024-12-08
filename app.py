@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import os
 import json
 import webbrowser
@@ -24,6 +24,20 @@ def render_page(page_name):
         return render_template(f"{page_name}.html")
     except Exception as e:
         return f"Error loading page {page_name}: {e}", 404
+
+@app.route("/campaign-resource/<campaign_name>/<resource_name>")
+def get_campaign_resource(campaign_name, resource_name):
+    try:
+        # Capture the file extension from resource_name
+        file_extension = os.path.splitext(resource_name)[1]
+        if file_extension in [".jpg", ".jpeg", ".png", ".gif", ".svg"]:
+            resource_folder = "images"
+        elif file_extension in [".mp3", ".wav", ".ogg"]:
+            resource_folder = "audio"
+        
+        return send_from_directory(os.path.join(CAMPAIGN_FOLDER, campaign_name, resource_folder), resource_name)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # List all campaigns
 @app.route("/campaigns", methods=["POST", "GET"])
