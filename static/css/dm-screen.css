@@ -2,6 +2,64 @@ body {
   font-size: 14px;
 }
 
+.immersive-mode-grid {
+  display: grid;
+  grid-template-areas:
+    "image audio-duck ."
+    "image bgm ."
+    "image ambience ."
+    "image . .";
+  grid-template-columns: min-content min-content 1fr;
+  grid-template-rows: repeat(4, min-content);
+}
+
+.audio-grid {
+  display: grid;
+  grid-template-columns: 15em min-content;
+  grid-template-rows: min-content;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .four-column {
   display: grid;
   grid-template-columns: 20em 25em 22em 22em;
@@ -25,11 +83,6 @@ select, .disabled-text {
 
 .label-text {
   min-width: 4em;
-}
-    
-.preview-image {
-  max-width: 20em;
-  max-height: 20em;
 }
 
 .dm-card-grid {

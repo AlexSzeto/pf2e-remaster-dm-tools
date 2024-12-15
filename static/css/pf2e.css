@@ -26,6 +26,10 @@ body {
   background-image: url('../images/parchment-background.jpg');
 }
 
+.hidden {
+  display: none;
+}
+
 .campaign-card-frame {
   border: 1px dashed #472c2c;
   padding: 3em;
@@ -287,4 +291,10 @@ button {
   &:not(:disabled):active {
     background-color: #351a1a;
   }
+}
+
+.preview-image {
+  max-width: 20em;
+  max-height: 20em;
+  border-radius: 0.25em;
 }

@@ -26,6 +26,7 @@ export function createAudioSource(path, fadeInDuration) {
 
   const end = (duration) => {
     const currentTime = audioContext.currentTime
+    gainNode.gain.cancelScheduledValues(currentTime)
     gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
     gainNode.gain.linearRampToValueAtTime(0, currentTime + duration)
 
@@ -42,12 +43,14 @@ export function createAudioSource(path, fadeInDuration) {
 
   const duck = (duration, duckVolume) => {
     const currentTime = audioContext.currentTime
+    gainNode.gain.cancelScheduledValues(currentTime)
     gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
     gainNode.gain.linearRampToValueAtTime(duckVolume, currentTime + duration)
   }
 
   const unduck = (duration) => {
     const currentTime = audioContext.currentTime
+    gainNode.gain.cancelScheduledValues(currentTime)
     gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
     gainNode.gain.linearRampToValueAtTime(1, currentTime + duration)
   }

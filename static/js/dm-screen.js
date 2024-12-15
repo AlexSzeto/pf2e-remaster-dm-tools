@@ -6,10 +6,104 @@ import {
   InitiativeTracker,
 } from './components/initiative-tracker.js'
 import { campaignResource, getCookie, setCookie } from './common/util.js'
-import { ImageSelector } from './components/image-modal.js'
+import { ImageSelectorModal } from './components/image-modal.js'
+import { FileSelectorModal } from './components/file-modal.js'
 import { createAudioSource } from './common/audio.js'
 
+const audioTypes = ['bgm', 'ambience']
+
 class App extends Component {
+  showImage(url) {
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        image: {
+          url,
+        },
+      },
+    })
+    setCookie('dm-image', url)
+  }
+
+  startAudioLoop(type, label, url) {
+    if (this.state.screen.duckAudio) {
+      this.toggleAudioDuck()
+    }
+
+    const start = () =>{
+      this.setState({
+        screen: {
+          ...this.state.screen,
+          [type]: {
+            label,
+            controls: createAudioSource(campaignResource(this.state.campaign.filename, url), 8),
+          },
+          duckAudio: false,
+        },
+      })
+    }
+
+    if (this.state.screen[type].controls !== null) {
+      this.state.screen[type].controls.end(4)
+      setTimeout(start(), 6000)
+    } else {
+      start()
+    }
+  }
+
+  stopAudio(type) {
+    if (this.state.screen[type].controls !== null) {
+      this.state.screen[type].controls.end(4)
+    }
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        [type]: {
+          label: '',
+          controls: null,
+        },
+      },
+    })
+  }
+
+  toggleAudioDuck() {
+    const duckAudio = !this.state.screen.duckAudio
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        duckAudio
+      },
+    })
+
+    audioTypes.forEach((type) => {
+      if (this.state.screen[type].controls !== null) {
+        if (duckAudio) {
+          this.state.screen[type].controls.duck(1, 0.2)
+        } else {
+          this.state.screen[type].controls.unduck(4)
+        }
+      }
+    })
+  }
+
+  showModal(modal) {
+    this.setState({
+      modals: {
+        ...this.state.modals,
+        [modal]: true,
+      },
+    })
+  }
+
+  hideModal(modal) {
+    this.setState({
+      modals: {
+        ...this.state.modals,
+        [modal]: false,
+      },
+    })
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -81,20 +175,16 @@ class App extends Component {
       fetch(`/campaign/${currentCampaign}`)
         .then((response) => response.json())
         .then((campaign) => {
+          console.log('Loaded campaign:', campaign)
+
           // Update state with loaded data
           this.setState({
             campaign,
-            cards: campaign.cards,
           })
 
-          const showImage = getCookie('dm-image')
-          if (showImage) {
-            this.setState({
-              show: {
-                ...this.state.show,
-                image: showImage,
-              },
-            })
+          const savedImage = getCookie('dm-image')
+          if (savedImage) {
+            this.showImage(savedImage)
           }
 
           const initiativeTracker = getCookie('initiativeTracker')
@@ -108,76 +198,12 @@ class App extends Component {
           console.error('Error loading data from campaigns.json:', error)
         })
     }
+
+    
+    // this.useEffect(() => { feather.replace() })
   }
 
-  showImage(url) {
-    this.setState({
-      screen: {
-        ...this.state.screen,
-        image: {
-          url,
-        },
-      },
-    })
-    setCookie('dm-image', url)
-  }
-
-  startAudioLoop(type, label, url) {
-    const start = () =>{
-      this.setState({
-        screen: {
-          ...this.state.screen,
-          [type]: {
-            label,
-            controls: createAudioSource(url, 8),
-          },
-        },
-      })
-    }
-
-    if (this.state.screen[type].controls !== null) {
-      this.state.screen[type].controls.end(4)
-      setTimeout(start(), 6000)
-    } else {
-      start()
-    }
-  }
-
-  stopAudio(type) {
-    if (this.state.screen[type].controls !== null) {
-      this.state.screen[type].controls.end(4)
-    }
-    this.setState({
-      screen: {
-        ...this.state.screen,
-        [type]: {
-          label: '',
-          controls: null,
-        },
-      },
-    })
-  }
-
-  toggleAudioDuck() {
-    const duckAudio = !this.state.screen.duckAudio    
-    this.setState({
-      screen: {
-        ...this.state.screen,
-        duckAudio
-      },
-    })
-
-    ['bgm', 'ambience'].forEach((type) => {
-      if (this.state.screen[type].controls !== null) {
-        if (duckAudio) {
-          this.state.screen[type].controls.duck(1, 0.2)
-        } else {
-          this.state.screen[type].controls.unduck(4)
-        }
-      }
-    })
-  }
-
+  componentDidUpdate() { feather.replace() }
   // addCardToView(andInitiatve = false) {
   //   const card = this.state.cards[this.state.previewCard]
   //   if (this.state.show.cards.includes(card)) {
@@ -274,193 +300,77 @@ class App extends Component {
         <h2>${this.state.campaign.name}</h2>
         <h3>${this.state.campaign.description}</h3>
       </div>
-      <div class="four-column">
-        <div>
-          <h2>Now Showing/Playing</h2>
-          <div>
-            <label>
-              <span class="label-text">Image:</span>
-              <span class="disabled-text"
-                ><span
-                  >${this.state.labels.image !== ''
-                    ? this.state.labels.image
-                    : 'None'}</span
-                ></span
-              >
-            </label>
-          </div>
-          <div>
-            <label>
-              <span class="label-text">BGM:</span>
-              <span class="disabled-text"
-                ><span
-                  >${this.state.labels.bgm !== ''
-                    ? this.state.labels.bgm
-                    : 'None'}</span
-                ></span
-              >
-            </label>
-          </div>
-          <div>
-            <label>
-              <span class="label-text">Ambience:</span>
-              <span class="disabled-text"
-                ><span
-                  >${this.state.labels.ambience !== ''
-                    ? this.state.labels.ambience
-                    : 'None'}</span
-                ></span
-              >
-            </label>
-          </div>
-
-          <h2>Controls</h2>
-          <div>
-            <button onClick=${() => this.duckUnduckAudio()}>
-              ${this.state.duck ? 'Unduck' : 'Duck'}
-            </button>
-          </div>
-        </div>
-        <div>
-          <h2>Next</h2>
-          <div>
-            <label>
-              <select
-                name="image"
-                value=${this.state.next.image}
-                onChange=${(e) => this.handleNextChange(e)}
-              >
-                <option value="">None</option>
-                ${this.state.campaign.images.map(
-                  (image) => html`
-                    <option value=${image.path}>${image.label}</option>
-                  `
-                )}
-              </select>
-              <button onClick=${() => this.clearImage()}>Clear</button>
-              <button onClick=${() => this.swapImage()}>Load</button>
-            </label>
-          </div>
-          <div>
-            <label>
-              <select
-                name="bgm"
-                value=${this.state.next.bgm}
-                onChange=${(e) => this.handleNextChange(e)}
-              >
-                <option value="">None</option>
-                ${this.state.campaign.bgms.map(
-                  (bgm) => html`
-                    <option value=${bgm.path}>${bgm.label}</option>
-                  `
-                )}
-              </select>
-              <button onClick=${() => this.clearLoop('bgm')}>Clear</button>
-              <button onClick=${() => this.loadLoop('bgm')}>Load</button>
-            </label>
-          </div>
-          <div>
-            <label>
-              <select
-                name="ambience"
-                value=${this.state.next.ambience}
-                onChange=${(e) => this.handleNextChange(e)}
-              >
-                <option value="">None</option>
-                ${this.state.campaign.ambiences.map(
-                  (ambience) => html`
-                    <option value=${ambience.path}>${ambience.label}</option>
-                  `
-                )}
-              </select>
-              <button onClick=${() => this.clearLoop('ambience')}>Clear</button>
-              <button onClick=${() => this.loadLoop('ambience')}>Load</button>
-            </label>
-          </div>
-        </div>
-        <div>
-          <h2>DM Screen Image</h2>
-          <a href="#" onClick=${() => this.setState({ showImageModal: true })}>
-            <img
-              class="preview-image"
-              src="${campaignResource(
-                this.state.campaign.filename,
-                this.state.show.image
-              )}"
-            />
-          </a>
-        </div>
-        <div>
-          <h2>Next Image Preview</h2>
-          <img
-            class="preview-image"
-            src="${campaignResource(
-              this.state.campaign.filename,
-              this.state.next.image
-            )}"
-          />
-        </div>
-      </div>
-
-      <h2>
-        Initiative Tracker
-        (${this.state.initiativeTracker.inUse ? 'Active' : 'Inactive'})
-      </h2>
-      <div>
-        <${InitiativeTracker}
-          data=${this.state.initiativeTracker}
-          updateData=${(data) => this.updateInitiateTracker(data)}
-        />
-      </div>
-
-      <h2>Cards</h2>
-      <div>
-        <label>
-          <select
-            name="card"
-            value=${this.state.previewCard}
-            onChange=${(e) => this.setState({ previewCard: e.target.value })}
-          >
-            ${this.state.cards.map(
-              (card, index) => html`
-                <option value=${index}>${card.name}</option>
-              `
-            )}
-          </select>
-          <button onClick=${() => this.addCardToView()}>View</button>
-          <button onClick=${() => this.addCardToView(true)}>Add</button>
-        </label>
-      </div>
-      <div class="dm-card-grid">
-        ${this.state.show.cards.map(
-          (card, index) => html`
-            <div class="campaign-card-frame">
-              <button
-                class="campaign-card-insert square"
-                onClick=${() => this.addCardToInitiative(index)}
-              >
-                <div>＋</div>
-              </button>
-              <button
-                class="campaign-card-dismiss square"
-                onClick=${() => this.dismissCard(index)}
-              >
-                <div>✖</div>
-              </button>
-              <${Card} data=${card} />
+      <div class="tabs">
+        <h2>Immersive Mode</h2>
+        <div class="immersive-mode-grid">
+            <div style="grid-area: image"
+              onClick=${() => this.showModal('image')}
+            >
+              ${this.state.screen.image.url === '' && html`
+                <button>Select Image</button>`}
+              <img
+                class="preview-image"
+                src="${campaignResource(
+                  this.state.campaign.filename,
+                  this.state.screen.image.url
+                )}"
+              />
             </div>
-          `
-        )}
+            <div style="grid-area: audio-duck" class="audio-grid">
+              <span class="disabled-text">
+                ${this.state.screen.duckAudio ? 'Ducking Audio' : 'Not Ducking Audio'}
+              </span>
+              <button onClick=${() => this.toggleAudioDuck()}>
+                <span class=${this.state.screen.duckAudio ? '' : 'hidden'}>
+                  <i data-feather="volume-x"></i>
+                </span>
+                <span class=${!this.state.screen.duckAudio ? '' : 'hidden'}>
+                  <i data-feather="volume-2"></i>
+                </span>
+              </button>
+            </div>
+            ${audioTypes.map((type) => html`
+            <div style="grid-area: ${type}" class="audio-grid">
+              <span
+                class="disabled-text"
+                onClick=${() => this.showModal(type)}
+              >
+                <label>
+                  ${this.state.screen[type].label === '' 
+                    ? '(No Audio Selected)' 
+                    : this.state.screen[type].label
+                  }
+                </label>
+              </span>
+              <button
+                onClick=${() => this.stopAudio(type)}
+              >
+                <i data-feather="square"></i>
+              </button>
+            </div>
+            `)}
+        </div>
       </div>
-      ${this.state.showImageModal && html`
-      <${ImageSelector}
+
+      ${this.state.modals.image && html`
+      <${ImageSelectorModal}
         campaign=${this.state.campaign.filename}
         images=${this.state.campaign.images.map((imageData) => imageData.path)}
-        onSelect=${(image) =>
-          this.setState({ show: { ...this.state.show, image } })}
-        onClose=${() => this.setState({ showImageModal: false })}
+        onSelect=${(url) => this.showImage(url)}
+        onClose=${() => this.hideModal('image')}
       />
-      `}      
+      `}
+
+      ${audioTypes.map((type) => html`
+      ${this.state.modals[type] && html`
+      <${FileSelectorModal}
+        files=${this.state.campaign[type + 's']}
+        onSelect=${(label, path) => this.startAudioLoop(type, label, path)}
+        onClose=${() => this.hideModal(type)}
+      />
+      `}
+      `)}
+
     `
   }
 }
