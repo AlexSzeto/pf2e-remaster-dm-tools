@@ -7,6 +7,7 @@ import {
 } from './components/initiative-tracker.js'
 import { campaignResource, getCookie, setCookie } from './common/util.js'
 import { ImageSelector } from './components/image-modal.js'
+import { createAudioSource } from './common/audio.js'
 
 class App extends Component {
   constructor(props) {
@@ -19,35 +20,57 @@ class App extends Component {
         images: [],
         bgms: [],
         ambiences: [],
-      },
-      labels: {
-        image: '',
-        bgm: '',
-        ambience: '',
-      },
-      show: {
-        image: '',
-        bgm: '',
-        ambience: '',
         cards: [],
       },
-      next: {
-        image: '',
-        bgm: '',
-        ambience: '',
+      screen: {
+        image: {
+          url: '',
+        },
+        bgm: {
+          label: '',
+          controls: null,
+        },
+        ambience: {
+          label: '',
+          controls: null,
+        },
+        duckAudio: false,
       },
-      cards: [],
-      bgmControls: null,
-      ambienceControls: null,
-      duck: false,
-      previewCard: null,
-      initiativeTracker: {
+      notes: {
+        active: []
+      },
+      // labels: {
+      //   image: '',
+      //   bgm: '',
+      //   ambience: '',
+      // },
+      // show: {
+      //   image: '',
+      //   bgm: '',
+      //   ambience: '',
+      //   cards: [],
+      // },
+      // next: {
+      //   image: '',
+      //   bgm: '',
+      //   ambience: '',
+      // },
+
+      // cards: [],
+      // bgmControls: null,
+      // ambienceControls: null,
+      // duck: false,
+      // previewCard: null,
+      combat: {
         list: [],
         active: 0,
         inUse: false,
       },
 
-      showImageModal: true,
+      modals: {
+        image: false,
+      }
+      // showImageModal: true,
     }
 
     // Get current campaign from cookie
@@ -87,258 +110,163 @@ class App extends Component {
     }
   }
 
-  handleNextChange(e) {
-    const { name, value } = e.target
+  showImage(url) {
     this.setState({
-      next: {
-        ...this.state.next,
-        [name]: value,
+      screen: {
+        ...this.state.screen,
+        image: {
+          url,
+        },
       },
     })
+    setCookie('dm-image', url)
   }
 
-  swapImage() {
-    this.setState({
-      labels: {
-        ...this.state.labels,
-        image: this.state.campaign.images.find(
-          (data) => data.path === this.state.next.image
-        ).label,
-      },
-      show: {
-        ...this.state.show,
-        image: this.state.next.image,
-      },
-      next: {
-        ...this.state.next,
-        image: '',
-      },
-    })
-    setCookie('dm-image', this.state.next.image)
-  }
-
-  clearImage() {
-    this.setState({
-      labels: {
-        ...this.state.labels,
-        image: '',
-      },
-      show: {
-        ...this.state.show,
-        image: '',
-      },
-    })
-    setCookie('dm-image', this.state.next.image)
-  }
-
-  createAudioSource(path, fadeInDuration) {
-    let audioContext = new AudioContext()
-    let bufferSource = audioContext.createBufferSource()
-    let gainNode = audioContext.createGain()
-    bufferSource.connect(gainNode)
-    gainNode.connect(audioContext.destination)
-
-    let request = new XMLHttpRequest()
-    request.open('GET', path, true)
-    request.responseType = 'arraybuffer'
-
-    request.onload = function () {
-      let audioData = request.response
-      audioContext.decodeAudioData(audioData, function (buffer) {
-        bufferSource.buffer = buffer
-        bufferSource.loop = true
-        bufferSource.start(0)
-
-        const currentTime = audioContext.currentTime
-        gainNode.gain.setValueAtTime(0, currentTime)
-        gainNode.gain.linearRampToValueAtTime(1, currentTime + fadeInDuration)
-      })
-    }
-
-    request.send()
-
-    const end = (duration) => {
-      const currentTime = audioContext.currentTime
-      gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
-      gainNode.gain.linearRampToValueAtTime(0, currentTime + duration)
-
-      // Schedule stop and cleanup after fade out completes
-      setTimeout(function () {
-        bufferSource.stop()
-        bufferSource.disconnect()
-        gainNode.disconnect()
-        bufferSource = null
-        gainNode = null
-        audioContext.close() // Close the audio context if no longer needed
-      }, (currentTime + duration) * 1000) // Convert seconds to milliseconds
-    }
-
-    const duck = (duration, duckVolume) => {
-      const currentTime = audioContext.currentTime
-      gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
-      gainNode.gain.linearRampToValueAtTime(duckVolume, currentTime + duration)
-    }
-
-    const unduck = (duration) => {
-      const currentTime = audioContext.currentTime
-      gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
-      gainNode.gain.linearRampToValueAtTime(1, currentTime + duration)
-    }
-
-    return {
-      end,
-      duck,
-      unduck,
-    }
-  }
-
-  loadLoop(type) {
-    if (this.state[`${type}Controls`]) {
-      this.state[`${type}Controls`].end(4)
-    }
-
-    const timeOut = this.state[`${type}Controls`] ? 6000 : 0
-
-    setTimeout(() => {
+  startAudioLoop(type, label, url) {
+    const start = () =>{
       this.setState({
-        labels: {
-          ...this.state.labels,
-          [type]: this.state.campaign[`${type}s`].find(
-            (data) => data.path === this.state.next[type]
-          ).label,
+        screen: {
+          ...this.state.screen,
+          [type]: {
+            label,
+            controls: createAudioSource(url, 8),
+          },
         },
-        show: {
-          ...this.state.show,
-          [type]: this.state.next[type],
-        },
-        next: {
-          ...this.state.next,
-          [type]: '',
-        },
-        [`${type}Controls`]: this.createAudioSource(this.state.next[type], 8),
       })
-    }, timeOut)
-  }
-
-  clearLoop(type) {
-    if (this.state[`${type}Controls`]) {
-      this.state[`${type}Controls`].end(4)
     }
-    this.setState({
-      labels: {
-        ...this.state.labels,
-        [type]: '',
-      },
-      show: {
-        ...this.state.show,
-        [type]: '',
-      },
-      [`${type}Controls`]: null,
-    })
-  }
 
-  duckUnduckAudio() {
-    if (this.state.duck) {
-      if (this.state.bgmControls) this.state.bgmControls.unduck(4)
-      if (this.state.ambienceControls) this.state.ambienceControls.unduck(4)
+    if (this.state.screen[type].controls !== null) {
+      this.state.screen[type].controls.end(4)
+      setTimeout(start(), 6000)
     } else {
-      if (this.state.bgmControls) this.state.bgmControls.duck(1, 0.2)
-      if (this.state.ambienceControls) this.state.ambienceControls.duck(1, 0.2)
+      start()
     }
-    this.setState({
-      duck: !this.state.duck,
-    })
   }
 
-  addCardToView(andInitiatve = false) {
-    const card = this.state.cards[this.state.previewCard]
-    if (this.state.show.cards.includes(card)) {
-      if (andInitiatve) {
-        this.addCardToInitiative(
-          this.state.show.cards.findIndex((c) => c === card)
-        )
-      }
-      return
+  stopAudio(type) {
+    if (this.state.screen[type].controls !== null) {
+      this.state.screen[type].controls.end(4)
     }
-    this.setState(
-      {
-        show: {
-          ...this.state.show,
-          cards: [...this.state.show.cards, card],
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        [type]: {
+          label: '',
+          controls: null,
         },
       },
-      () => {
-        if (andInitiatve) {
-          this.addCardToInitiative(this.state.show.cards.length - 1)
+    })
+  }
+
+  toggleAudioDuck() {
+    const duckAudio = !this.state.screen.duckAudio    
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        duckAudio
+      },
+    })
+
+    ['bgm', 'ambience'].forEach((type) => {
+      if (this.state.screen[type].controls !== null) {
+        if (duckAudio) {
+          this.state.screen[type].controls.duck(1, 0.2)
+        } else {
+          this.state.screen[type].controls.unduck(4)
         }
       }
-    )
-  }
-
-  addCardToInitiative(index) {
-    const card = this.state.show.cards[index]
-
-    if (!card.stats.find((stat) => stat.name === 'HP')) {
-      return
-    }
-
-    const filterConsumables = (consumables) => {
-      const multiConsumables = /(.*)\s*\((\d+)\)/
-      return consumables
-        .map((consumable) => consumable.trim().toLowerCase())
-        .filter((consumable) => consumable !== '')
-        .reduce((acc, consumable) => {
-          if (multiConsumables.test(consumable)) {
-            const match = multiConsumables.exec(consumable)
-            return [...acc, ...Array(Number(match[2])).fill(match[1])]
-          } else {
-            return [...acc, consumable]
-          }
-        }, [])
-    }
-    const getConsumables = (type) =>
-      filterConsumables(
-        card.stats.find((stat) => stat.name === type)?.text.split(',') ?? []
-      )
-    const getSpells = () => {
-      const spellString =
-        card.stats.find((stat) => stat.name === 'Spells')?.text ?? ''
-      const spellStringsByLevel = /\*\*(?:[\w\d\s]+)\*\*([^;]*)(?:;|$)/g
-      let spells = []
-      let match
-      while ((match = spellStringsByLevel.exec(spellString)) !== null) {
-        spells = [...spells, ...match[1].split(',')]
-      }
-      return filterConsumables(spells)
-    }
-    const initiativeTracker = { ...this.state.initiativeTracker }
-    initiativeTracker.list.push(
-      new InitiativeListItem(
-        card.name,
-        0,
-        Number(card.stats.find((stat) => stat.name === 'HP').text ?? '0'),
-        [...getConsumables('Items'), ...getSpells()]
-      )
-    )
-    this.setState({
-      initiativeTracker,
     })
   }
 
-  updateInitiateTracker(data) {
-    this.setState({
-      initiativeTracker: data,
-    })
-  }
+  // addCardToView(andInitiatve = false) {
+  //   const card = this.state.cards[this.state.previewCard]
+  //   if (this.state.show.cards.includes(card)) {
+  //     if (andInitiatve) {
+  //       this.addCardToInitiative(
+  //         this.state.show.cards.findIndex((c) => c === card)
+  //       )
+  //     }
+  //     return
+  //   }
+  //   this.setState(
+  //     {
+  //       show: {
+  //         ...this.state.show,
+  //         cards: [...this.state.show.cards, card],
+  //       },
+  //     },
+  //     () => {
+  //       if (andInitiatve) {
+  //         this.addCardToInitiative(this.state.show.cards.length - 1)
+  //       }
+  //     }
+  //   )
+  // }
 
-  dismissCard(index) {
-    this.setState({
-      show: {
-        ...this.state.show,
-        cards: this.state.show.cards.filter((card, i) => i !== index),
-      },
-    })
-  }
+  // addCardToInitiative(index) {
+  //   const card = this.state.show.cards[index]
+
+  //   if (!card.stats.find((stat) => stat.name === 'HP')) {
+  //     return
+  //   }
+
+  //   const filterConsumables = (consumables) => {
+  //     const multiConsumables = /(.*)\s*\((\d+)\)/
+  //     return consumables
+  //       .map((consumable) => consumable.trim().toLowerCase())
+  //       .filter((consumable) => consumable !== '')
+  //       .reduce((acc, consumable) => {
+  //         if (multiConsumables.test(consumable)) {
+  //           const match = multiConsumables.exec(consumable)
+  //           return [...acc, ...Array(Number(match[2])).fill(match[1])]
+  //         } else {
+  //           return [...acc, consumable]
+  //         }
+  //       }, [])
+  //   }
+  //   const getConsumables = (type) =>
+  //     filterConsumables(
+  //       card.stats.find((stat) => stat.name === type)?.text.split(',') ?? []
+  //     )
+  //   const getSpells = () => {
+  //     const spellString =
+  //       card.stats.find((stat) => stat.name === 'Spells')?.text ?? ''
+  //     const spellStringsByLevel = /\*\*(?:[\w\d\s]+)\*\*([^;]*)(?:;|$)/g
+  //     let spells = []
+  //     let match
+  //     while ((match = spellStringsByLevel.exec(spellString)) !== null) {
+  //       spells = [...spells, ...match[1].split(',')]
+  //     }
+  //     return filterConsumables(spells)
+  //   }
+  //   const initiativeTracker = { ...this.state.initiativeTracker }
+  //   initiativeTracker.list.push(
+  //     new InitiativeListItem(
+  //       card.name,
+  //       0,
+  //       Number(card.stats.find((stat) => stat.name === 'HP').text ?? '0'),
+  //       [...getConsumables('Items'), ...getSpells()]
+  //     )
+  //   )
+  //   this.setState({
+  //     initiativeTracker,
+  //   })
+  // }
+
+  // updateInitiateTracker(data) {
+  //   this.setState({
+  //     initiativeTracker: data,
+  //   })
+  // }
+
+  // dismissCard(index) {
+  //   this.setState({
+  //     show: {
+  //       ...this.state.show,
+  //       cards: this.state.show.cards.filter((card, i) => i !== index),
+  //     },
+  //   })
+  // }
 
   render() {
     return html`

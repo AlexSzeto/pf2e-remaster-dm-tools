@@ -53,9 +53,9 @@ def manage_campaigns():
             data["description"] = data.get("description", "")
 
             # Create image, ambiences, bgm, and cards data structures
-            data["image"] = data.get("image", [])
+            data["images"] = data.get("images", [])
             data["ambiences"] = data.get("ambiences", [])
-            data["bgm"] = data.get("bgm", [])
+            data["bgms"] = data.get("bgms", [])
             data["cards"] = data.get("cards", [])
 
             # Create new JSON file in campaigns directory
