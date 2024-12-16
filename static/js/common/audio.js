@@ -1,7 +1,8 @@
-export function createAudioSource(path, fadeInDuration) {
+export function createAudioSource(path, fadeInDuration, fadeToGain = 1.0) {
   let audioContext = new AudioContext()
   let bufferSource = audioContext.createBufferSource()
   let gainNode = audioContext.createGain()
+
   bufferSource.connect(gainNode)
   gainNode.connect(audioContext.destination)
 
@@ -18,7 +19,7 @@ export function createAudioSource(path, fadeInDuration) {
 
       const currentTime = audioContext.currentTime
       gainNode.gain.setValueAtTime(0, currentTime)
-      gainNode.gain.linearRampToValueAtTime(1, currentTime + fadeInDuration)
+      gainNode.gain.linearRampToValueAtTime(fadeToGain, currentTime + fadeInDuration)
     })
   }
 
@@ -41,22 +42,29 @@ export function createAudioSource(path, fadeInDuration) {
     }, (currentTime + duration) * 1000) // Convert seconds to milliseconds
   }
 
-  const duck = (duration, duckVolume) => {
+  const volume = () => {
+    return gainNode.gain.value
+  }
+
+  const rampVolume = (duration, targetVolume) => {
+    const volume = gainNode.gain.value
     const currentTime = audioContext.currentTime
     gainNode.gain.cancelScheduledValues(currentTime)
-    gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
-    gainNode.gain.linearRampToValueAtTime(duckVolume, currentTime + duration)
+    gainNode.gain.setValueAtTime(volume, currentTime)
+    gainNode.gain.linearRampToValueAtTime(targetVolume, currentTime + duration)
+  }
+
+  const duck = (duration, duckVolume) => {
+    rampVolume(duration, duckVolume)
   }
 
   const unduck = (duration) => {
-    const currentTime = audioContext.currentTime
-    gainNode.gain.cancelScheduledValues(currentTime)
-    gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime)
-    gainNode.gain.linearRampToValueAtTime(1, currentTime + duration)
+    rampVolume(duration, 1)
   }
 
   return {
     end,
+    volume,
     duck,
     unduck,
   }

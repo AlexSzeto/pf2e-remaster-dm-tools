@@ -165,7 +165,10 @@ body {
     &.divider {
       margin-top: 2em;
     }
-    border: 0.1em solid black;
+    display: block;
+    height: 0.2em;
+    border: 0;
+    border-top: 0.2em solid black;
   }
 
   .description {
@@ -198,6 +201,12 @@ body {
     &.reaction::before {
       content: 'r';
     }
+  }
+}
+
+.pf2e-stats.dark {
+  hr {
+    border-top: 0.2em solid white;
   }
 }
 
@@ -297,4 +306,90 @@ button {
   max-width: 20em;
   max-height: 20em;
   border-radius: 0.25em;
+}
+
+.screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  .close-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal {
+    position: fixed;
+    top: 10vh;
+    bottom: 10vh;
+    left: 10vw;
+    right: 10vw;
+    background-color: white;
+    padding: 1em;
+    border-radius: 1em;
+  
+    overflow-y: hidden;
+  }
+
+  .image-selector, .card-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+    row-gap: 1em;
+    column-gap: 0.25em;
+  
+    width: 100%;
+    height: 100%;
+  
+    overflow-x: hidden;
+    overflow-y: scroll;  
+  }
+
+  .image-selector {
+    .image-container {
+      display: flex;
+      flex-direction: column;
+      
+      .description {
+        text-align: center;
+      }
+
+      img {
+        width: 100%;
+      }  
+    }
+  }
+
+  .card-selector {
+    grid-template-columns: repeat(auto-fill, 24em);
+    grid-template-rows: repeat(20, min-content);
+
+    .card-container {
+      position: relative;
+      font-size: 0.4em;
+      color: black;
+      background-color: lightgray;
+      padding: 1.25em;
+      height: min-content;
+
+      &.selected {
+        background-color: #351a1a;
+        color: white;
+      }
+    }
+  }
+
+  .file-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+  }
+  
 }

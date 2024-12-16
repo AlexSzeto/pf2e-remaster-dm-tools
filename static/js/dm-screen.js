@@ -6,13 +6,23 @@ import {
   InitiativeTracker,
 } from './components/initiative-tracker.js'
 import { campaignResource, getCookie, setCookie } from './common/util.js'
-import { ImageSelectorModal } from './components/image-modal.js'
-import { FileSelectorModal } from './components/file-modal.js'
 import { createAudioSource } from './common/audio.js'
 
+import { ImageSelectorModal } from './components/image-modal.js'
+import { FileSelectorModal } from './components/file-modal.js'
+import { CardSelectorModal } from './components/card-modal.js'
+
 const audioTypes = ['bgm', 'ambience']
+const audioTypeToDataSource = {
+  bgm: 'bgms',
+  ambience: 'ambiences',
+}
+const duckVolume = 0.2
 
 class App extends Component {
+  //
+  // IMAGE
+  //
   showImage(url) {
     this.setState({
       screen: {
@@ -25,29 +35,31 @@ class App extends Component {
     setCookie('dm-image', url)
   }
 
-  startAudioLoop(type, label, url) {
-    if (this.state.screen.duckAudio) {
-      this.toggleAudioDuck()
-    }
+  //
+  // AUDIO
+  //
+  get globalVolume() {
+    return this.state.screen.duckAudio ? duckVolume : 1
+  }
 
-    const start = () =>{
+  startAudioLoop(type, label, url) {
+    const start = (fadeInDuration) =>{
       this.setState({
         screen: {
           ...this.state.screen,
           [type]: {
             label,
-            controls: createAudioSource(campaignResource(this.state.campaign.filename, url), 8),
+            controls: createAudioSource(campaignResource(this.state.campaign.filename, url), fadeInDuration, this.globalVolume),
           },
-          duckAudio: false,
         },
       })
     }
 
     if (this.state.screen[type].controls !== null) {
       this.state.screen[type].controls.end(4)
-      setTimeout(start(), 6000)
+      setTimeout(start(8), 6000)
     } else {
-      start()
+      start(2)
     }
   }
 
@@ -78,7 +90,7 @@ class App extends Component {
     audioTypes.forEach((type) => {
       if (this.state.screen[type].controls !== null) {
         if (duckAudio) {
-          this.state.screen[type].controls.duck(1, 0.2)
+          this.state.screen[type].controls.duck(1, duckVolume)
         } else {
           this.state.screen[type].controls.unduck(4)
         }
@@ -86,6 +98,14 @@ class App extends Component {
     })
   }
 
+  // 
+  // NOTES
+  //
+  
+
+  //
+  // MODALS
+  //
   showModal(modal) {
     this.setState({
       modals: {
@@ -123,48 +143,29 @@ class App extends Component {
         bgm: {
           label: '',
           controls: null,
+          volume: 1,
         },
         ambience: {
           label: '',
           controls: null,
+          volume: 1,
         },
         duckAudio: false,
       },
       notes: {
-        active: []
+        cards: []
       },
-      // labels: {
-      //   image: '',
-      //   bgm: '',
-      //   ambience: '',
-      // },
-      // show: {
-      //   image: '',
-      //   bgm: '',
-      //   ambience: '',
-      //   cards: [],
-      // },
-      // next: {
-      //   image: '',
-      //   bgm: '',
-      //   ambience: '',
-      // },
-
-      // cards: [],
-      // bgmControls: null,
-      // ambienceControls: null,
-      // duck: false,
-      // previewCard: null,
       combat: {
         list: [],
         active: 0,
         inUse: false,
       },
-
       modals: {
         image: false,
+        bgm: false,
+        ambience: false,
+        card: false,
       }
-      // showImageModal: true,
     }
 
     // Get current campaign from cookie
@@ -199,11 +200,28 @@ class App extends Component {
         })
     }
 
-    
-    // this.useEffect(() => { feather.replace() })
+    setInterval(() => {
+      this.setState({
+        screen: {
+          ...this.state.screen,
+          ...audioTypes.reduce((updates, type, i) => ({
+            ...updates,
+            [type]: {
+              ...this.state.screen[type],
+              volume: (this.state.screen[type].controls !== null)
+                ? this.state.screen[type].controls.volume()
+                : this.globalVolume,
+            },
+          }), {}),
+        },
+      })
+    }, 200);
   }
 
-  componentDidUpdate() { feather.replace() }
+  componentDidUpdate() {
+    feather.replace()   
+  }
+
   // addCardToView(andInitiatve = false) {
   //   const card = this.state.cards[this.state.previewCard]
   //   if (this.state.show.cards.includes(card)) {
@@ -301,56 +319,79 @@ class App extends Component {
         <h3>${this.state.campaign.description}</h3>
       </div>
       <div class="tabs">
-        <h2>Immersive Mode</h2>
-        <div class="immersive-mode-grid">
-            <div style="grid-area: image"
-              onClick=${() => this.showModal('image')}
-            >
-              ${this.state.screen.image.url === '' && html`
-                <button>Select Image</button>`}
-              <img
-                class="preview-image"
-                src="${campaignResource(
-                  this.state.campaign.filename,
-                  this.state.screen.image.url
-                )}"
-              />
-            </div>
-            <div style="grid-area: audio-duck" class="audio-grid">
-              <span class="disabled-text">
-                ${this.state.screen.duckAudio ? 'Ducking Audio' : 'Not Ducking Audio'}
-              </span>
-              <button onClick=${() => this.toggleAudioDuck()}>
-                <span class=${this.state.screen.duckAudio ? '' : 'hidden'}>
-                  <i data-feather="volume-x"></i>
-                </span>
-                <span class=${!this.state.screen.duckAudio ? '' : 'hidden'}>
-                  <i data-feather="volume-2"></i>
-                </span>
-              </button>
-            </div>
-            ${audioTypes.map((type) => html`
-            <div style="grid-area: ${type}" class="audio-grid">
-              <span
-                class="disabled-text"
-                onClick=${() => this.showModal(type)}
+        <div class="tab">
+          <h2>Immersive Mode</h2>
+          <div class="immersive-mode-grid">
+              <div style="grid-area: image"
+                onClick=${() => this.showModal('image')}
               >
-                <label>
-                  ${this.state.screen[type].label === '' 
-                    ? '(No Audio Selected)' 
-                    : this.state.screen[type].label
-                  }
-                </label>
-              </span>
-              <button
-                onClick=${() => this.stopAudio(type)}
-              >
-                <i data-feather="square"></i>
-              </button>
-            </div>
-            `)}
+                ${this.state.screen.image.url === '' && html`
+                  <button>Select Image</button>`}
+                <img
+                  class="preview-image"
+                  src="${campaignResource(
+                    this.state.campaign.filename,
+                    this.state.screen.image.url
+                  )}"
+                />
+              </div>
+              <div style="grid-area: audio-duck" class="audio-grid">
+                <span class="disabled-text">
+                  ${this.state.screen.duckAudio ? 'Ducking Audio' : 'Not Ducking Audio'}
+                </span>
+                <button onClick=${() => this.toggleAudioDuck()}>
+                  <span class=${this.state.screen.duckAudio ? '' : 'hidden'}>
+                    <i data-feather="volume-x"></i>
+                  </span>
+                  <span class=${!this.state.screen.duckAudio ? '' : 'hidden'}>
+                    <i data-feather="volume-2"></i>
+                  </span>
+                </button>
+              </div>
+              ${audioTypes.map((type) => html`
+              <div style="grid-area: ${type}" class="audio-grid">
+                <span
+                  class="disabled-text"
+                  onClick=${() => this.showModal(type)}
+                >
+                  <label>
+                    ${this.state.screen[type].controls !== null && html`
+                      <span>${Math.floor(this.state.screen[type].volume * 100)}% </span>
+                    `}
+                    ${this.state.screen[type].label === '' 
+                      ? '(No Audio Selected)' 
+                      : this.state.screen[type].label
+                    }
+                  </label>
+                </span>
+                <button
+                  onClick=${() => this.stopAudio(type)}
+                >
+                  <i data-feather="square"></i>
+                </button>
+              </div>
+              `)}
+          </div>
         </div>
+
+        <div class="tab">
+          <h2>Notes</h2>
+          <button onClick=${() => this.showModal('card')}>Add Card</button>
+          <div class="notes-grid">
+            <div class="card-grid">
+              ${this.state.notes.cards.map((card) => html`
+              <div class="card-container">
+                <${Card} data=${card} />
+              </div>
+              `)}
+            </div>
+            <div>notes</div>
+          </div>
+        </div>
+
       </div>
+
+
 
       ${this.state.modals.image && html`
       <${ImageSelectorModal}
@@ -364,12 +405,21 @@ class App extends Component {
       ${audioTypes.map((type) => html`
       ${this.state.modals[type] && html`
       <${FileSelectorModal}
-        files=${this.state.campaign[type + 's']}
+        files=${this.state.campaign[audioTypeToDataSource[type]]}
         onSelect=${(label, path) => this.startAudioLoop(type, label, path)}
         onClose=${() => this.hideModal(type)}
       />
       `}
       `)}
+
+      ${this.state.modals.card && html`
+      <${CardSelectorModal}
+        cards=${this.state.campaign.cards}
+        selectedCards=${this.state.notes.cards}
+        onUpdate=${(cards) => this.setState({ notes: { cards } })}
+        onClose=${() => this.hideModal('card')}
+      />
+      `}
 
     `
   }

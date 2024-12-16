@@ -8,8 +8,8 @@ const addMarkdownAndIconTo = (text) => text
     .replace(/\[(.*?)\]/g, '<span class="icon $1"></span>')
     .replace(/\n/g, '<br>')
 
-export const Card = ({data}) => html`
-    <div class="pf2e-stats">
+export const Card = ({data, darkMode}) => html`
+    <div class="pf2e-stats ${darkMode ? 'dark' : ''}">
       ${ !!data.fullFrameImage
         && html`<div class="full-frame-image" style="background-image: url('${ data.fullFrameImage }')" />`
       }
@@ -67,3 +67,42 @@ export const Card = ({data}) => html`
     </div>
 `;
 
+const previewStats = [
+  'Str',
+  'Dex',
+  'Con',
+  'Int',
+  'Wis',
+  'Cha',
+]
+
+export const PreviewCard = ({data, darkMode}) => html`
+    <div class="pf2e-stats ${darkMode ? 'dark' : ''}">
+      ${ (!!data.name || !!data.type)
+        && html`
+        <div class="title">
+          <div class="name ${!!data.fullFrameImage && 'text-outline'}">${ data.name }</div>
+          ${ !!data.type
+            && html`<div class="type">${ data.type }</div>` 
+          }
+        </div>
+        <hr/>
+        `
+      }
+      ${ !!data.stats
+        && html`<div class="stats">
+          ${ data.stats.map(stat => 
+            previewStats.includes(stat.name) &&
+            html`
+              <span class="stat-name">${ stat.name }</span>
+              ${ !!stat.action && html`<span class=${`icon ${stat.action}`}> </span>`}
+              <span class="stat-text" dangerouslySetInnerHTML=${{
+                __html: addMarkdownAndIconTo(stat.text)
+
+              }}></span>
+            `) ?? html``
+          }
+        </div>`
+      }
+    </div>
+`;
