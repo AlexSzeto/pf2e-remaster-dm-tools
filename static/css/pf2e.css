@@ -30,6 +30,10 @@ body {
   display: none;
 }
 
+.squish {
+  height: 100px !important;
+}
+
 .campaign-card-frame {
   border: 1px dashed #472c2c;
   padding: 3em;
@@ -391,5 +395,33 @@ button {
     flex-direction: column;
     gap: 0.25em;
   }
-  
+}
+
+.markdown-document {
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    color: #472c2c;
+  }
+
+  .text-container {
+    width: 50em;
+    height: 25em;
+    position: relative;
+  }
+
+  .editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .preview {
+    padding: 0.5em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
 }

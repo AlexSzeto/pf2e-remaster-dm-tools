@@ -7,6 +7,7 @@ import {
 } from './components/initiative-tracker.js'
 import { campaignResource, getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
+import { MarkdownDocument } from './components/md-doc.js'
 
 import { ImageSelectorModal } from './components/image-modal.js'
 import { FileSelectorModal } from './components/file-modal.js'
@@ -32,7 +33,7 @@ class App extends Component {
         },
       },
     })
-    setCookie('dm-image', url)
+    setCookie('screenImage', url)
   }
 
   //
@@ -101,7 +102,18 @@ class App extends Component {
   // 
   // NOTES
   //
-  
+  loadDocument(label, path) {
+    fetch(campaignResource(this.state.campaign.filename, path))
+      .then((response) => response.text())
+      .then((text) => {
+        this.setState({
+          notes: {
+            ...this.state.notes,
+            docs: [...this.state.notes.docs, { label, path, text }],
+          },
+        })
+      })
+  }
 
   //
   // MODALS
@@ -135,6 +147,7 @@ class App extends Component {
         bgms: [],
         ambiences: [],
         cards: [],
+        docs: [],
       },
       screen: {
         image: {
@@ -153,7 +166,8 @@ class App extends Component {
         duckAudio: false,
       },
       notes: {
-        cards: []
+        cards: [],
+        docs: []
       },
       combat: {
         list: [],
@@ -165,6 +179,7 @@ class App extends Component {
         bgm: false,
         ambience: false,
         card: false,
+        docs: false,
       }
     }
 
@@ -183,15 +198,15 @@ class App extends Component {
             campaign,
           })
 
-          const savedImage = getCookie('dm-image')
+          const savedImage = getCookie('screenImage')
           if (savedImage) {
             this.showImage(savedImage)
           }
 
-          const initiativeTracker = getCookie('initiativeTracker')
-          if (initiativeTracker) {
+          const initiatives = getCookie('initiativeTracker')
+          if (initiatives) {
             this.setState({
-              initiativeTracker: JSON.parse(initiativeTracker),
+              combat: JSON.parse(initiatives),
             })
           }
         })
@@ -222,95 +237,60 @@ class App extends Component {
     feather.replace()   
   }
 
-  // addCardToView(andInitiatve = false) {
-  //   const card = this.state.cards[this.state.previewCard]
-  //   if (this.state.show.cards.includes(card)) {
-  //     if (andInitiatve) {
-  //       this.addCardToInitiative(
-  //         this.state.show.cards.findIndex((c) => c === card)
-  //       )
-  //     }
-  //     return
-  //   }
-  //   this.setState(
-  //     {
-  //       show: {
-  //         ...this.state.show,
-  //         cards: [...this.state.show.cards, card],
-  //       },
-  //     },
-  //     () => {
-  //       if (andInitiatve) {
-  //         this.addCardToInitiative(this.state.show.cards.length - 1)
-  //       }
-  //     }
-  //   )
-  // }
+  addCharacterToInitiative(card) {
+    if (!card.stats.find((stat) => stat.name === 'HP')) {
+      return
+    }
 
-  // addCardToInitiative(index) {
-  //   const card = this.state.show.cards[index]
+    const filterConsumables = (consumables) => {
+      const multiConsumables = /(.*)\s*\((\d+)\)/
+      return consumables
+        .map((consumable) => consumable.trim().toLowerCase())
+        .filter((consumable) => consumable !== '')
+        .reduce((acc, consumable) => {
+          if (multiConsumables.test(consumable)) {
+            const match = multiConsumables.exec(consumable)
+            return [...acc, ...Array(Number(match[2])).fill(match[1])]
+          } else {
+            return [...acc, consumable]
+          }
+        }, [])
+    }
+    const getConsumables = (type) =>
+      filterConsumables(
+        card.stats.find((stat) => stat.name === type)?.text.split(',') ?? []
+      )
+    const getSpells = () => {
+      const spellString =
+        card.stats.find((stat) => stat.name === 'Spells')?.text ?? ''
+      const spellStringsByLevel = /\*\*(?:[\w\d\s]+)\*\*([^;]*)(?:;|$)/g
+      let spells = []
+      let match
+      while ((match = spellStringsByLevel.exec(spellString)) !== null) {
+        spells = [...spells, ...match[1].split(',')]
+      }
+      return filterConsumables(spells)
+    }
 
-  //   if (!card.stats.find((stat) => stat.name === 'HP')) {
-  //     return
-  //   }
+    const combat = { ...this.state.combat }
+    combat.list.push(
+      new InitiativeListItem(
+        card.name,
+        0,
+        Number(card.stats.find((stat) => stat.name === 'HP').text ?? '0'),
+        [...getConsumables('Items'), ...getSpells()]
+      )
+    )
+    this.setState({
+      combat,
+    })
+  }
 
-  //   const filterConsumables = (consumables) => {
-  //     const multiConsumables = /(.*)\s*\((\d+)\)/
-  //     return consumables
-  //       .map((consumable) => consumable.trim().toLowerCase())
-  //       .filter((consumable) => consumable !== '')
-  //       .reduce((acc, consumable) => {
-  //         if (multiConsumables.test(consumable)) {
-  //           const match = multiConsumables.exec(consumable)
-  //           return [...acc, ...Array(Number(match[2])).fill(match[1])]
-  //         } else {
-  //           return [...acc, consumable]
-  //         }
-  //       }, [])
-  //   }
-  //   const getConsumables = (type) =>
-  //     filterConsumables(
-  //       card.stats.find((stat) => stat.name === type)?.text.split(',') ?? []
-  //     )
-  //   const getSpells = () => {
-  //     const spellString =
-  //       card.stats.find((stat) => stat.name === 'Spells')?.text ?? ''
-  //     const spellStringsByLevel = /\*\*(?:[\w\d\s]+)\*\*([^;]*)(?:;|$)/g
-  //     let spells = []
-  //     let match
-  //     while ((match = spellStringsByLevel.exec(spellString)) !== null) {
-  //       spells = [...spells, ...match[1].split(',')]
-  //     }
-  //     return filterConsumables(spells)
-  //   }
-  //   const initiativeTracker = { ...this.state.initiativeTracker }
-  //   initiativeTracker.list.push(
-  //     new InitiativeListItem(
-  //       card.name,
-  //       0,
-  //       Number(card.stats.find((stat) => stat.name === 'HP').text ?? '0'),
-  //       [...getConsumables('Items'), ...getSpells()]
-  //     )
-  //   )
-  //   this.setState({
-  //     initiativeTracker,
-  //   })
-  // }
-
-  // updateInitiateTracker(data) {
-  //   this.setState({
-  //     initiativeTracker: data,
-  //   })
-  // }
-
-  // dismissCard(index) {
-  //   this.setState({
-  //     show: {
-  //       ...this.state.show,
-  //       cards: this.state.show.cards.filter((card, i) => i !== index),
-  //     },
-  //   })
-  // }
+  updateInitiateTracker(data) {
+    this.setState({
+      combat: data,
+    })
+  }
 
   render() {
     return html`
@@ -376,8 +356,8 @@ class App extends Component {
 
         <div class="tab">
           <h2>Notes</h2>
-          <button onClick=${() => this.showModal('card')}>Add Card</button>
           <div class="notes-grid">
+            <button onClick=${() => this.showModal('card')}>Add Card</button>
             <div class="card-grid">
               ${this.state.notes.cards.map((card) => html`
               <div class="card-container">
@@ -385,13 +365,31 @@ class App extends Component {
               </div>
               `)}
             </div>
-            <div>notes</div>
+            <button onClick=${() => this.showModal('docs')}>Add Document</button>
+            <div class="doc-grid">
+              ${this.state.notes.docs.map((doc) => html`
+              <div class="doc-container">
+                <${MarkdownDocument} 
+                  label=${doc.label}
+                  path=${doc.path}
+                  text=${doc.text}
+                />
+              </div>
+              `)}
+            </div>
           </div>
         </div>
-
       </div>
 
-
+      <div class="tabs">
+        <h2>Combat</h2>
+        <div class="combat-grid">
+          <${InitiativeTracker}
+            data=${this.state.combat}
+            onUpdate=${(data) => this.updateInitiateTracker(data)}
+          />
+        </div>
+      </div>
 
       ${this.state.modals.image && html`
       <${ImageSelectorModal}
@@ -418,6 +416,14 @@ class App extends Component {
         selectedCards=${this.state.notes.cards}
         onUpdate=${(cards) => this.setState({ notes: { cards } })}
         onClose=${() => this.hideModal('card')}
+      />
+      `}
+
+      ${this.state.modals.docs && html`
+      <${FileSelectorModal}
+        files=${this.state.campaign.docs}
+        onSelect=${(label, path) => this.loadDocument(label, path)}
+        onClose=${() => this.hideModal('docs')}
       />
       `}
 

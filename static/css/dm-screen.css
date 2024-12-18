@@ -29,6 +29,16 @@ body {
   grid-gap: 1em;
 }
 
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, min-content);
+  grid-gap: 1em;
+}
+
+.doc-container {
+  background-color: rgba(0, 0, 0, 0.10);
+}
+
 .card-container {
   background-color: rgba(0, 0, 0, 0.10);
   padding: 1em;

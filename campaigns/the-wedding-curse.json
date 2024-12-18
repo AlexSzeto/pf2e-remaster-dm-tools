@@ -2,6 +2,18 @@
   "name": "The Wedding Curse",
   "description": "",
   "filename": "the-wedding-curse",
+  "docs": [
+    {
+      "label": "Characters",
+      "path": "characters.md"  
+    },
+    {
+      "label": "Events",
+      "path": "events.md"
+    }
+  ],
+  "maps": [
+  ],
   "images": [
     {
       "label": "Location Archives",

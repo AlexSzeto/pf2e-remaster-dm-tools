@@ -26,7 +26,7 @@ export class InitiativeTracker extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data) {
-      this.setState(this.props.data, () => setCookie('initiativeTracker', JSON.stringify(this.state)))
+      this.setState(this.props.data, () => setCookie('initiatives', JSON.stringify(this.state)))
     }
   }
   
@@ -98,8 +98,8 @@ export class InitiativeTracker extends Component {
   }
 
   updateCookie() {
-    setCookie('initiativeTracker', JSON.stringify(this.state));
-    this.props.updateData(this.state);
+    setCookie('initiatives', JSON.stringify(this.state));
+    this.props.onUpdate(this.state);
   }
 
   updateList(newList) {

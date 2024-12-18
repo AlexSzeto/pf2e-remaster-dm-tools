@@ -35,6 +35,8 @@ def get_campaign_resource(campaign_name, resource_name):
             resource_folder = "images"
         elif file_extension in [".mp3", ".wav", ".ogg"]:
             resource_folder = "audio"
+        elif file_extension in [".md", ".txt"]:
+            resource_folder = "docs"
         
         return send_from_directory(os.path.join(CAMPAIGN_FOLDER, campaign_name, resource_folder), resource_name)
     except Exception as e:
@@ -58,6 +60,7 @@ def manage_campaigns():
             data["ambiences"] = data.get("ambiences", [])
             data["bgms"] = data.get("bgms", [])
             data["cards"] = data.get("cards", [])
+            data["docs"] = data.get("docs", [])
 
             # Create new JSON file in campaigns directory
             filename = re.sub(r"[',.]", "", data["name"].strip().replace(" ", "-")).lower()
