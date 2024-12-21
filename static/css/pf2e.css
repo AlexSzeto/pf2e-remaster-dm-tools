@@ -1,4 +1,11 @@
 @font-face {
+  font-family: 'Taroca';
+  src: url('../fonts/taroca.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'FF Good Pro Cond';
   src: url('../fonts/ff-good-pro-cond-regular.woff') format('woff');
   font-weight: normal;
@@ -28,10 +35,6 @@ body {
 
 .hidden {
   display: none;
-}
-
-.squish {
-  height: 100px !important;
 }
 
 .campaign-card-frame {
@@ -225,6 +228,13 @@ body {
   }
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Taroca', sans-serif;
+  font-weight: normal;
+  margin: 0;
+  padding: 0 0 1em 0;
+}
+
 select,
 input,
 .disabled-text {
@@ -303,125 +313,5 @@ button {
 
   &:not(:disabled):active {
     background-color: #351a1a;
-  }
-}
-
-.preview-image {
-  max-width: 20em;
-  max-height: 20em;
-  border-radius: 0.25em;
-}
-
-.screen-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-
-  .close-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .modal {
-    position: fixed;
-    top: 10vh;
-    bottom: 10vh;
-    left: 10vw;
-    right: 10vw;
-    background-color: white;
-    padding: 1em;
-    border-radius: 1em;
-  
-    overflow-y: hidden;
-  }
-
-  .image-selector, .card-selector {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-    row-gap: 1em;
-    column-gap: 0.25em;
-  
-    width: 100%;
-    height: 100%;
-  
-    overflow-x: hidden;
-    overflow-y: scroll;  
-  }
-
-  .image-selector {
-    .image-container {
-      display: flex;
-      flex-direction: column;
-      
-      .description {
-        text-align: center;
-      }
-
-      img {
-        width: 100%;
-      }  
-    }
-  }
-
-  .card-selector {
-    grid-template-columns: repeat(auto-fill, 24em);
-    grid-template-rows: repeat(20, min-content);
-
-    .card-container {
-      position: relative;
-      font-size: 0.4em;
-      color: black;
-      background-color: lightgray;
-      padding: 1.25em;
-      height: min-content;
-
-      &.selected {
-        background-color: #351a1a;
-        color: white;
-      }
-    }
-  }
-
-  .file-selector {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25em;
-  }
-}
-
-.markdown-document {
-  display: flex;
-  flex-direction: column;
-
-  h3 {
-    color: #472c2c;
-  }
-
-  .text-container {
-    width: 50em;
-    height: 25em;
-    position: relative;
-  }
-
-  .editor {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  .preview {
-    padding: 0.5em;
-    overflow-x: hidden;
-    overflow-y: scroll;
   }
 }

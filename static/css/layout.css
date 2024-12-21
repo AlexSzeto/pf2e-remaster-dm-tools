@@ -1,0 +1,110 @@
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: min-content;
+
+  display: grid;
+  grid-template-areas:
+    ". . . ."
+    ". campaign-name            logo ."
+    ". campaign-description     logo ."
+    ". . . .";
+  grid-template-columns: 1em 1fr 1fr 1em;
+  grid-template-rows: 1em min-content min-content 1em;
+  max-height: 78px;
+  overflow: hidden;
+
+  color: white;
+  background-color: #472c2c;
+
+  .name {
+    grid-area: campaign-name;
+    font-size: 2em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .description {
+    grid-area: campaign-description;
+    font-family: 'FF Good Pro Cond', sans-serif;
+    font-size: 1em;
+    font-weight: bolder;
+    margin: 0;
+    padding: 0;
+  }
+
+  .logo {
+    grid-area: logo;
+    justify-self: end;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2.collapsible {
+  display: block;
+  color: black;
+  background: #ecc993;
+  border-top: 2px solid rgba(0, 0, 0, 0.25);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+  width: 100vw;
+
+  padding: 0.5em 0.5em 1em;
+}
+
+.tabs {
+  position: absolute;
+  top: calc(77px + 1em);
+
+  .tab {
+    position: relative;
+
+    .tab-content {
+      padding: 1.5em 0.5em 1em;
+    }
+  }
+}
+
+.labeled-item-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25em;
+
+  padding: 0.5em;
+
+  label {
+    font-size: 1em;
+  }
+}
+
+
+.view-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.preview-image-container {
+
+  &.full-screen {
+    width: 32em;
+    height: 18em;
+    padding: 0.25em;
+  }
+
+  border: 2px solid #472c2c;
+  border-radius: 0.5em;
+
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}

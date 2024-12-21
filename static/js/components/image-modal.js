@@ -9,6 +9,12 @@ export const ImageSelectorModal = ({campaign, images, onSelect, onClose}) => htm
     </div>
     <div class="modal">
       <div class="image-selector">
+        <div class="image-container" onClick=${() => { onSelect(''); onClose(); }}>
+          <div class="description">
+            <span>None</span>
+            <div class="blank"></div>
+          </div>
+        </div>
         ${images.map(image => html`
           <div class="image-container">
             <div class="description">

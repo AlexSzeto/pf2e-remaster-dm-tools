@@ -1,5 +1,8 @@
 import { render, Component } from 'preact'
 import { html } from 'htm/preact'
+
+import { LabeledItem } from './components/labeled-item.js'
+
 import { Card } from './components/card.js'
 import {
   InitiativeListItem,
@@ -293,103 +296,125 @@ class App extends Component {
   }
 
   render() {
+
+    const explorationTab = html`
+    <div class="tab">
+    <h2 class="collapsible">Immersive Mode</h2>
+    <div class="tab-content immersive-mode-grid">
+
+        <div style="grid-area: image"
+          onClick=${() => this.showModal('image')}
+        >
+          <${LabeledItem} label="Image">
+            <div class="preview-image-container full-screen">
+              ${this.state.screen.image.url === '' && html`
+              <button class="square">
+                <i data-feather="plus"></i>
+              </button>`}
+              <img
+                class="view-image"
+                src="${campaignResource(
+                  this.state.campaign.filename,
+                  this.state.screen.image.url
+                )}"
+              />
+            </div>
+          </${LabeledItem}>
+        </div>
+
+        <div style="grid-area: audio-duck" class="audio-grid">
+          <span class="disabled-text">
+            ${this.state.screen.duckAudio ? 'Ducking Audio' : 'Not Ducking Audio'}
+          </span>
+          <button onClick=${() => this.toggleAudioDuck()}>
+            <span class=${this.state.screen.duckAudio ? '' : 'hidden'}>
+              <i data-feather="volume-x"></i>
+            </span>
+            <span class=${!this.state.screen.duckAudio ? '' : 'hidden'}>
+              <i data-feather="volume-2"></i>
+            </span>
+          </button>
+        </div>
+        ${audioTypes.map((type) => html`
+
+        <div style="grid-area: ${type}" class="audio-grid">
+          <span
+            class="disabled-text"
+            onClick=${() => this.showModal(type)}
+          >
+            <label>
+              ${this.state.screen[type].controls !== null && html`
+                <span>${Math.floor(this.state.screen[type].volume * 100)}% </span>
+              `}
+              ${this.state.screen[type].label === '' 
+                ? '(No Audio Selected)' 
+                : this.state.screen[type].label
+              }
+            </label>
+          </span>
+          <button
+            onClick=${() => this.stopAudio(type)}
+          >
+            <i data-feather="square"></i>
+          </button>
+        </div>
+        `)}
+    </div>
+  </div>
+    `
+
+    const notesTab = html`
+    <div class="tab">
+      <h2 class="collapsible">Notes</h2>
+      <div class="tab-content notes-grid">
+        <button onClick=${() => this.showModal('card')}>Add Card</button>
+        <div class="card-grid">
+          ${this.state.notes.cards.map((card) => html`
+          <div class="card-container">
+            <${Card} data=${card} />
+          </div>
+          `)}
+        </div>
+        <button onClick=${() => this.showModal('docs')}>Add Document</button>
+        <div class="doc-grid">
+          ${this.state.notes.docs.map((doc) => html`
+          <div class="doc-container">
+            <${MarkdownDocument} 
+              label=${doc.label}
+              path=${doc.path}
+              text=${doc.text}
+            />
+          </div>
+          `)}
+        </div>
+      </div>
+    </div>    
+    `
+
+    const combatTab = html`
+    <div class="tab">
+      <h2 class="collapsible">Combat</h2>
+      <div class="tab-content combat-grid">
+        <${InitiativeTracker}
+          data=${this.state.combat}
+          onUpdate=${(data) => this.updateInitiateTracker(data)}
+        />
+      </div>
+    </div>
+    `
+
     return html`
-      <div>
-        <h2>${this.state.campaign.name}</h2>
-        <h3>${this.state.campaign.description}</h3>
+      <div class="header">
+        <h1 class="name">${this.state.campaign.name}</h1>
+        <h2 class="description">${this.state.campaign.description}</h2>
+        <h1 class="logo">PF2E Tools - DM Screen</h1>
       </div>
       <div class="tabs">
-        <div class="tab">
-          <h2>Immersive Mode</h2>
-          <div class="immersive-mode-grid">
-              <div style="grid-area: image"
-                onClick=${() => this.showModal('image')}
-              >
-                ${this.state.screen.image.url === '' && html`
-                  <button>Select Image</button>`}
-                <img
-                  class="preview-image"
-                  src="${campaignResource(
-                    this.state.campaign.filename,
-                    this.state.screen.image.url
-                  )}"
-                />
-              </div>
-              <div style="grid-area: audio-duck" class="audio-grid">
-                <span class="disabled-text">
-                  ${this.state.screen.duckAudio ? 'Ducking Audio' : 'Not Ducking Audio'}
-                </span>
-                <button onClick=${() => this.toggleAudioDuck()}>
-                  <span class=${this.state.screen.duckAudio ? '' : 'hidden'}>
-                    <i data-feather="volume-x"></i>
-                  </span>
-                  <span class=${!this.state.screen.duckAudio ? '' : 'hidden'}>
-                    <i data-feather="volume-2"></i>
-                  </span>
-                </button>
-              </div>
-              ${audioTypes.map((type) => html`
-              <div style="grid-area: ${type}" class="audio-grid">
-                <span
-                  class="disabled-text"
-                  onClick=${() => this.showModal(type)}
-                >
-                  <label>
-                    ${this.state.screen[type].controls !== null && html`
-                      <span>${Math.floor(this.state.screen[type].volume * 100)}% </span>
-                    `}
-                    ${this.state.screen[type].label === '' 
-                      ? '(No Audio Selected)' 
-                      : this.state.screen[type].label
-                    }
-                  </label>
-                </span>
-                <button
-                  onClick=${() => this.stopAudio(type)}
-                >
-                  <i data-feather="square"></i>
-                </button>
-              </div>
-              `)}
-          </div>
-        </div>
-
-        <div class="tab">
-          <h2>Notes</h2>
-          <div class="notes-grid">
-            <button onClick=${() => this.showModal('card')}>Add Card</button>
-            <div class="card-grid">
-              ${this.state.notes.cards.map((card) => html`
-              <div class="card-container">
-                <${Card} data=${card} />
-              </div>
-              `)}
-            </div>
-            <button onClick=${() => this.showModal('docs')}>Add Document</button>
-            <div class="doc-grid">
-              ${this.state.notes.docs.map((doc) => html`
-              <div class="doc-container">
-                <${MarkdownDocument} 
-                  label=${doc.label}
-                  path=${doc.path}
-                  text=${doc.text}
-                />
-              </div>
-              `)}
-            </div>
-          </div>
-        </div>
+        ${explorationTab}
+        ${notesTab}
+        ${combatTab}
       </div>
 
-      <div class="tabs">
-        <h2>Combat</h2>
-        <div class="combat-grid">
-          <${InitiativeTracker}
-            data=${this.state.combat}
-            onUpdate=${(data) => this.updateInitiateTracker(data)}
-          />
-        </div>
-      </div>
 
       ${this.state.modals.image && html`
       <${ImageSelectorModal}
@@ -405,6 +430,7 @@ class App extends Component {
       <${FileSelectorModal}
         files=${this.state.campaign[audioTypeToDataSource[type]]}
         onSelect=${(label, path) => this.startAudioLoop(type, label, path)}
+        onSelectNone=${() => this.stopAudio(type)}
         onClose=${() => this.hideModal(type)}
       />
       `}
