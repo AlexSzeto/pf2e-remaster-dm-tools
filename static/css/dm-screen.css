@@ -5,18 +5,45 @@ body {
 .immersive-mode-grid {
   display: grid;
   grid-template-areas:
-    "image audio-duck ."
-    "image bgm ."
-    "image ambience ."
-    "image . .";
+    "image audio .";
   grid-template-columns: min-content min-content 1fr;
-  grid-template-rows: repeat(4, min-content);
 }
 
 .audio-grid {
-  display: grid;
-  grid-template-columns: 15em min-content;
-  grid-template-rows: min-content;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25em;
+
+  .disabled-text {
+    height: 2.5em;
+    padding: 0;
+  }
+
+  .volume-slider {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    background-color: #ecc993;
+    color: white;
+    text-align: center;
+    border-radius: 0.25em;
+
+    &.inactive {
+      background-color: white;
+    }
+
+    transition: background-color 1.5s ease;
+  }
+
+  .audio-label {
+    position: absolute;
+    width: 100%;
+    padding: 3.5px;
+  }
 }
 
 .card-grid {

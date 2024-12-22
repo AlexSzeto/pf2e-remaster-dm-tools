@@ -1,7 +1,7 @@
 import { render, Component } from 'preact'
 import { html } from 'htm/preact'
 
-import { LabeledItem } from './components/labeled-item.js'
+import { ContentSection, LabeledItem } from './components/content-section.js'
 
 import { Card } from './components/card.js'
 import {
@@ -15,12 +15,18 @@ import { MarkdownDocument } from './components/md-doc.js'
 import { ImageSelectorModal } from './components/image-modal.js'
 import { FileSelectorModal } from './components/file-modal.js'
 import { CardSelectorModal } from './components/card-modal.js'
+import { FramedImage } from './components/framed-image.js'
 
 const audioTypes = ['bgm', 'ambience']
 const audioTypeToDataSource = {
   bgm: 'bgms',
   ambience: 'ambiences',
 }
+const audioTypeToLabel = {
+  bgm: 'Background Music',
+  ambience: 'Ambience',
+}
+
 const duckVolume = 0.2
 
 class App extends Component {
@@ -67,6 +73,26 @@ class App extends Component {
     }
   }
 
+  stopAllAudio() {
+    audioTypes.forEach((type) => {
+      if (this.state.screen[type].controls !== null) {
+        this.state.screen[type].controls.end(4)
+      }
+    })
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        ...audioTypes.reduce((updates, type) => ({
+          ...updates,
+          [type]: {
+            label: '',
+            controls: null,
+          },
+        }), {})
+      },
+    })
+  }
+
   stopAudio(type) {
     if (this.state.screen[type].controls !== null) {
       this.state.screen[type].controls.end(4)
@@ -89,7 +115,7 @@ class App extends Component {
         ...this.state.screen,
         duckAudio
       },
-    })
+    }, () => feather.replace())
 
     audioTypes.forEach((type) => {
       if (this.state.screen[type].controls !== null) {
@@ -99,7 +125,7 @@ class App extends Component {
           this.state.screen[type].controls.unduck(4)
         }
       }
-    })
+    })    
   }
 
   // 
@@ -297,70 +323,86 @@ class App extends Component {
 
   render() {
 
-    const explorationTab = html`
-    <div class="tab">
-    <h2 class="collapsible">Immersive Mode</h2>
-    <div class="tab-content immersive-mode-grid">
-
-        <div style="grid-area: image"
-          onClick=${() => this.showModal('image')}
-        >
-          <${LabeledItem} label="Image">
-            <div class="preview-image-container full-screen">
-              ${this.state.screen.image.url === '' && html`
-              <button class="square">
-                <i data-feather="plus"></i>
-              </button>`}
-              <img
-                class="view-image"
-                src="${campaignResource(
-                  this.state.campaign.filename,
-                  this.state.screen.image.url
-                )}"
-              />
-            </div>
-          </${LabeledItem}>
-        </div>
-
-        <div style="grid-area: audio-duck" class="audio-grid">
-          <span class="disabled-text">
-            ${this.state.screen.duckAudio ? 'Ducking Audio' : 'Not Ducking Audio'}
-          </span>
-          <button onClick=${() => this.toggleAudioDuck()}>
-            <span class=${this.state.screen.duckAudio ? '' : 'hidden'}>
-              <i data-feather="volume-x"></i>
-            </span>
-            <span class=${!this.state.screen.duckAudio ? '' : 'hidden'}>
-              <i data-feather="volume-2"></i>
-            </span>
-          </button>
-        </div>
-        ${audioTypes.map((type) => html`
-
-        <div style="grid-area: ${type}" class="audio-grid">
-          <span
-            class="disabled-text"
-            onClick=${() => this.showModal(type)}
-          >
-            <label>
-              ${this.state.screen[type].controls !== null && html`
-                <span>${Math.floor(this.state.screen[type].volume * 100)}% </span>
-              `}
-              ${this.state.screen[type].label === '' 
-                ? '(No Audio Selected)' 
-                : this.state.screen[type].label
+    const explorationImage = html`
+    <div style="grid-area: image">
+      <${ContentSection}
+        label="Image"
+        actions=${[
+          {
+            icon: 'layout',
+            onClick: () => this.setState({
+              ...this.state,
+              screen: {
+                ...this.state.screen,
+                cover: !this.state.screen.cover
               }
-            </label>
-          </span>
-          <button
-            onClick=${() => this.stopAudio(type)}
-          >
-            <i data-feather="square"></i>
-          </button>
+            })
+          }
+        ]}
+      >
+        <${FramedImage}
+        onClick=${() => this.showModal('image')}
+        cover=${this.state.screen.cover}
+        url="${campaignResource(
+          this.state.campaign.filename,
+          this.state.screen.image.url
+        )}"
+        type="full-screen" />
+      </${ContentSection}>
+    </div>    
+    `
+
+    const explorationAudio = html`
+    <div style="grid-area: audio">
+      <${ContentSection}
+        label="Audio"
+        actions=${[
+          {
+            icon: this.state.screen.duckAudio ? 'volume-2' : 'volume-x',
+            onClick: () => this.toggleAudioDuck()
+          },
+          {
+            icon: 'square',
+            onClick: () => this.stopAllAudio()
+          }
+        ]}
+      >
+        <div class="audio-grid">
+          ${audioTypes.map((type) => html`
+            <${LabeledItem} label=${audioTypeToLabel[type]}>
+              <div onClick=${() => this.showModal(type)}>
+                <div class="disabled-text">
+                  <div
+                    class="volume-slider ${
+                      this.state.screen[type].volume === 1.0
+                      || this.state.screen[type].volume === 0
+                      ? 'inactive' : ''}"
+                    style=${`width: ${this.state.screen[type].volume * 100}%`}
+                  >
+                  </div>
+                  <div class="audio-label">
+                    ${this.state.screen[type].label === ''
+                      ? 'None' 
+                      : this.state.screen[type].label
+                    }
+                  </div>
+                </div>
+              </div>
+            </${LabeledItem}>
+          `)}
         </div>
-        `)}
+      </${ContentSection}>
     </div>
-  </div>
+    `
+
+    const explorationTab = html`
+      <div class="tab">
+      <h2 class="collapsible">Immersive Mode</h2>
+      <div class="tab-content immersive-mode-grid">
+        ${explorationImage}
+        ${explorationAudio}
+      </div>
+    </div>
     `
 
     const notesTab = html`
