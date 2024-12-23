@@ -48,7 +48,7 @@ body {
 
 .notes-grid {
   width: min-content;
-  min-width: 400px;
+  min-width: 32em;
 }
 
 .card-grid {

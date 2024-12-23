@@ -55,11 +55,13 @@ h2.collapsible {
   display: block;
   color: black;
   background: #eccf9e;
-  border-top: 2px solid rgba(0, 0, 0, 0.25);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  /* border-bottom: 2px solid rgba(0, 0, 0, 0.25); */
   width: 100vw;
+  max-width: 32em;
 
-  padding: 1em 0.5em 0.25em;
+  padding: 0.4em 0.5em 0.2em;
+  margin: 0 0.5em;
 }
 
 .tabs {

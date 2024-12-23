@@ -270,11 +270,11 @@ input,
 
 a {
   display: inline-block;
-  color: white;
+  color: black;
   text-decoration: none;
-  padding: 0.5em;
-  background-color: #472c2c;
-  border: 1px solid rgb(118, 118, 118);
+  padding: 0.25em 0.5em;
+  background-color: white;
+  border: 1px solid black;
   border-radius: 4px;
 }
 

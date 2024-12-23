@@ -69,8 +69,9 @@
       position: relative;
       font-size: 0.4em;
       color: black;
-      background-color: lightgray;
+      background-color: rgba(0, 0, 0, 0.1);
       padding: 1.25em;
+      border-radius: 4px;
       height: min-content;
 
       &.selected {
@@ -84,6 +85,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.25em;
+    font-size: 1.5em;
+
+    a {
+      display: block;
+    }
   }
 }
 
