@@ -1,15 +1,16 @@
 import { Component } from 'preact'
 import { html } from 'htm/preact'
+import { ContentSection } from './content-section.js'
 
 export class MarkdownDocument extends Component {
 
-  constructor({label, path, text, onEdit}) {
+  constructor({label, path, text, onEdit, onClose}) {
     super()
     this.state = {
       label,
       path,
       text,
-      readonly: false,
+      readonly: true,
     }
   }
 
@@ -19,7 +20,7 @@ export class MarkdownDocument extends Component {
     const previewElement = componentElement.querySelector('.preview')
 
     const editor = ace.edit(editorElement)
-    editor.setTheme("ace/theme/twilight")
+    editor.setTheme("ace/theme/solarized_light")
     editor.session.setMode("ace/mode/markdown")
     editor.commands.addCommand({
       name: 'exit',
@@ -47,11 +48,21 @@ export class MarkdownDocument extends Component {
   render() {
     return html`
       <div data-path="${this.state.path}" class="markdown-document">
-        <h3>${this.state.label}</h3>
-        <div class="text-container">
-          <div class="preview ${this.state.readonly ? '' : 'hidden'}"onClick=${() => this.setState({readonly: false})}></div>
-          <pre class="editor ${this.state.readonly ? 'hidden' : ''}">${this.state.text}</pre>
-        </div>
+        <${ContentSection} label=${this.state.label} actions=${[
+          {
+            icon: this.state.readonly ? 'edit' : 'save',
+            onClick: () => this.setState({readonly: !this.state.readonly})
+          },
+          {
+            icon: 'x',
+            onClick: () => this.props.onClose(this.state.path)
+          }
+        ]}>
+          <div class="text-container">
+            <div class="preview ${this.state.readonly ? '' : 'hidden'}"></div>
+            <pre class="editor ${this.state.readonly ? 'hidden' : ''}">${this.state.text}</pre>
+          </div>
+        </${ContentSection}>
       </div>
     `
   }

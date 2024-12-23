@@ -5,6 +5,7 @@
   left: 0;
   right: 0;
   height: min-content;
+  z-index: 1000;
 
   display: grid;
   grid-template-areas:
@@ -53,12 +54,12 @@ body {
 h2.collapsible {
   display: block;
   color: black;
-  background: #ecc993;
+  background: #eccf9e;
   border-top: 2px solid rgba(0, 0, 0, 0.25);
   border-bottom: 2px solid rgba(0, 0, 0, 0.25);
   width: 100vw;
 
-  padding: 0.5em 0.5em 1em;
+  padding: 1em 0.5em 0.25em;
 }
 
 .tabs {

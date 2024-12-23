@@ -2,6 +2,8 @@ import { render, Component } from 'preact'
 import { html } from 'htm/preact'
 
 import { ContentSection, LabeledItem } from './components/content-section.js'
+import { FramedImage } from './components/framed-image.js'
+import { FeatherIcon } from './components/feather-icon.js'
 
 import { Card } from './components/card.js'
 import {
@@ -15,7 +17,6 @@ import { MarkdownDocument } from './components/md-doc.js'
 import { ImageSelectorModal } from './components/image-modal.js'
 import { FileSelectorModal } from './components/file-modal.js'
 import { CardSelectorModal } from './components/card-modal.js'
-import { FramedImage } from './components/framed-image.js'
 
 const audioTypes = ['bgm', 'ambience']
 const audioTypeToDataSource = {
@@ -144,6 +145,42 @@ class App extends Component {
       })
   }
 
+  closeDocument(path) {
+    this.setState({
+      notes: {
+        ...this.state.notes,
+        docs: this.state.notes.docs.filter((d) => d.path !== path),
+      },
+    })
+  }
+
+  closeAllDocuments() {
+    this.setState({
+      notes: {
+        ...this.state.notes,
+        docs: [],
+      },
+    })
+  }
+
+  updateCards(cards) {
+    this.setState({
+      notes: {
+        ...this.state.notes,
+        cards,
+      },
+    })
+  }
+
+  removeNotesCard(card) {
+    this.setState({
+      notes: {
+        ...this.state.notes,
+        cards: this.state.notes.cards.filter((c) => c !== card),
+      },
+    })
+  }
+  
   //
   // MODALS
   //
@@ -409,26 +446,64 @@ class App extends Component {
     <div class="tab">
       <h2 class="collapsible">Notes</h2>
       <div class="tab-content notes-grid">
-        <button onClick=${() => this.showModal('card')}>Add Card</button>
-        <div class="card-grid">
-          ${this.state.notes.cards.map((card) => html`
-          <div class="card-container">
-            <${Card} data=${card} />
+        <${ContentSection}
+          label="Reference Cards"
+          actions=${[
+            {
+              icon: 'plus',
+              onClick: () => this.showModal('card')
+            },
+            {
+              icon: 'x',
+              onClick: () => this.updateCards([])
+            }
+          ]}
+        >
+          <div class="card-grid">
+            ${this.state.notes.cards.map((card) => html`
+              <div class="reference-card-frame">
+              <${ContentSection}
+                label=""
+                actions=${[
+                  {
+                    icon: 'x',
+                    onClick: () => this.removeNotesCard(card)
+                  }
+                ]}
+              >
+                  <${Card} data=${card} />
+              </${ContentSection}>
+              </div>
+              `)}
           </div>
-          `)}
-        </div>
-        <button onClick=${() => this.showModal('docs')}>Add Document</button>
-        <div class="doc-grid">
-          ${this.state.notes.docs.map((doc) => html`
-          <div class="doc-container">
-            <${MarkdownDocument} 
-              label=${doc.label}
-              path=${doc.path}
-              text=${doc.text}
-            />
+        </${ContentSection}>
+
+        <${ContentSection}
+          label="Documents"
+          actions=${[
+            {
+              icon: 'plus',
+              onClick: () => this.showModal('docs')
+            },
+            {
+              icon: 'x',
+              onClick: () => this.closeAllDocuments()
+            },
+          ]}
+        >
+          <div class="doc-grid">
+            ${this.state.notes.docs.map((doc) => html`
+            <div class="doc-container">
+              <${MarkdownDocument} 
+                label=${doc.label}
+                path=${doc.path}
+                text=${doc.text}
+                onClose=${(path) => this.closeDocument(path)}
+              />
+            </div>
+            `)}
           </div>
-          `)}
-        </div>
+        </${ContentSection}>
       </div>
     </div>    
     `
@@ -482,7 +557,7 @@ class App extends Component {
       <${CardSelectorModal}
         cards=${this.state.campaign.cards}
         selectedCards=${this.state.notes.cards}
-        onUpdate=${(cards) => this.setState({ notes: { cards } })}
+        onUpdate=${(cards) => this.updateCards(cards)}
         onClose=${() => this.hideModal('card')}
       />
       `}

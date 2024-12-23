@@ -30,7 +30,7 @@ body {
     background-color: #ecc993;
     color: white;
     text-align: center;
-    border-radius: 0.25em;
+    border-radius: 4px;
 
     &.inactive {
       background-color: white;
@@ -46,9 +46,13 @@ body {
   }
 }
 
+.notes-grid {
+  width: min-content;
+  min-width: 400px;
+}
+
 .card-grid {
   color: black;
-  font-size: 0.4em;
 
   margin-top: 1em;
   display: grid;
@@ -57,31 +61,32 @@ body {
 }
 
 .doc-grid {
-  display: grid;
-  grid-template-columns: repeat(2, min-content);
-  grid-gap: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .doc-container {
-  background-color: rgba(0, 0, 0, 0.10);
+  background-color: rgba(255, 255, 255, 0.50);
+  border-radius: 4px;
 }
 
-.card-container {
-  background-color: rgba(0, 0, 0, 0.10);
-  padding: 1em;
-  height: min-content;
+.reference-card-frame {
+  background-color: rgba(255, 255, 255, 0.50);
+  border-radius: 4px;
+
+  .content-section-with-actions > .content {
+    font-size: 5px;  
+    padding: 1em;
+    width: 60em;
+    max-height: 80em;
+    overflow-y: scroll;  
+  }
+
+  .content-section-with-actions > .content::-webkit-scrollbar {
+    width: 2px;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -140,18 +145,18 @@ select, .disabled-text {
   grid-gap: 1em;
 }
 
-.campaign-card-frame {
+.reference-card-frame {
   position: relative;
 }
 
-.campaign-card-insert {
+.printed-card-insert {
   position: absolute;
   bottom: 0.1em;
   right: 2.2em;
   font-size: 3em;
 }
 
-.campaign-card-dismiss {
+.printed-card-dismiss {
   position: absolute;
   right: 0.1em;
   bottom: 0.1em;

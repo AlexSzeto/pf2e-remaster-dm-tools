@@ -95,14 +95,11 @@
   display: flex;
   flex-direction: column;
 
-  h3 {
-    color: #472c2c;
-  }
-
   .text-container {
-    width: 50em;
-    height: 25em;
     position: relative;
+    width: 50em;
+    min-height: 25em;  
+    border-radius: 4px;  
   }
 
   .editor {
@@ -115,8 +112,101 @@
 
   .preview {
     padding: 0.5em;
+    max-height: 40em;
     overflow-x: hidden;
     overflow-y: scroll;
+
+    font-size: 16px;
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'FF Good Pro Cond', sans-serif;
+      color: #472c2c;
+      font-weight: bold;
+      margin: 0.5em 0;
+      padding: 0;
+    }
+
+    p {
+      margin: 0.5em 0;
+      padding: 0;
+    }
+
+    ul, ol {
+      margin: 0.5em;
+      padding: 0 0.75em;
+    }
+
+    a {
+      font-weight: normal;
+    }
+
+    blockquote {
+      font-family: 'Crimson Pro', serif;
+      margin: 0.5em 0;
+      padding: 0.75em 2em;
+      background-color: #f5e1bf;
+      color: #472c2c;
+      border: 2px solid rgba(71, 44, 44, 0.5);
+      border-radius: 4px;
+    }
+
+    blockquote p::before {
+      font-size: 20px;
+      font-weight: bold;
+      content: open-quote;
+      padding-right: 4px;
+    }
+
+    blockquote p::after {
+      font-size: 20px;
+      font-weight: bold;
+      content: close-quote;
+      padding-left: 4px;
+    }
+
+    :not(pre) code {
+      font-family: 'FF Good Pro Cond', sans-serif;
+      background-color: #472c2c;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    pre {
+      margin: 1.5em 0;
+      padding: 0.75em 2em;
+      border-top: 2px solid #472c2c;
+      border-bottom: 2px solid #472c2c;
+
+      code {
+        font-family: 'Crimson Pro', serif;
+      }
+    }
+
+    thead {
+      background-color: #472c2c;
+      color: white;
+      
+      th {
+        font-weight: normal;
+      }
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #f5e6cd;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f4eae2;
+    }
+
+    th, td {
+      padding: 0.25em 0.5em;
+    }
+
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
   }
 }
 
@@ -135,14 +225,14 @@
   column-gap: 0;
   padding: 0.5em;
 
-  .title {
+  > .title {
     grid-area: title;
     font-size: 1.5em;
     font-weight: bold;
     align-self: center;
   }
 
-  .actions {
+  > .actions {
     grid-area: actions;
     display: flex;
     flex-direction: row;
@@ -155,7 +245,7 @@
     }
   }
 
-  .content {
+  > .content {
     grid-area: content;
   } 
 
@@ -174,17 +264,17 @@
 /* FRAMED IMAGE */
 /*****************************************************/
 
+.insert-frame {
+  border: 1px solid #472c2c;
+}
+
 .framed-image {
   &.full-screen {
     width: 32em;
     height: 18em;
   }
 
-  &.empty {
-    border: 1px solid #472c2c;
-  }
-
-  border-radius: 0.5em;
+  border-radius: 6px;
   
   background-color: rgba(255, 255, 255, 0.5);
   background-size: cover;
