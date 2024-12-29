@@ -433,8 +433,8 @@ class App extends Component {
     `
 
     const explorationTab = html`
-      <div class="tab">
-      <h2 class="collapsible">Immersive Mode</h2>
+    <h2 class="collapsible">Immersive Mode</h2>
+    <div class="tab">
       <div class="tab-content immersive-mode-grid">
         ${explorationImage}
         ${explorationAudio}
@@ -443,8 +443,8 @@ class App extends Component {
     `
 
     const notesTab = html`
+    <h2 class="collapsible">Notes</h2>
     <div class="tab">
-      <h2 class="collapsible">Notes</h2>
       <div class="tab-content notes-grid">
         <${ContentSection}
           label="Reference Cards"
@@ -509,8 +509,8 @@ class App extends Component {
     `
 
     const combatTab = html`
+    <h2 class="collapsible">Combat</h2>
     <div class="tab">
-      <h2 class="collapsible">Combat</h2>
       <div class="tab-content combat-grid">
         <${InitiativeTracker}
           data=${this.state.combat}
@@ -526,10 +526,12 @@ class App extends Component {
         <h2 class="description">${this.state.campaign.description}</h2>
         <h1 class="logo">PF2E Tools - DM Screen</h1>
       </div>
-      <div class="tabs">
-        ${explorationTab}
-        ${notesTab}
-        ${combatTab}
+      <div class="page-content">
+        <div class="tabs">
+          ${explorationTab}
+          ${notesTab}
+          ${combatTab}
+        </div>
       </div>
 
 

@@ -56,17 +56,27 @@ h2.collapsible {
   color: black;
   background: #eccf9e;
   border: 2px solid rgba(0, 0, 0, 0.25);
-  /* border-bottom: 2px solid rgba(0, 0, 0, 0.25); */
-  width: 100vw;
-  max-width: 32em;
+  width: 100%;
+  max-width: 90vw;
 
   padding: 0.4em 0.5em 0.2em;
   margin: 0 0.5em;
 }
 
-.tabs {
+.page-content {
   position: absolute;
   top: calc(77px + 1em);
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
   .tab {
     position: relative;

@@ -269,13 +269,27 @@ input,
 }
 
 a {
-  display: inline-block;
+  display: inline;
   color: black;
   text-decoration: none;
-  padding: 0.25em 0.5em;
-  background-color: white;
-  border: 1px solid black;
+  padding: 0.125em 0.25em;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 4px;
+
+  &:disabled {
+    color: rgb(118, 118, 118);
+  }
+
+  &:not(:disabled):hover {
+    color: white;
+    background-color: #664e47;
+  }  
+
+  &:not(:disabled):active {
+    color: white;
+    background-color: #351a1a;
+  }  
 }
 
 a.selected {
