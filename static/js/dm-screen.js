@@ -18,6 +18,7 @@ import { ImageSelectorModal } from './components/image-modal.js'
 import { FileSelectorModal } from './components/file-modal.js'
 import { CardSelectorModal } from './components/card-modal.js'
 
+const imageLocations = ['background', 'left', 'right']
 const audioTypes = ['bgm', 'ambience']
 const audioTypeToDataSource = {
   bgm: 'bgms',
@@ -34,16 +35,21 @@ class App extends Component {
   //
   // IMAGE
   //
-  showImage(url) {
+  showImage(location, url) {
+    const images = {
+      ...this.state.screen.images,
+      [location]: url,
+      cover: location === 'background' 
+        ? true
+        : this.state.screen.cover,
+    }
     this.setState({
       screen: {
         ...this.state.screen,
-        image: {
-          url,
-        },
+        images
       },
     })
-    setCookie('screenImage', url)
+    setCookie('screenImages', JSON.stringify(images))
   }
 
   //
@@ -105,17 +111,7 @@ class App extends Component {
           label: '',
           controls: null,
         },
-      },
-    })
-  }
-
-  toggleAudioDuck() {
-    const duckAudio = !this.state.screen.duckAudio
-    this.setState({
-      screen: {
-        ...this.state.screen,
-        duckAudio
-      },
+      },showImage
     }, () => feather.replace())
 
     audioTypes.forEach((type) => {
@@ -216,8 +212,10 @@ class App extends Component {
         docs: [],
       },
       screen: {
-        image: {
-          url: '',
+        images: {
+          background: '',
+          left: '',
+          right: '',
         },
         bgm: {
           label: '',
@@ -260,21 +258,19 @@ class App extends Component {
           console.log('Loaded campaign:', campaign)
 
           // Update state with loaded data
+          const savedImages = getCookie('screenImages')
+          const initiatives = getCookie('initiativeTracker')
+
+          console.log(savedImages)
+
           this.setState({
             campaign,
+            screen: {
+              ...this.state.screen,
+              images: savedImages ? JSON.parse(savedImages) : this.state.screen.images,
+            },
+            combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
           })
-
-          const savedImage = getCookie('screenImage')
-          if (savedImage) {
-            this.showImage(savedImage)
-          }
-
-          const initiatives = getCookie('initiativeTracker')
-          if (initiatives) {
-            this.setState({
-              combat: JSON.parse(initiatives),
-            })
-          }
         })
         .catch((error) => {
           console.error('Error loading data from campaigns.json:', error)
@@ -377,14 +373,19 @@ class App extends Component {
           }
         ]}
       >
-        <${FramedImage}
-        onClick=${() => this.showModal('image')}
-        cover=${this.state.screen.cover}
-        url="${campaignResource(
-          this.state.campaign.filename,
-          this.state.screen.image.url
-        )}"
-        type="full-screen" />
+        <div class="images-layout">
+          ${imageLocations.map((location) => html`
+            <${FramedImage}
+              type=${location}
+              url=${campaignResource(
+                this.state.campaign.filename,
+                this.state.screen.images[location]
+              )}
+              cover=${location === 'background' ? this.state.screen.images.cover : false}
+              onClick=${() => this.showModal(location)}
+            />
+          `)}
+        </div>
       </${ContentSection}>
     </div>    
     `
@@ -535,24 +536,26 @@ class App extends Component {
       </div>
 
 
-      ${this.state.modals.image && html`
-      <${ImageSelectorModal}
-        campaign=${this.state.campaign.filename}
-        images=${this.state.campaign.images.map((imageData) => imageData.path)}
-        onSelect=${(url) => this.showImage(url)}
-        onClose=${() => this.hideModal('image')}
-      />
-      `}
+      ${imageLocations.map((location) => html`
+        ${this.state.modals[location] && html`
+          <${ImageSelectorModal}
+            campaign=${this.state.campaign.filename}
+            images=${this.state.campaign.images.map((imageData) => imageData.path)}
+            onSelect=${(url) => this.showImage(location, url)}
+            onClose=${() => this.hideModal(location)}
+          />
+        `}
+      `)}
 
       ${audioTypes.map((type) => html`
-      ${this.state.modals[type] && html`
-      <${FileSelectorModal}
-        files=${this.state.campaign[audioTypeToDataSource[type]]}
-        onSelect=${(label, path) => this.startAudioLoop(type, label, path)}
-        onSelectNone=${() => this.stopAudio(type)}
-        onClose=${() => this.hideModal(type)}
-      />
-      `}
+        ${this.state.modals[type] && html`
+          <${FileSelectorModal}
+            files=${this.state.campaign[audioTypeToDataSource[type]]}
+            onSelect=${(label, path) => this.startAudioLoop(type, label, path)}
+            onSelectNone=${() => this.stopAudio(type)}
+            onClose=${() => this.hideModal(type)}
+          />
+        `}
       `)}
 
       ${this.state.modals.card && html`
