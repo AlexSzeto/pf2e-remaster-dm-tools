@@ -1,6 +1,6 @@
 import { Component } from "preact";
 import { html } from "htm/preact";
-import { useState } from "preact/hooks";
+
 import { setCookie } from "../common/util.js";
 
 export class InitiativeListItem {
@@ -26,7 +26,7 @@ export class InitiativeTracker extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data) {
-      this.setState(this.props.data, () => setCookie('initiatives', JSON.stringify(this.state)))
+      this.setState(this.props.data, () => setCookie('initiativeTracker', JSON.stringify(this.state)))
     }
   }
   
@@ -98,7 +98,7 @@ export class InitiativeTracker extends Component {
   }
 
   updateCookie() {
-    setCookie('initiatives', JSON.stringify(this.state));
+    setCookie('initiativeTracker', JSON.stringify(this.state));
     this.props.onUpdate(this.state);
   }
 

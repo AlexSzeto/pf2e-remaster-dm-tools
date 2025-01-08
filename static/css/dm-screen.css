@@ -9,6 +9,59 @@ body {
   grid-template-columns: min-content min-content 1fr;
 }
 
+.images-layout {
+  position: relative;
+  width: 32em;
+  height: 18em;
+
+  .background-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    .background {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .left-container, .right-container {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+  }
+
+  .left-container {
+    left: 0;
+    top: 0;
+  }
+
+  .right-container {
+    right: 0;
+    top: 0;
+  }
+
+  .left, .right {
+    min-width: 8em;
+    min-height: 8em;
+
+    max-width: 10em;
+    max-height: 10em;
+
+    pointer-events: all;
+    
+    &.framed-image:not(.insert-frame) {
+      background: none;
+    }
+  }
+}
+
 .audio-grid {
   display: flex;
   flex-direction: column;
@@ -110,8 +163,18 @@ body {
 
 
 
+.disabled-text {      
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+}
 
+select, .disabled-text {
+  min-width: 15em;
+  min-height: 2.5em;
+}
 
+/* 
 
 .four-column {
   display: grid;
@@ -163,17 +226,11 @@ select, .disabled-text {
   font-size: 3em;
 }
 
-button.square {
-  width: 2em;
-  height: 2em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   &.small {
     font-size: 0.4em;
   }
-}
+} */
 
 .initiative-tracker-grid {
   display: grid;

@@ -4,171 +4,12 @@
     <title>DM Screen</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/pf2e.css" />
-    <style>
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      body {
-        position: relative;
-        font-size: 18px;
-      }
-      .image-frame {
-        position: absolute;
-        width: 98vw;
-        height: 98vh;
-        transition: opacity 1s;
-      }
-      .responsive-image {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Scale the image to fit within the viewport */
-        transition: opacity 1s;
-        opacity: 0;
-      }
-      .responsive-image.loaded {
-        opacity: 1;
-      }
-
-      .faded {
-        opacity: 0.2;
-      }
-
-      #initiative-display-container {
-        position: absolute;
-        font-size: 2em;
-        opacity: 0;
-        transition: opacity 1s;
-
-        &.active {
-          opacity: 1;
-        }
-      }
-
-      .initiative-display-grid {
-        display: grid;
-        grid-template-columns: 2em 15em;
-        grid-gap: 0.5em;
-
-        .active-item {
-          .icon {
-            width: 1.5em;
-            height: 1.5em;
-            color: white;
-            background-color: #472C2C;
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .name, .npc-name {
-          font-size: 2em;
-          font-weight: bold;
-          color:#664E47;
-
-          &.active {
-            color: #472C2C;
-          }
-        }
-
-        .npc-name {
-          color: #999;
-
-          &.active {
-            color: #444;
-          }
-        }
-      }      
-    </style>
-  </head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pf2e.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pc-screen.css') }}" />
+    </head>
   <body>
-    <div id="crossfade-frame" class="image-frame">
-      <img id="crossfade-image" class="responsive-image" />
-    </div>
-    <div id="current-frame" class="image-frame">
-      <img id="current-image" class="responsive-image" />
-    </div>
-    <div id="initiative-display-container"></div>
-    <script>
-      const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(";").shift();
-        return null;
-      };
-
-      let trackingInitiative = false;
-      const updateInitiativeDisplay = () => {
-        const initiativeTracker = getCookie("initiativeTracker");
-        if(!!initiativeTracker) {
-          const active = JSON.parse(initiativeTracker).inUse;
-          if(trackingInitiative != active) {
-            trackingInitiative = active;
-            if(active) {
-              document.getElementById("initiative-display-container").classList.add('active');
-              document.getElementById("current-frame").classList.add('faded');
-              document.getElementById("crossfade-frame").classList.add('faded');
-            } else {
-              document.getElementById("initiative-display-container").classList.remove('active');
-              document.getElementById("current-frame").classList.remove('faded');
-              document.getElementById("crossfade-frame").classList.remove('faded');
-            }
-          }
-        }
-      }
-
-      const loadCurrentImage = () => {
-        const image = document.getElementById("current-image");
-        const imageSource = getCookie("dm-image");
-        crossFade(imageSource);
-      };
-
-      const getFileName = (url) => {
-        return url.substring(url.lastIndexOf("/") + 1);
-      };
-
-      let currentImagePath = ''
-
-      const crossFade = (next) => {
-        const currentImage = document.getElementById("current-image");
-        const crossfadeImage = document.getElementById("crossfade-image");
-
-        if(currentImagePath === next) {
-          return;
-        }
-        currentImagePath = next;
-
-        crossfadeImage.src = next;
-        currentImage.classList.remove("loaded");
-        crossfadeImage.classList.add("loaded");
-
-        setTimeout(() => {
-          currentImage.src = next;
-          currentImage.classList.add("loaded");
-          setTimeout(() => {
-            crossfadeImage.classList.remove("loaded");
-          }, 1000)          
-        }, 1000);
-      };
-
-      loadCurrentImage();
-      const checkInterval = setInterval(loadCurrentImage, 1000);
-      const initiativeInterval = setInterval(updateInitiativeDisplay, 1000);
-    </script>
     <script type="importmap">
       {
           "imports": {
@@ -178,6 +19,6 @@
           }
       }
     </script>    
-    <script type="module" src="js/dm-screen.js"></script></head>    
+    <script type="module" src="{{ url_for('static', filename='js/pc-screen.js') }}"></script></head>
   </body>
 </html>

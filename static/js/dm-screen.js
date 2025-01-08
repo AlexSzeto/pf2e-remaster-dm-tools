@@ -36,22 +36,39 @@ class App extends Component {
   // IMAGE
   //
   showImage(location, url) {
-    const images = {
-      ...this.state.screen.images,
-      [location]: url,
-      cover: location === 'background' 
-        ? true
-        : this.state.screen.cover,
-    }
+    const images = location === 'background' 
+      ? {
+        background: url,
+        left: '',
+        right: '',
+        cover: true,
+      } : {
+        ...this.state.screen.images,
+        [location]: url,
+      }
+
     this.setState({
       screen: {
         ...this.state.screen,
         images
       },
     })
+
     setCookie('screenImages', JSON.stringify(images))
   }
 
+  toggleBackgroundCover() {
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        images: {
+          ...this.state.screen.images,
+          cover: !this.state.screen.images.cover,
+        },
+      },
+    }, () => setCookie('screenImages', JSON.stringify(this.state.screen.images)))    
+  }
+  
   //
   // AUDIO
   //
@@ -181,6 +198,7 @@ class App extends Component {
   // MODALS
   //
   showModal(modal) {
+    console.log('showing modal:', modal)
     this.setState({
       modals: {
         ...this.state.modals,
@@ -216,6 +234,7 @@ class App extends Component {
           background: '',
           left: '',
           right: '',
+          cover: true,
         },
         bgm: {
           label: '',
@@ -255,13 +274,10 @@ class App extends Component {
       fetch(`/campaign/${currentCampaign}`)
         .then((response) => response.json())
         .then((campaign) => {
-          console.log('Loaded campaign:', campaign)
 
           // Update state with loaded data
           const savedImages = getCookie('screenImages')
           const initiatives = getCookie('initiativeTracker')
-
-          console.log(savedImages)
 
           this.setState({
             campaign,
@@ -362,19 +378,14 @@ class App extends Component {
         label="Image"
         actions=${[
           {
-            icon: 'layout',
-            onClick: () => this.setState({
-              ...this.state,
-              screen: {
-                ...this.state.screen,
-                cover: !this.state.screen.cover
-              }
-            })
+            icon: this.state.screen.images.cover ? 'minimize' : 'maximize',
+            onClick: () => this.toggleBackgroundCover()
           }
         ]}
       >
         <div class="images-layout">
           ${imageLocations.map((location) => html`
+            <div class="${location}-container">
             <${FramedImage}
               type=${location}
               url=${campaignResource(
@@ -384,6 +395,7 @@ class App extends Component {
               cover=${location === 'background' ? this.state.screen.images.cover : false}
               onClick=${() => this.showModal(location)}
             />
+            </div>
           `)}
         </div>
       </${ContentSection}>
