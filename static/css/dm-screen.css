@@ -234,7 +234,7 @@ select, .disabled-text {
 
 .initiative-tracker-grid {
   display: grid;
-  grid-template-columns: min-content min-content min-content min-content 2em 15em 2em 4em 4em 10em 1fr;
+  grid-template-columns: min-content min-content min-content min-content 2em 15em 2em 4em min-content 4em 4em 1fr;
   grid-gap: 0.1em;
   align-items: center;
 

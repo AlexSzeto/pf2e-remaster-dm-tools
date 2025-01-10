@@ -45,17 +45,33 @@ export class MarkdownDocument extends Component {
     }
   }
 
+  editOrSaveDocument() {
+    if(this.state.readonly) {
+      this.setState({readonly: false})
+    } else {
+      this.props.onEdit(this.state.path, this.state.text)
+      this.setState({readonly: true})
+    }
+  }
+
+  saveAndCloseDocument() {
+    if(!this.state.readonly) {
+      this.props.onEdit(this.state.path, this.state.text)
+    }
+    this.props.onClose(this.state.path)
+  }
+
   render() {
     return html`
       <div data-path="${this.state.path}" class="markdown-document">
         <${ContentSection} label=${this.state.label} actions=${[
           {
             icon: this.state.readonly ? 'edit' : 'save',
-            onClick: () => this.setState({readonly: !this.state.readonly})
+            onClick: () => this.editOrSaveDocument()
           },
           {
             icon: 'x',
-            onClick: () => this.props.onClose(this.state.path)
+            onClick: () => this.saveAndCloseDocument()
           }
         ]}>
           <div class="text-container">

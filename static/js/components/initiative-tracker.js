@@ -2,6 +2,7 @@ import { Component } from "preact";
 import { html } from "htm/preact";
 
 import { setCookie } from "../common/util.js";
+import { FeatherIcon } from "./feather-icon.js";
 
 export class InitiativeListItem {
   constructor(name, initiative = 0, hp = 0, consumables = [], notes = '') {
@@ -97,6 +98,13 @@ export class InitiativeTracker extends Component {
     this.updateList(newList);
   }
 
+  dealDamage(index) {
+    const damage = prompt('How much damage?');
+    const newList = [...this.state.list];
+    newList[index].hp -= damage;
+    this.updateList(newList);
+  }
+
   updateCookie() {
     setCookie('initiativeTracker', JSON.stringify(this.state));
     this.props.onUpdate(this.state);
@@ -144,6 +152,7 @@ export class InitiativeTracker extends Component {
         <div class="header-item">Name</div>
         <div class="header-item">PC</div>
         <div class="header-item">HP</div>
+        <div class="header-item"></div>
         <div class="header-item">Initiative</div>
         <div class="header-item">Notes</div>
         <div class="header-item">Consumables</div>
@@ -187,6 +196,10 @@ export class InitiativeTracker extends Component {
             value=${item.hp}
             onInput=${(e) => this.handleListItemChange(index, e)}
           ></input>
+          <button class="square"
+            onClick=${() => this.dealDamage(index)}>
+            <${FeatherIcon} icon="zap" />
+          </button>
           <input
             name="initiative"
             type="number"

@@ -158,6 +158,24 @@ class App extends Component {
       })
   }
 
+  saveDocument(path, text) {
+    const formData = new FormData()
+    const blob = new Blob([text], { type: 'text/plain' })
+
+    formData.append('file', blob, path)
+    formData.append('type', 'docs')
+
+    fetch(`/campaign-resource/${this.state.campaign.filename}`, {
+      method: 'POST',
+      body: formData,
+    })
+    .then((response) => {
+      if (response.ok) {
+        console.log('Document saved:', path)
+      }
+    })
+  }
+
   closeDocument(path) {
     this.setState({
       notes: {
@@ -511,6 +529,7 @@ class App extends Component {
                 label=${doc.label}
                 path=${doc.path}
                 text=${doc.text}
+                onEdit=${(path, text) => this.saveDocument(path, text)}
                 onClose=${(path) => this.closeDocument(path)}
               />
             </div>
@@ -525,10 +544,20 @@ class App extends Component {
     <h2 class="collapsible">Combat</h2>
     <div class="tab">
       <div class="tab-content combat-grid">
-        <${InitiativeTracker}
-          data=${this.state.combat}
-          onUpdate=${(data) => this.updateInitiateTracker(data)}
-        />
+        <${ContentSection}
+          label="Initiative Tracker"
+          actions=${[
+            {
+              icon: 'plus',
+              onClick: () => this.showModal('combatCards')
+            }
+          ]}
+        >
+          <${InitiativeTracker}
+            data=${this.state.combat}
+            onUpdate=${(data) => this.updateInitiateTracker(data)}
+          />
+        </${ContentSection}>
       </div>
     </div>
     `
@@ -587,6 +616,16 @@ class App extends Component {
       />
       `}
 
+      ${this.state.modals.combatCards && html`
+        <${CardSelectorModal}
+          cards=${this.state.campaign.cards}
+          selectedCards=${[]}
+          onUpdate=${(cards) => this.addCharacterToInitiative(cards[0])}
+          onClose=${() => this.hideModal('combatCards')}
+        />
+      `}
+  
+  
     `
   }
 }
