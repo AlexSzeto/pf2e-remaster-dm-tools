@@ -1,0 +1,3 @@
+[submodule "campaigns"]
+  path = campaigns
+  url = https://github.com/AlexSzeto/pf2e-drakonis-data.git
