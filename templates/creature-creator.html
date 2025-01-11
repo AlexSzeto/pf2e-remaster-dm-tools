@@ -4,39 +4,10 @@
   <title>Creature Builder</title>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' type='text/css' media='screen' href='css/pf2e.css'>
-  <style>
-    body {
-      font-size: 18px;
-    }
-
-    .label-text {
-      min-width: 6em;
-      margin-right: 0.5em;
-    }
-
-    .item-list {
-      position: relative;
-      left: 6.5em;
-    }
-
-    .column {
-      display: flex;
-    }
-
-    .two-column {
-      display: grid;
-      grid-template-columns: 15em 15em;
-    }
-
-    #card-preview {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 12px;
-      margin-left: 0.5em;
-      width: 30em;
-      height: 40em;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pf2e.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
+  <script src="https://unpkg.com/feather-icons"></script>
   <script type="importmap">
     {
         "imports": {
@@ -46,7 +17,7 @@
         }
     }
   </script>    
-  <script type="module" src="js/creature-builder.js"></script>
+  <script type="module" src="{{ url_for('static', filename='js/creature-builder.js') }}"></script></head>
 </head>
 <body>
   <!-- Your content here -->

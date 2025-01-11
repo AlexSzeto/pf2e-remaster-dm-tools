@@ -320,3 +320,38 @@
     object-fit: contain; /* Scale the image to fit the viewport */
   }
 }
+
+/*****************************************************/
+/* CARD BUILDERS */
+/*****************************************************/
+
+.creature-builder {
+  font-size: 18px;
+
+  .label-text {
+    min-width: 6em;
+    margin-right: 0.5em;
+  }
+
+  .item-list {
+    position: relative;
+    left: 6.5em;
+  }
+
+  .column {
+    display: flex;
+  }
+
+  .two-column {
+    display: grid;
+    grid-template-columns: 15em 15em;
+  }
+
+  #card-preview {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    margin-left: 0.5em;
+    width: 30em;
+    height: 40em;
+  }
+}

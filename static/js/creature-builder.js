@@ -34,7 +34,7 @@ import {
   creatureSpellLevelLabels,
   createSpellTemplate,
 } from "./common/dm-data.js";
-import { Card } from "./card.js";
+import { Card } from "./components/card.js";
 
 const dice = (data) => `${data.count}d${data.sides}${
   data.bonus > 0 
@@ -873,6 +873,7 @@ class App extends Component {
     `
 
     return html`
+    <div class="creature-builder">
       <h1>Creature Builder</h1>
       ${
         this.state.step === 0
@@ -891,6 +892,7 @@ class App extends Component {
         && html`<h2>Preview and Export</h2><${CreaturePreview} data=${this.state.data[3]} onUpdate=${(data) => this.setData(3, data)} />`
       }
       ${nav}
+    </div>
     `;
   }
 }
