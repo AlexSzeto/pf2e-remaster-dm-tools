@@ -13,6 +13,6 @@ export function setCookie(name, value) {
   document.cookie = `${name}=${value || ''}${expires}; samesite=lax`
 }
 
-export function campaignResource(campaignName, filename) {
-  return filename ? `/campaign-resource/${campaignName}/${filename}` : ''
+export function campaignResource(campaignId, filename) {
+  return filename ? `/campaign-resource/${campaignId}/${filename}` : ''
 }

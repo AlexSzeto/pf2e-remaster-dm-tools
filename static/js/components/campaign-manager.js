@@ -69,8 +69,8 @@ export class CampaignManager extends Component {
             <div>
             <a
               href="#"
-              class=${campaign.filename === this.state.currentCampaign ? "selected" : ""}
-              onClick=${() => this.setCurrentCampaign(campaign.filename)}
+              class=${campaign.id === this.state.currentCampaign ? "selected" : ""}
+              onClick=${() => this.setCurrentCampaign(campaign.id)}
             >
               ${campaign.name}
             </a>

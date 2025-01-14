@@ -35,6 +35,7 @@ import {
   createSpellTemplate,
 } from "./common/dm-data.js";
 import { Card } from "./components/card.js";
+import { campaignResource, getCookie } from "./common/util.js";
 
 const dice = (data) => `${data.count}d${data.sides}${
   data.bonus > 0 
@@ -555,25 +556,59 @@ class CreaturePreview extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    const editorElement = document.getElementById("card-preview");
+
+    const editor = ace.edit(editorElement)
+    editor.setTheme("ace/theme/solarized_light")
+    editor.session.setMode("ace/mode/json")
+
+    const updateText = () => {
+      try {
+        const data = JSON.parse(editor.getValue());
+        this.props.onUpdate(data)  
+      } catch (e) {}
+    }
+    editor.session.on('change', updateText);    
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data) {
       this.setState(this.props.data);
     }
   }
 
-  handleChange = (e) => {
-    try {
-      const data = JSON.parse(e.target.value);
-      this.props.onUpdate(data);
-    } catch (e) {
-      console.error(e);
-      return;
-    }
-  }
-
   copyToClipboard = () => {
     const copyText = document.getElementById("card-preview");
-    navigator.clipboard.writeText(copyText.value);
+    navigator.clipboard.writeText(JSON.stringify(this.props.data));
+  }
+
+  saveCard = () => {
+    try {
+      const data = this.props.data;
+
+      // Get current campaign from cookie
+      const currentCampaign = getCookie('currentCampaign')
+
+      // If current campaign is set, load it
+      if (currentCampaign) {
+        fetch(`/campaign-resource/${currentCampaign}/card`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },          
+          body: JSON.stringify(data),
+        })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Card saved")
+          }
+        })
+        }      
+    } catch (e) {
+      console.error(e);
+      return
+    }
   }
 
   render() {
@@ -581,15 +616,13 @@ class CreaturePreview extends Component {
       <div>
         <h3>Preview:</h3>
         <div class="column">
-          <div class="deck-card-frame">
+          <div class="reference-card-frame">
             <${Card} data=${this.props.data} />
           </div>
           <div>
-            <textarea
-              id="card-preview"
-              onInput=${this.handleChange}
-            >${JSON.stringify(this.props.data, null, 2)}</textarea>
+            <pre id="card-preview">${JSON.stringify(this.props.data, null, 2)}</pre>
             <button onClick=${this.copyToClipboard}>Copy to Clipboard</button>
+            <button onClick=${this.saveCard}>Save Card</button>
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      campaignName: '',
+      campaignId: '',
       images: {
         background: '',
         left: '',
@@ -29,13 +29,8 @@ class App extends Component {
 
     // If current campaign is set, load it
     if (currentCampaign) {
-      fetch(`/campaign/${currentCampaign}`)
-        .then((response) => response.json())
-        .then((campaign) => {
-          this.setState({ campaignName: campaign.filename });
-        });
+      this.setState({ campaignId: currentCampaign });
     }
-
 
     setInterval(() => {
       this.setState({
@@ -49,13 +44,13 @@ class App extends Component {
     return html`
       <div class="images-container ${this.state.initiativeTracker.inUse ? 'faded' : ''}">
         <div class="background-container">
-          <${CrossfadeImage} cover=${this.state.images.cover} url=${campaignResource(this.state.campaignName, this.state.images.background)} />
+          <${CrossfadeImage} cover=${this.state.images.cover} url=${campaignResource(this.state.campaignId, this.state.images.background)} />
         </div>
         <div class="left-container">
-          <${CrossfadeImage} url=${campaignResource(this.state.campaignName, this.state.images.left)} />
+          <${CrossfadeImage} url=${campaignResource(this.state.campaignId, this.state.images.left)} />
         </div>
         <div class="right-container">
-          <${CrossfadeImage} url=${campaignResource(this.state.campaignName, this.state.images.right)} />
+          <${CrossfadeImage} url=${campaignResource(this.state.campaignId, this.state.images.right)} />
         </div>
       </div>
       <div 

@@ -83,7 +83,7 @@ class App extends Component {
           ...this.state.screen,
           [type]: {
             label,
-            controls: createAudioSource(campaignResource(this.state.campaign.filename, url), fadeInDuration, this.globalVolume),
+            controls: createAudioSource(campaignResource(this.state.campaign.id, url), fadeInDuration, this.globalVolume),
           },
         },
       })
@@ -146,7 +146,7 @@ class App extends Component {
   // NOTES
   //
   loadDocument(label, path) {
-    fetch(campaignResource(this.state.campaign.filename, path))
+    fetch(campaignResource(this.state.campaign.id, path))
       .then((response) => response.text())
       .then((text) => {
         this.setState({
@@ -163,9 +163,8 @@ class App extends Component {
     const blob = new Blob([text], { type: 'text/plain' })
 
     formData.append('file', blob, path)
-    formData.append('type', 'docs')
 
-    fetch(`/campaign-resource/${this.state.campaign.filename}`, {
+    fetch(`/campaign-resource/${this.state.campaign.id}/docs`, {
       method: 'POST',
       body: formData,
     })
@@ -240,7 +239,7 @@ class App extends Component {
       campaign: {
         name: '',
         description: '',
-        filename: '',
+        id: '',
         images: [],
         bgms: [],
         ambiences: [],
@@ -407,7 +406,7 @@ class App extends Component {
             <${FramedImage}
               type=${location}
               url=${campaignResource(
-                this.state.campaign.filename,
+                this.state.campaign.id,
                 this.state.screen.images[location]
               )}
               cover=${location === 'background' ? this.state.screen.images.cover : false}
@@ -580,7 +579,7 @@ class App extends Component {
       ${imageLocations.map((location) => html`
         ${this.state.modals[location] && html`
           <${ImageSelectorModal}
-            campaign=${this.state.campaign.filename}
+            campaign=${this.state.campaign.id}
             images=${this.state.campaign.images.map((imageData) => imageData.path)}
             onSelect=${(url) => this.showImage(location, url)}
             onClose=${() => this.hideModal(location)}
