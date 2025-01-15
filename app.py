@@ -59,7 +59,7 @@ def insert_update_campaign_resource(campaign_name, resource_type):
                     campaign_data = json.load(f)
                     campaign_data["cards"].append(data)
                     with open(campaign_path, "w") as f:
-                        json.dump(campaign_data, f)
+                        json.dump(campaign_data, f, indent=2)
             return jsonify({"message": "Data saved successfully"}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
@@ -92,7 +92,7 @@ def insert_update_campaign_resource(campaign_name, resource_type):
                             "label": file.filename
                         })
                         with open(campaign_path, "w") as f:
-                            json.dump(campaign_data, f)
+                            json.dump(campaign_data, f, indent=2)
             
             # Save the file to the campaign folder
             file.save(os.path.join(CAMPAIGN_FOLDER, campaign_name, resource_folder, file.filename))
@@ -127,7 +127,7 @@ def manage_campaigns():
             
             # Write payload to project.json
             with open(campaign_path, "w") as f:
-                json.dump(data, f)
+                json.dump(data, f, indent=2)
             return jsonify({"message": "Data saved successfully"}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
@@ -160,7 +160,7 @@ def campaign_data(name):
             
             # Write payload to project.json
             with open(campaign_path, "w") as f:
-                json.dump(data, f)
+                json.dump(data, f, indent=2)
             return jsonify({"message": "Data saved successfully"}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500

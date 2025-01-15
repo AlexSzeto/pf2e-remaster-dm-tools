@@ -39,11 +39,11 @@ export class CrossfadeImage extends Component {
   render() {
     return html`
       <img
-        class="crossfade-image ${showCrossfade[this.state.fadeStage]} ${this.props.cover ? 'cover' : ''}"
+        class="crossfade-image ${(showCrossfade[this.state.fadeStage] && this.state.crossfade) ? 'shown' : ''} ${this.props.cover ? 'cover' : ''}"
         src=${this.state.crossfade}
       />
       <img
-        class="crossfade-image ${showCurrent[this.state.fadeStage]} ${this.props.cover ? 'cover' : ''}"
+        class="crossfade-image ${(showCurrent[this.state.fadeStage] && this.state.current) ? 'shown' : ''} ${this.props.cover ? 'cover' : ''}"
         src=${this.state.current}
       />
     `

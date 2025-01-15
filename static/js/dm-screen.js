@@ -142,6 +142,26 @@ class App extends Component {
     })    
   }
 
+  toggleAudioDuck() {
+    const duckAudio = !this.state.screen.duckAudio
+    this.setState({
+      screen: {
+        ...this.state.screen,
+        duckAudio
+      },
+    })
+
+    audioTypes.forEach((type) => {
+      if (this.state.screen[type].controls !== null) {
+        if (duckAudio) {
+          this.state.screen[type].controls.duck(1, 0.2)
+        } else {
+          this.state.screen[type].controls.unduck(4)
+        }
+      }
+    })
+  }
+  
   // 
   // NOTES
   //
