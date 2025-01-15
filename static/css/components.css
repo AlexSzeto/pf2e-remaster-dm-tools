@@ -214,6 +214,13 @@
     &::-webkit-scrollbar {
       width: 2px;
     }
+
+    img {
+      max-width: 30em;
+      max-height: 20em;
+      display: block;
+      margin: 1em auto;
+    }
   }
 }
 

@@ -1,17 +1,27 @@
 import { Component } from 'preact'
 import { html } from 'htm/preact'
 import { ContentSection } from './content-section.js'
+import { getCookie } from '../common/util.js'
 
 export class MarkdownDocument extends Component {
 
   constructor({label, path, text, onEdit, onClose}) {
     super()
+
+    const currentCampaign = getCookie('currentCampaign')
     this.state = {
       label,
       path,
       text,
       readonly: true,
+      currentCampaign,
     }
+  }
+
+  enhanceMarkdownText(text) {
+    const imageLinks = /(\!\[.+\]\()((?!https?:\/\/).+(?:\.jpg|\.jpeg|\.png|\.gif|\.webp)\))/g
+
+    return text.replace(imageLinks, `$1/campaign-resource/${this.state.currentCampaign}/$2`)
   }
 
   updateEditor() {
@@ -28,11 +38,11 @@ export class MarkdownDocument extends Component {
       bindKey: {win: 'Esc', mac: 'Esc'},
     })
     const updateText = () => {
-      previewElement.innerHTML = marked.parse(editor.getValue());
+      previewElement.innerHTML = marked.parse(this.enhanceMarkdownText(editor.getValue()))
       this.setState({text: editor.getValue()})
     }
     editor.session.on('change', updateText);
-    previewElement.innerHTML = marked.parse(editor.getValue());
+    previewElement.innerHTML = marked.parse(this.enhanceMarkdownText(editor.getValue()))
   }
 
   componentDidMount() {
