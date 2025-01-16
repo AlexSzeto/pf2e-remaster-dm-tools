@@ -1,12 +1,13 @@
 import { html } from "htm/preact";
 
-const addMarkdownAndIconTo = (text) => text
+const addMarkdownAndIconTo = (text) => text != null ? text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/__(.*?)__/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/_(.*?)_/g, '<em>$1</em>')
     .replace(/\[(.*?)\]/g, '<span class="icon $1"></span>')
     .replace(/\n/g, '<br>')
+    : '';
 
 export const Card = ({data, darkMode}) => html`
     <div class="pf2e-stats ${darkMode ? 'dark' : ''}">

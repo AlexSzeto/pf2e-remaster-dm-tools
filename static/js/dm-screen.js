@@ -17,6 +17,7 @@ import { MarkdownDocument } from './components/md-doc.js'
 import { ImageSelectorModal } from './components/image-modal.js'
 import { FileSelectorModal } from './components/file-modal.js'
 import { CardSelectorModal } from './components/card-modal.js'
+import { RulesSearchModal } from './components/rules-search-modal.js'
 
 const imageLocations = ['background', 'left', 'right']
 const audioTypes = ['bgm', 'ambience']
@@ -299,6 +300,7 @@ class App extends Component {
         bgm: false,
         ambience: false,
         card: false,
+        search: false,
         docs: false,
       }
     }
@@ -500,6 +502,10 @@ class App extends Component {
           label="Reference Cards"
           actions=${[
             {
+              icon: 'search',
+              onClick: () => this.showModal('search')
+            },
+            {
               icon: 'plus',
               onClick: () => this.showModal('card')
             },
@@ -624,6 +630,13 @@ class App extends Component {
         selectedCards=${this.state.notes.cards}
         onUpdate=${(cards) => this.updateCards(cards)}
         onClose=${() => this.hideModal('card')}
+      />
+      `}
+
+      ${this.state.modals.search && html`
+      <${RulesSearchModal}
+        onResult=${(result) => this.updateCards([...this.state.notes.cards, result])}
+        onClose=${() => this.hideModal('search')}
       />
       `}
 

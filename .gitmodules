@@ -1,3 +1,7 @@
 [submodule "campaigns"]
   path = campaigns
   url = https://github.com/AlexSzeto/pf2e-drakonis-data.git
+
+[submodule "pf2e"]
+  path = pf2e
+  url = https://github.com/foundryvtt/pf2e.git

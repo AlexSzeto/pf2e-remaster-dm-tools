@@ -188,6 +188,33 @@ def campaign_data(name):
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+# Pull an item from the foundry vtt pf2e module and return it
+@app.route("/rule/<folder>/<query>", methods=["GET"])
+def get_rule(folder, query):
+    rule_path = os.path.join("pf2e", "packs", folder)
+    try:
+        if not os.path.exists(rule_path):
+            return jsonify({"error": "Folder does not exist"}), 404
+
+        exact_file_path = os.path.join(rule_path, query.lower().replace(" ", "-") + ".json")
+        if os.path.exists(exact_file_path):
+            with open(exact_file_path, "r") as f:
+                data = json.load(f)
+                return jsonify(data), 200
+        
+        # List all files in the specified folder
+        files = os.listdir(rule_path)
+        # Search for the first file that partially matches the query
+        for file in files:
+            if query.lower() in file.lower():
+                # Read and return the contents of the matched file
+                with open(os.path.join(rule_path, file), "r") as f:
+                    data = json.load(f)
+                return jsonify(data), 200
+        return jsonify({"error": "No matching rule found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+  
 def open_browser():
     """Opens the default web browser to the Flask server."""
     webbrowser.open_new("http://127.0.0.1:5000/")
