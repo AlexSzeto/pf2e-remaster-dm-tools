@@ -1,3 +1,7 @@
+const formatDescription = (description) => {
+  return description.replace(/@\w+\[(.*)\]/g, "<strong>$1</strong>");
+}
+
 export const spellToCard = (spellRulesJson) => {
   /**
    * Transforms the first JSON block into the second JSON block.
@@ -49,7 +53,7 @@ export const spellToCard = (spellRulesJson) => {
       },
       {
         name: "Description",
-        text: description,
+        text: formatDescription(description),
         hr: true
       }
     ]

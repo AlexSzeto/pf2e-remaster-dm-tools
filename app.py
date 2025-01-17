@@ -132,17 +132,19 @@ def manage_campaigns():
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     try:
-        # Get list of all JSON files in campaigns directory
-        campaigns = [f for f in os.listdir("campaigns") if f.endswith(".json")]
-        # Open each file and read the name and description
-        for i, campaign in enumerate(campaigns):
-            with open(os.path.join(CAMPAIGN_FOLDER, campaign), "r") as f:
-                data = json.load(f)
-                campaigns[i] = {
+        # Get list of all folders in campaigns directory
+        campaign_folders = [d for d in os.listdir(CAMPAIGN_FOLDER) if os.path.isdir(os.path.join(CAMPAIGN_FOLDER, d))]
+        campaigns = []
+        for folder in campaign_folders:
+            campaign_file = os.path.join(CAMPAIGN_FOLDER, folder, "campaign.json")
+            if os.path.exists(campaign_file):
+                with open(campaign_file, "r") as f:
+                    data = json.load(f)
+                    campaigns.append({
                     "name": data["name"],
                     "description": data["description"],
                     "id": data["id"]
-                }
+                    })
         return jsonify({"campaigns": campaigns}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -150,7 +152,7 @@ def manage_campaigns():
 # CRUD operations for specific campaign
 @app.route("/campaign/<name>", methods=["POST", "PUT", "GET", "DELETE"])
 def campaign_data(name):
-    campaign_path = os.path.join(CAMPAIGN_FOLDER, f"{name}.json")
+    campaign_path = os.path.join(CAMPAIGN_FOLDER, name, "campaign.json")
     if request.method in ["POST", "PUT"]:
         try:
             # Get JSON payload

@@ -68,7 +68,7 @@ export class MarkdownDocument extends Component {
     if(!this.state.readonly) {
       this.props.onEdit(this.state.path, this.state.text)
     }
-    this.props.onClose(this.state.path)
+    requestAnimationFrame(() => this.props.onClose(this.state.path))
   }
 
   render() {
