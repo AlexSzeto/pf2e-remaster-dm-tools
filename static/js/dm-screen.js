@@ -78,6 +78,11 @@ class App extends Component {
   }
 
   startAudioLoop(type, label, url) {
+    if(url === '') {
+      this.stopAudio(type)
+      return
+    }
+
     const start = (fadeInDuration) =>{
       this.setState({
         screen: {
@@ -129,18 +134,8 @@ class App extends Component {
           label: '',
           controls: null,
         },
-      },showImage
+      },
     }, () => feather.replace())
-
-    audioTypes.forEach((type) => {
-      if (this.state.screen[type].controls !== null) {
-        if (duckAudio) {
-          this.state.screen[type].controls.duck(1, duckVolume)
-        } else {
-          this.state.screen[type].controls.unduck(4)
-        }
-      }
-    })    
   }
 
   toggleAudioDuck() {
