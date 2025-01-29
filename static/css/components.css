@@ -113,7 +113,8 @@
 
   .text-container {
     position: relative;
-    width: 50em;
+    width: 35vw;
+    min-width: 40em;
     min-height: 25em;  
     border-radius: 4px;  
   }

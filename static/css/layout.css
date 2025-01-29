@@ -57,10 +57,9 @@ h2.collapsible {
   background: #eccf9e;
   border: 2px solid rgba(0, 0, 0, 0.25);
   width: 100%;
-  max-width: 90vw;
 
   padding: 0.4em 0.5em 0.2em;
-  margin: 0 0.5em;
+  box-sizing: border-box;
 }
 
 .page-content {
@@ -80,6 +79,7 @@ h2.collapsible {
 
   .tab {
     position: relative;
+    width: 80vw;
 
     .tab-content {
       padding: 1.5em 0.5em 1em;

@@ -115,7 +115,9 @@ body {
 
 .doc-grid {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 78vw;
   gap: 1em;
 }
 
