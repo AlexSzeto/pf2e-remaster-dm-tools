@@ -58,8 +58,8 @@ export function createAudioSource(path, fadeInDuration, fadeToGain = 1.0) {
     rampVolume(duration, duckVolume)
   }
 
-  const unduck = (duration) => {
-    rampVolume(duration, 1)
+  const unduck = (duration, unduckVolume = 1) => {
+    rampVolume(duration, unduckVolume)
   }
 
   return {

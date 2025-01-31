@@ -48,11 +48,16 @@ body {
   }
 
   .left, .right {
-    min-width: 8em;
-    min-height: 8em;
+    width: 10em;
 
-    max-width: 10em;
-    max-height: 10em;
+    &.insert-frame {
+      width: 8em;
+      height: 8em;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     pointer-events: all;
     

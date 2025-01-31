@@ -14,20 +14,26 @@ import { campaignResource, getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
 import { MarkdownDocument } from './components/md-doc.js'
 
-import { ImageSelectorModal } from './components/image-modal.js'
+import { ImageSelectorModal } from './components/image-selector-modal.js'
 import { FileSelectorModal } from './components/file-modal.js'
 import { CardSelectorModal } from './components/card-modal.js'
 import { RulesSearchModal } from './components/rules-search-modal.js'
+import { ImageViewerModal } from './components/image-viewer-modal.js'
 
 const imageLocations = ['background', 'left', 'right']
 const audioTypes = ['bgm', 'ambience']
-const audioTypeToDataSource = {
-  bgm: 'bgms',
-  ambience: 'ambiences',
-}
-const audioTypeToLabel = {
-  bgm: 'Background Music',
-  ambience: 'Ambience',
+
+const audioTypeMaps = {
+  bgm: {
+    dataSource: 'bgms',
+    label: 'Background Music',
+    volume: 0.50,
+  },
+  ambience: {
+    dataSource: 'ambiences',
+    label: 'Ambience',
+    volume: 0.20,
+  },
 }
 
 const duckVolume = 0.2
@@ -73,8 +79,8 @@ class App extends Component {
   //
   // AUDIO
   //
-  get globalVolume() {
-    return this.state.screen.duckAudio ? duckVolume : 1
+  globalVolume(type) {
+    return this.state.screen.duckAudio ? duckVolume * audioTypeMaps[type].volume : audioTypeMaps[type].volume
   }
 
   startAudioLoop(type, label, url) {
@@ -89,7 +95,7 @@ class App extends Component {
           ...this.state.screen,
           [type]: {
             label,
-            controls: createAudioSource(campaignResource(this.state.campaign.id, url), fadeInDuration, this.globalVolume),
+            controls: createAudioSource(campaignResource(this.state.campaign.id, url), fadeInDuration, this.globalVolume(type)),
           },
         },
       })
@@ -150,9 +156,9 @@ class App extends Component {
     audioTypes.forEach((type) => {
       if (this.state.screen[type].controls !== null) {
         if (duckAudio) {
-          this.state.screen[type].controls.duck(1, 0.2)
+          this.state.screen[type].controls.duck(1, duckVolume * audioTypeMaps[type].volume)
         } else {
-          this.state.screen[type].controls.unduck(4)
+          this.state.screen[type].controls.unduck(4, audioTypeMaps[type].volume)
         }
       }
     })
@@ -249,6 +255,24 @@ class App extends Component {
     })
   }
 
+  showImageViewerModal(url) {
+    this.setState({
+      modals: {
+        ...this.state.modals,
+        viewer: url,
+      },
+    })
+  }
+
+  hideImageViewerModal() {
+    this.setState({
+      modals: {
+        ...this.state.modals,
+        viewer: '',
+      }
+    })
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -297,6 +321,7 @@ class App extends Component {
         card: false,
         search: false,
         docs: false,
+        viewer: '',
       }
     }
 
@@ -336,8 +361,8 @@ class App extends Component {
             [type]: {
               ...this.state.screen[type],
               volume: (this.state.screen[type].controls !== null)
-                ? this.state.screen[type].controls.volume()
-                : this.globalVolume,
+                ? this.state.screen[type].controls.volume() / audioTypeMaps[type].volume
+                : this.globalVolume(type) / audioTypeMaps[type].volume,
             },
           }), {}),
         },
@@ -428,6 +453,7 @@ class App extends Component {
               )}
               cover=${location === 'background' ? this.state.screen.images.cover : false}
               onClick=${() => this.showModal(location)}
+              onModal=${(url) => () => this.showImageViewerModal(url)}
             />
             </div>
           `)}
@@ -453,12 +479,12 @@ class App extends Component {
       >
         <div class="audio-grid">
           ${audioTypes.map((type) => html`
-            <${LabeledItem} label=${audioTypeToLabel[type]}>
+            <${LabeledItem} label=${audioTypeMaps[type].label}>
               <div onClick=${() => this.showModal(type)}>
                 <div class="disabled-text">
                   <div
                     class="volume-slider ${
-                      this.state.screen[type].volume === 1.0
+                      this.state.screen[type].volume >= 0.99
                       || this.state.screen[type].volume === 0
                       ? 'inactive' : ''}"
                     style=${`width: ${this.state.screen[type].volume * 100}%`}
@@ -467,7 +493,7 @@ class App extends Component {
                   <div class="audio-label">
                     ${this.state.screen[type].label === ''
                       ? 'None' 
-                      : this.state.screen[type].label
+                      : this.state.screen[type].label + ' ' + (this.state.screen[type].volume * 100).toFixed(0) + '%'
                     }
                   </div>
                 </div>
@@ -549,6 +575,7 @@ class App extends Component {
                 label=${doc.label}
                 path=${doc.path}
                 text=${doc.text}
+                onPreviewImage=${(url) => this.showImageViewerModal(url)}
                 onEdit=${(path, text) => this.saveDocument(path, text)}
                 onClose=${(path) => this.closeDocument(path)}
               />
@@ -611,7 +638,7 @@ class App extends Component {
       ${audioTypes.map((type) => html`
         ${this.state.modals[type] && html`
           <${FileSelectorModal}
-            files=${this.state.campaign[audioTypeToDataSource[type]]}
+            files=${this.state.campaign[audioTypeMaps[type].dataSource]}
             onSelect=${(label, path) => this.startAudioLoop(type, label, path)}
             onSelectNone=${() => this.stopAudio(type)}
             onClose=${() => this.hideModal(type)}
@@ -649,6 +676,13 @@ class App extends Component {
           selectedCards=${[]}
           onUpdate=${(cards) => this.addCharacterToInitiative(cards[0])}
           onClose=${() => this.hideModal('combatCards')}
+        />
+      `}
+
+      ${this.state.modals.viewer && html`
+        <${ImageViewerModal}
+          url=${this.state.modals.viewer}
+          onClose=${() => this.hideImageViewerModal()}
         />
       `}
   

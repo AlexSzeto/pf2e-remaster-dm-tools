@@ -1,11 +1,12 @@
-import { Component } from 'preact'
+import { Component, render } from 'preact'
 import { html } from 'htm/preact'
 import { ContentSection } from './content-section.js'
 import { getCookie } from '../common/util.js'
+import { FeatherIcon } from './feather-icon.js'
 
 export class MarkdownDocument extends Component {
 
-  constructor({label, path, text, onEdit, onClose}) {
+  constructor({label, path, text, onEdit, onClose, onPreviewImage}) {
     super()
 
     const currentCampaign = getCookie('currentCampaign')
@@ -24,6 +25,25 @@ export class MarkdownDocument extends Component {
     return text.replace(imageLinks, `$1/campaign-resource/${this.state.currentCampaign}/$2`)
   }
 
+  createImageLinks() {
+    const previewElement = document.querySelector(`[data-path="${this.state.path}"] .preview`)
+    const images = previewElement.querySelectorAll('img')
+
+    images.forEach(image => {
+      const url = image.src
+      const enhancedImage = document.createElement('div')
+      image.parentElement.replaceChild(enhancedImage, image)
+      render(html`
+        <div class="album-image">
+          <button class="square top-left" onClick=${() => this.props.onPreviewImage(url)}>
+            <${FeatherIcon} icon="zoom-in" />
+          </button>
+          <img src=${url} />
+        </div>
+      `, enhancedImage)
+    })
+  }
+
   updateEditor() {
     const componentElement = document.querySelector(`[data-path="${this.state.path}"]`)
     const editorElement = componentElement.querySelector('.editor')
@@ -39,10 +59,12 @@ export class MarkdownDocument extends Component {
     })
     const updateText = () => {
       previewElement.innerHTML = marked.parse(this.enhanceMarkdownText(editor.getValue()))
+      this.createImageLinks()
       this.setState({text: editor.getValue()})
     }
     editor.session.on('change', updateText);
     previewElement.innerHTML = marked.parse(this.enhanceMarkdownText(editor.getValue()))
+    this.createImageLinks()
   }
 
   componentDidMount() {
