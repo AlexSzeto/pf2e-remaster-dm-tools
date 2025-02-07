@@ -10,7 +10,6 @@ app = Flask(__name__)
 
 # File path for current campaign data
 CAMPAIGN_FOLDER = "campaigns"
-CURRENT_CAMPAIGN = os.path.join(CAMPAIGN_FOLDER, "current.json")
 
 # Home page
 @app.route("/")
@@ -52,7 +51,7 @@ def insert_update_campaign_resource(campaign_name, resource_type):
                 return jsonify({"error": "Invalid or missing JSON payload"}), 400
             
             # Create the campaign data point if it doesn't exist
-            campaign_path = os.path.join(CAMPAIGN_FOLDER, f"{campaign_name}.json")
+            campaign_path = os.path.join(CAMPAIGN_FOLDER, campaign_name, "campaign.json")
             if os.path.exists(campaign_path):
                 # Read and return contents of project.json
                 with open(campaign_path, "r") as f:
@@ -60,7 +59,9 @@ def insert_update_campaign_resource(campaign_name, resource_type):
                     campaign_data["cards"].append(data)
                     with open(campaign_path, "w") as f:
                         json.dump(campaign_data, f, indent=2)
-            return jsonify({"message": "Data saved successfully"}), 200
+                        return jsonify({"message": "Data saved successfully"}), 200
+            else:
+                return jsonify({"error": "Campaign does not exist"}), 404
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     else:

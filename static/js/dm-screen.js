@@ -27,12 +27,14 @@ const audioTypeMaps = {
   bgm: {
     dataSource: 'bgms',
     label: 'Background Music',
-    volume: 0.50,
+    // volume: 0.50,
+    volume: 1.00
   },
   ambience: {
     dataSource: 'ambiences',
     label: 'Ambience',
-    volume: 0.20,
+    // volume: 0.20,
+    volume: 1.00
   },
 }
 
@@ -520,42 +522,6 @@ class App extends Component {
     <div class="tab">
       <div class="tab-content notes-grid">
         <${ContentSection}
-          label="Reference Cards"
-          actions=${[
-            {
-              icon: 'search',
-              onClick: () => this.showModal('search')
-            },
-            {
-              icon: 'plus',
-              onClick: () => this.showModal('card')
-            },
-            {
-              icon: 'x',
-              onClick: () => this.updateCards([])
-            }
-          ]}
-        >
-          <div class="card-grid">
-            ${this.state.notes.cards.map((card) => html`
-              <div class="reference-card-frame">
-              <${ContentSection}
-                label=""
-                actions=${[
-                  {
-                    icon: 'x',
-                    onClick: () => this.removeNotesCard(card)
-                  }
-                ]}
-              >
-                  <${Card} data=${card} />
-              </${ContentSection}>
-              </div>
-              `)}
-          </div>
-        </${ContentSection}>
-
-        <${ContentSection}
           label="Documents"
           actions=${[
             {
@@ -591,6 +557,41 @@ class App extends Component {
     <h2 class="collapsible">Combat</h2>
     <div class="tab">
       <div class="tab-content combat-grid">
+          <${ContentSection}
+          label="Reference Cards"
+          actions=${[
+            {
+              icon: 'search',
+              onClick: () => this.showModal('search')
+            },
+            {
+              icon: 'plus',
+              onClick: () => this.showModal('card')
+            },
+            {
+              icon: 'x',
+              onClick: () => this.updateCards([])
+            }
+          ]}
+        >
+          <div class="card-grid">
+            ${this.state.notes.cards.map((card) => html`
+              <div class="reference-card-frame">
+              <${ContentSection}
+                label=""
+                actions=${[
+                  {
+                    icon: 'x',
+                    onClick: () => this.removeNotesCard(card)
+                  }
+                ]}
+              >
+                  <${Card} data=${card} />
+              </${ContentSection}>
+              </div>
+              `)}
+          </div>
+        </${ContentSection}>      
         <${ContentSection}
           label="Initiative Tracker"
           actions=${[

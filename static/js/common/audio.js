@@ -1,5 +1,6 @@
+const audioContext = new AudioContext()
+
 export function createAudioSource(path, fadeInDuration, fadeToGain = 1.0) {
-  let audioContext = new AudioContext()
   let bufferSource = audioContext.createBufferSource()
   let gainNode = audioContext.createGain()
 
