@@ -9,3 +9,6 @@
 [submodule "static/js/ace-editor"]
 	path = static/js/ace-editor
 	url = https://github.com/ajaxorg/ace.git
+[submodule "external-resources/pf2e"]
+	path = external-resources/pf2e
+	url = https://github.com/foundryvtt/pf2e.git
