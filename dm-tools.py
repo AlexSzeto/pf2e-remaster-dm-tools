@@ -194,7 +194,7 @@ def campaign_data(name):
 # Pull an item from the foundry vtt pf2e module and return it
 @app.route("/rule/<folder>/<query>", methods=["GET"])
 def get_rule(folder, query):
-    rule_path = os.path.join("pf2e", "packs", folder)
+    rule_path = os.path.join("external-resources/pf2e", "packs", folder)
     try:
         if not os.path.exists(rule_path):
             return jsonify({"error": "Folder does not exist"}), 404
