@@ -165,7 +165,7 @@ def current_campaign():
             data = request.get_json()
             if not data:
                 return jsonify({"error": "Invalid or missing JSON payload"}), 400             
-            settings["campaign"]["current"] = data["id"]            
+            settings["campaign"]["current"] = data["current"]            
             with open("settings.json", "w") as f:
                 json.dump(settings, f, indent=2)
             return jsonify({"message": "Data saved successfully"}), 200
@@ -173,7 +173,7 @@ def current_campaign():
             return jsonify({"error": str(e)}), 500
     if request.method == "GET":
         try:
-            return jsonify({"id": settings["campaign"]["current"]}), 200
+            return jsonify({"current": settings["campaign"]["current"]}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         

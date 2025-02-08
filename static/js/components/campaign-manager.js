@@ -58,7 +58,7 @@ export class CampaignManager extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: current }),
+      body: JSON.stringify({ current }),
     }).catch((error) => {
       console.error('Error setting current campaign:', error)
     })
