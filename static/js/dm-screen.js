@@ -3,7 +3,6 @@ import { html } from 'htm/preact'
 
 import { ContentSection, LabeledItem } from './components/content-section.js'
 import { FramedImage } from './components/framed-image.js'
-import { FeatherIcon } from './components/feather-icon.js'
 
 import { Card } from './components/card.js'
 import {
@@ -14,11 +13,11 @@ import { campaignResource, getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
 import { MarkdownDocument } from './components/md-doc.js'
 
-import { ImageSelectorModal } from './components/image-selector-modal.js'
-import { FileSelectorModal } from './components/file-modal.js'
-import { CardSelectorModal } from './components/card-modal.js'
-import { RulesSearchModal } from './components/rules-search-modal.js'
-import { ImageViewerModal } from './components/image-viewer-modal.js'
+import { ImageSelectorModal } from './modals/image-selector-modal.js'
+import { FileSelectorModal } from './modals/file-modal.js'
+import { CardSelectorModal } from './modals/card-modal.js'
+import { RulesSearchModal } from './modals/rules-search-modal.js'
+import { ImageViewerModal } from './modals/image-viewer-modal.js'
 
 const imageLocations = ['background', 'left', 'right']
 const audioTypes = ['bgm', 'ambience']
@@ -28,13 +27,13 @@ const audioTypeMaps = {
     dataSource: 'bgms',
     label: 'Background Music',
     // volume: 0.50,
-    volume: 1.00
+    volume: 1.0,
   },
   ambience: {
     dataSource: 'ambiences',
     label: 'Ambience',
     // volume: 0.20,
-    volume: 1.00
+    volume: 1.0,
   },
 }
 
@@ -45,21 +44,23 @@ class App extends Component {
   // IMAGE
   //
   showImage(location, url) {
-    const images = location === 'background' 
-      ? {
-        background: url,
-        left: '',
-        right: '',
-        cover: true,
-      } : {
-        ...this.state.screen.images,
-        [location]: url,
-      }
+    const images =
+      location === 'background'
+        ? {
+            background: url,
+            left: '',
+            right: '',
+            cover: true,
+          }
+        : {
+            ...this.state.screen.images,
+            [location]: url,
+          }
 
     this.setState({
       screen: {
         ...this.state.screen,
-        images
+        images,
       },
     })
 
@@ -67,37 +68,46 @@ class App extends Component {
   }
 
   toggleBackgroundCover() {
-    this.setState({
-      screen: {
-        ...this.state.screen,
-        images: {
-          ...this.state.screen.images,
-          cover: !this.state.screen.images.cover,
+    this.setState(
+      {
+        screen: {
+          ...this.state.screen,
+          images: {
+            ...this.state.screen.images,
+            cover: !this.state.screen.images.cover,
+          },
         },
       },
-    }, () => setCookie('screenImages', JSON.stringify(this.state.screen.images)))    
+      () => setCookie('screenImages', JSON.stringify(this.state.screen.images))
+    )
   }
-  
+
   //
   // AUDIO
   //
   globalVolume(type) {
-    return this.state.screen.duckAudio ? duckVolume * audioTypeMaps[type].volume : audioTypeMaps[type].volume
+    return this.state.screen.duckAudio
+      ? duckVolume * audioTypeMaps[type].volume
+      : audioTypeMaps[type].volume
   }
 
   startAudioLoop(type, label, url) {
-    if(url === '') {
+    if (url === '') {
       this.stopAudio(type)
       return
     }
 
-    const start = (fadeInDuration) =>{
+    const start = (fadeInDuration) => {
       this.setState({
         screen: {
           ...this.state.screen,
           [type]: {
             label,
-            controls: createAudioSource(campaignResource(this.state.campaign.id, url), fadeInDuration, this.globalVolume(type)),
+            controls: createAudioSource(
+              campaignResource(this.state.campaign.id, url),
+              fadeInDuration,
+              this.globalVolume(type)
+            ),
           },
         },
       })
@@ -120,13 +130,16 @@ class App extends Component {
     this.setState({
       screen: {
         ...this.state.screen,
-        ...audioTypes.reduce((updates, type) => ({
-          ...updates,
-          [type]: {
-            label: '',
-            controls: null,
-          },
-        }), {})
+        ...audioTypes.reduce(
+          (updates, type) => ({
+            ...updates,
+            [type]: {
+              label: '',
+              controls: null,
+            },
+          }),
+          {}
+        ),
       },
     })
   }
@@ -135,15 +148,18 @@ class App extends Component {
     if (this.state.screen[type].controls !== null) {
       this.state.screen[type].controls.end(4)
     }
-    this.setState({
-      screen: {
-        ...this.state.screen,
-        [type]: {
-          label: '',
-          controls: null,
+    this.setState(
+      {
+        screen: {
+          ...this.state.screen,
+          [type]: {
+            label: '',
+            controls: null,
+          },
         },
       },
-    }, () => feather.replace())
+      () => feather.replace()
+    )
   }
 
   toggleAudioDuck() {
@@ -151,22 +167,25 @@ class App extends Component {
     this.setState({
       screen: {
         ...this.state.screen,
-        duckAudio
+        duckAudio,
       },
     })
 
     audioTypes.forEach((type) => {
       if (this.state.screen[type].controls !== null) {
         if (duckAudio) {
-          this.state.screen[type].controls.duck(1, duckVolume * audioTypeMaps[type].volume)
+          this.state.screen[type].controls.duck(
+            1,
+            duckVolume * audioTypeMaps[type].volume
+          )
         } else {
           this.state.screen[type].controls.unduck(4, audioTypeMaps[type].volume)
         }
       }
     })
   }
-  
-  // 
+
+  //
   // NOTES
   //
   loadDocument(label, path) {
@@ -191,8 +210,7 @@ class App extends Component {
     fetch(`/campaign-resource/${this.state.campaign.id}/docs`, {
       method: 'POST',
       body: formData,
-    })
-    .then((response) => {
+    }).then((response) => {
       if (response.ok) {
         console.log('Document saved:', path)
       }
@@ -234,7 +252,7 @@ class App extends Component {
       },
     })
   }
-  
+
   //
   // MODALS
   //
@@ -271,7 +289,7 @@ class App extends Component {
       modals: {
         ...this.state.modals,
         viewer: '',
-      }
+      },
     })
   }
 
@@ -309,7 +327,7 @@ class App extends Component {
       },
       notes: {
         cards: [],
-        docs: []
+        docs: [],
       },
       combat: {
         list: [],
@@ -324,7 +342,7 @@ class App extends Component {
         search: false,
         docs: false,
         viewer: '',
-      }
+      },
     }
 
     // Get current campaign from cookie
@@ -335,7 +353,6 @@ class App extends Component {
       fetch(`/campaign/${currentCampaign}`)
         .then((response) => response.json())
         .then((campaign) => {
-
           // Update state with loaded data
           const savedImages = getCookie('screenImages')
           const initiatives = getCookie('initiativeTracker')
@@ -344,7 +361,9 @@ class App extends Component {
             campaign,
             screen: {
               ...this.state.screen,
-              images: savedImages ? JSON.parse(savedImages) : this.state.screen.images,
+              images: savedImages
+                ? JSON.parse(savedImages)
+                : this.state.screen.images,
             },
             combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
           })
@@ -358,22 +377,27 @@ class App extends Component {
       this.setState({
         screen: {
           ...this.state.screen,
-          ...audioTypes.reduce((updates, type, i) => ({
-            ...updates,
-            [type]: {
-              ...this.state.screen[type],
-              volume: (this.state.screen[type].controls !== null)
-                ? this.state.screen[type].controls.volume() / audioTypeMaps[type].volume
-                : this.globalVolume(type) / audioTypeMaps[type].volume,
-            },
-          }), {}),
+          ...audioTypes.reduce(
+            (updates, type, i) => ({
+              ...updates,
+              [type]: {
+                ...this.state.screen[type],
+                volume:
+                  this.state.screen[type].controls !== null
+                    ? this.state.screen[type].controls.volume() /
+                      audioTypeMaps[type].volume
+                    : this.globalVolume(type) / audioTypeMaps[type].volume,
+              },
+            }),
+            {}
+          ),
         },
       })
-    }, 200);
+    }, 200)
   }
 
   componentDidUpdate() {
-    feather.replace()   
+    feather.replace()
   }
 
   addCharacterToInitiative(card) {
@@ -432,7 +456,6 @@ class App extends Component {
   }
 
   render() {
-
     const explorationImage = html`
     <div style="grid-area: image">
       <${ContentSection}
@@ -440,25 +463,29 @@ class App extends Component {
         actions=${[
           {
             icon: this.state.screen.images.cover ? 'minimize' : 'maximize',
-            onClick: () => this.toggleBackgroundCover()
-          }
+            onClick: () => this.toggleBackgroundCover(),
+          },
         ]}
       >
         <div class="images-layout">
-          ${imageLocations.map((location) => html`
-            <div class="${location}-container">
-            <${FramedImage}
-              type=${location}
-              url=${campaignResource(
-                this.state.campaign.id,
-                this.state.screen.images[location]
-              )}
-              cover=${location === 'background' ? this.state.screen.images.cover : false}
-              onClick=${() => this.showModal(location)}
-              onModal=${(url) => () => this.showImageViewerModal(url)}
-            />
-            </div>
-          `)}
+          ${imageLocations.map(
+            (location) => html`
+              <div class="${location}-container">
+                <${FramedImage}
+                  type=${location}
+                  url=${campaignResource(
+                    this.state.campaign.id,
+                    this.state.screen.images[location]
+                  )}
+                  cover=${location === 'background'
+                    ? this.state.screen.images.cover
+                    : false}
+                  onClick=${() => this.showModal(location)}
+                  onModal=${(url) => () => this.showImageViewerModal(url)}
+                />
+              </div>
+            `
+          )}
         </div>
       </${ContentSection}>
     </div>    
@@ -471,50 +498,57 @@ class App extends Component {
         actions=${[
           {
             icon: this.state.screen.duckAudio ? 'volume-2' : 'volume-x',
-            onClick: () => this.toggleAudioDuck()
+            onClick: () => this.toggleAudioDuck(),
           },
           {
             icon: 'square',
-            onClick: () => this.stopAllAudio()
-          }
+            onClick: () => this.stopAllAudio(),
+          },
         ]}
       >
         <div class="audio-grid">
-          ${audioTypes.map((type) => html`
+          ${audioTypes.map(
+            (type) => html`
             <${LabeledItem} label=${audioTypeMaps[type].label}>
               <div onClick=${() => this.showModal(type)}>
                 <div class="disabled-text">
                   <div
                     class="volume-slider ${
-                      this.state.screen[type].volume >= 0.99
-                      || this.state.screen[type].volume === 0
-                      ? 'inactive' : ''}"
+                      this.state.screen[type].volume >= 0.99 ||
+                      this.state.screen[type].volume === 0
+                        ? 'inactive'
+                        : ''
+                    }"
                     style=${`width: ${this.state.screen[type].volume * 100}%`}
                   >
                   </div>
                   <div class="audio-label">
-                    ${this.state.screen[type].label === ''
-                      ? 'None' 
-                      : this.state.screen[type].label + ' ' + (this.state.screen[type].volume * 100).toFixed(0) + '%'
+                    ${
+                      this.state.screen[type].label === ''
+                        ? 'None'
+                        : this.state.screen[type].label +
+                          ' ' +
+                          (this.state.screen[type].volume * 100).toFixed(0) +
+                          '%'
                     }
                   </div>
                 </div>
               </div>
             </${LabeledItem}>
-          `)}
+          `
+          )}
         </div>
       </${ContentSection}>
     </div>
     `
 
     const explorationTab = html`
-    <h2 class="collapsible">Immersive Mode</h2>
-    <div class="tab">
-      <div class="tab-content immersive-mode-grid">
-        ${explorationImage}
-        ${explorationAudio}
+      <h2 class="collapsible">Immersive Mode</h2>
+      <div class="tab">
+        <div class="tab-content immersive-mode-grid">
+          ${explorationImage} ${explorationAudio}
+        </div>
       </div>
-    </div>
     `
 
     const notesTab = html`
@@ -526,27 +560,29 @@ class App extends Component {
           actions=${[
             {
               icon: 'plus',
-              onClick: () => this.showModal('docs')
+              onClick: () => this.showModal('docs'),
             },
             {
               icon: 'x',
-              onClick: () => this.closeAllDocuments()
+              onClick: () => this.closeAllDocuments(),
             },
           ]}
         >
           <div class="doc-grid">
-            ${this.state.notes.docs.map((doc) => html`
-            <div class="doc-container">
-              <${MarkdownDocument} 
-                label=${doc.label}
-                path=${doc.path}
-                text=${doc.text}
-                onPreviewImage=${(url) => this.showImageViewerModal(url)}
-                onEdit=${(path, text) => this.saveDocument(path, text)}
-                onClose=${(path) => this.closeDocument(path)}
-              />
-            </div>
-            `)}
+            ${this.state.notes.docs.map(
+              (doc) => html`
+                <div class="doc-container">
+                  <${MarkdownDocument}
+                    label=${doc.label}
+                    path=${doc.path}
+                    text=${doc.text}
+                    onPreviewImage=${(url) => this.showImageViewerModal(url)}
+                    onEdit=${(path, text) => this.saveDocument(path, text)}
+                    onClose=${(path) => this.closeDocument(path)}
+                  />
+                </div>
+              `
+            )}
           </div>
         </${ContentSection}>
       </div>
@@ -562,34 +598,36 @@ class App extends Component {
           actions=${[
             {
               icon: 'search',
-              onClick: () => this.showModal('search')
+              onClick: () => this.showModal('search'),
             },
             {
               icon: 'plus',
-              onClick: () => this.showModal('card')
+              onClick: () => this.showModal('card'),
             },
             {
               icon: 'x',
-              onClick: () => this.updateCards([])
-            }
+              onClick: () => this.updateCards([]),
+            },
           ]}
         >
           <div class="card-grid">
-            ${this.state.notes.cards.map((card) => html`
+            ${this.state.notes.cards.map(
+              (card) => html`
               <div class="reference-card-frame">
               <${ContentSection}
                 label=""
                 actions=${[
                   {
                     icon: 'x',
-                    onClick: () => this.removeNotesCard(card)
-                  }
+                    onClick: () => this.removeNotesCard(card),
+                  },
                 ]}
               >
                   <${Card} data=${card} />
               </${ContentSection}>
               </div>
-              `)}
+              `
+            )}
           </div>
         </${ContentSection}>      
         <${ContentSection}
@@ -597,8 +635,8 @@ class App extends Component {
           actions=${[
             {
               icon: 'plus',
-              onClick: () => this.showModal('combatCards')
-            }
+              onClick: () => this.showModal('combatCards'),
+            },
           ]}
         >
           <${InitiativeTracker}
@@ -617,61 +655,65 @@ class App extends Component {
         <h1 class="logo">PF2E Tools - DM Screen</h1>
       </div>
       <div class="page-content">
-        <div class="tabs">
-          ${explorationTab}
-          ${notesTab}
-          ${combatTab}
-        </div>
+        <div class="tabs">${explorationTab} ${notesTab} ${combatTab}</div>
       </div>
 
-
-      ${imageLocations.map((location) => html`
-        ${this.state.modals[location] && html`
-          <${ImageSelectorModal}
-            campaign=${this.state.campaign.id}
-            images=${this.state.campaign.images.map((imageData) => imageData.path)}
-            onSelect=${(url) => this.showImage(location, url)}
-            onClose=${() => this.hideModal(location)}
-          />
-        `}
-      `)}
-
-      ${audioTypes.map((type) => html`
-        ${this.state.modals[type] && html`
-          <${FileSelectorModal}
-            files=${this.state.campaign[audioTypeMaps[type].dataSource]}
-            onSelect=${(label, path) => this.startAudioLoop(type, label, path)}
-            onSelectNone=${() => this.stopAudio(type)}
-            onClose=${() => this.hideModal(type)}
-          />
-        `}
-      `)}
-
-      ${this.state.modals.card && html`
-      <${CardSelectorModal}
-        cards=${this.state.campaign.cards}
-        selectedCards=${this.state.notes.cards}
-        onUpdate=${(cards) => this.updateCards(cards)}
-        onClose=${() => this.hideModal('card')}
-      />
+      ${imageLocations.map(
+        (location) => html`
+          ${this.state.modals[location] &&
+          html`
+            <${ImageSelectorModal}
+              campaign=${this.state.campaign.id}
+              images=${this.state.campaign.images.map(
+                (imageData) => imageData.path
+              )}
+              onSelect=${(url) => this.showImage(location, url)}
+              onClose=${() => this.hideModal(location)}
+            />
+          `}
+        `
+      )}
+      ${audioTypes.map(
+        (type) => html`
+          ${this.state.modals[type] &&
+          html`
+            <${FileSelectorModal}
+              files=${this.state.campaign[audioTypeMaps[type].dataSource]}
+              onSelect=${(label, path) =>
+                this.startAudioLoop(type, label, path)}
+              onSelectNone=${() => this.stopAudio(type)}
+              onClose=${() => this.hideModal(type)}
+            />
+          `}
+        `
+      )}
+      ${this.state.modals.card &&
+      html`
+        <${CardSelectorModal}
+          cards=${this.state.campaign.cards}
+          selectedCards=${this.state.notes.cards}
+          onUpdate=${(cards) => this.updateCards(cards)}
+          onClose=${() => this.hideModal('card')}
+        />
       `}
-
-      ${this.state.modals.search && html`
-      <${RulesSearchModal}
-        onResult=${(result) => this.updateCards([...this.state.notes.cards, result])}
-        onClose=${() => this.hideModal('search')}
-      />
+      ${this.state.modals.search &&
+      html`
+        <${RulesSearchModal}
+          onResult=${(result) =>
+            this.updateCards([...this.state.notes.cards, result])}
+          onClose=${() => this.hideModal('search')}
+        />
       `}
-
-      ${this.state.modals.docs && html`
-      <${FileSelectorModal}
-        files=${this.state.campaign.docs}
-        onSelect=${(label, path) => this.loadDocument(label, path)}
-        onClose=${() => this.hideModal('docs')}
-      />
+      ${this.state.modals.docs &&
+      html`
+        <${FileSelectorModal}
+          files=${this.state.campaign.docs}
+          onSelect=${(label, path) => this.loadDocument(label, path)}
+          onClose=${() => this.hideModal('docs')}
+        />
       `}
-
-      ${this.state.modals.combatCards && html`
+      ${this.state.modals.combatCards &&
+      html`
         <${CardSelectorModal}
           cards=${this.state.campaign.cards}
           selectedCards=${[]}
@@ -679,15 +721,13 @@ class App extends Component {
           onClose=${() => this.hideModal('combatCards')}
         />
       `}
-
-      ${this.state.modals.viewer && html`
+      ${this.state.modals.viewer &&
+      html`
         <${ImageViewerModal}
           url=${this.state.modals.viewer}
           onClose=${() => this.hideImageViewerModal()}
         />
       `}
-  
-  
     `
   }
 }

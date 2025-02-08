@@ -1,10 +1,10 @@
 import { Component, createRef } from 'preact'
 import { html } from 'htm/preact'
 import { spellToCard } from '../common/rule-to-card.js'
-import { Modal } from './modal.js'
+import { Modal } from './../components/modal.js'
 
 export class RulesSearchModal extends Component {
-  constructor({onResult, onClose}) {
+  constructor({ onResult, onClose }) {
     super()
 
     this.queryInput = createRef()
@@ -21,11 +21,11 @@ export class RulesSearchModal extends Component {
 
   doSearch() {
     fetch(`/rule/spells/${this.state.query}`)
-    .then(response => response.json())
-    .then(data => {      
-      this.props.onResult(spellToCard(data))
-      this.props.onClose()
-    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.props.onResult(spellToCard(data))
+        this.props.onClose()
+      })
   }
 
   render() {
@@ -37,14 +37,14 @@ export class RulesSearchModal extends Component {
             type="text"
             placeholder="Search..."
             onKeyPress=${(e) => {
-              if(e.key === 'Enter') {
+              if (e.key === 'Enter') {
                 this.doSearch()
               } else if (e.key === 'Escape') {
                 this.props.onClose()
               }
             }}
             onInput=${(e) => {
-              this.setState({query: e.target.value})
+              this.setState({ query: e.target.value })
             }}
           />
           <button onClick=${(e) => this.doSearch()}>
