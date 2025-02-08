@@ -7,7 +7,7 @@ export class CampaignManager extends Component {
     super(props)
     this.state = {
       campaigns: [],
-      currentCampaign: '',
+      current: '',
     }
     this.loadCampaigns()
   }
@@ -16,10 +16,8 @@ export class CampaignManager extends Component {
     fetch('./campaigns')
       .then((response) => response.json())
       .then((campaignData) => {
-        const currentCampaign = getCookie('currentCampaign') || ""
         const nextState = {
           ...campaignData,
-          currentCampaign
         }
         this.setState(nextState)
         console.log(nextState)
@@ -34,7 +32,7 @@ export class CampaignManager extends Component {
     const form = event.target
     const formData = new FormData(form)
     const name = formData.get('name')
-    if(!name || name.length === 0) {
+    if (!name || name.length === 0) {
       return
     }
     fetch('./campaigns', {
@@ -53,9 +51,17 @@ export class CampaignManager extends Component {
       })
   }
 
-  setCurrentCampaign(currentCampaign) {
-    this.setState({ currentCampaign })
-    setCookie('currentCampaign', currentCampaign)
+  setCurrentCampaign(current) {
+    this.setState({ current })
+    fetch('./campaign/current', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: current }),
+    }).catch((error) => {
+      console.error('Error setting current campaign:', error)
+    })
   }
 
   render() {
@@ -65,17 +71,17 @@ export class CampaignManager extends Component {
         <h2>Select</h2>
         <div class="subsection vertical-list">
           ${this.state.campaigns.map(
-          (campaign) => html`
-            <div>
-            <a
-              href="#"
-              class=${campaign.id === this.state.currentCampaign ? "selected" : ""}
-              onClick=${() => this.setCurrentCampaign(campaign.id)}
-            >
-              ${campaign.name}
-            </a>
-            </div>
-          `
+            (campaign) => html`
+              <div>
+                <a
+                  href="#"
+                  class=${campaign.id === this.state.current ? 'selected' : ''}
+                  onClick=${() => this.setCurrentCampaign(campaign.id)}
+                >
+                  ${campaign.name}
+                </a>
+              </div>
+            `
           )}
         </div>
       </div>
@@ -83,10 +89,10 @@ export class CampaignManager extends Component {
         <h2>Create</h2>
         <div class="subsection">
           <form onSubmit=${this.createCampaign.bind(this)}>
-          <label>
-            <input type="text" name="name" />
-          </label>
-          <button type="submit">Create</button>
+            <label>
+              <input type="text" name="name" />
+            </label>
+            <button type="submit">Create</button>
           </form>
         </div>
       </div>

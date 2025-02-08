@@ -104,7 +104,7 @@ class App extends Component {
           [type]: {
             label,
             controls: createAudioSource(
-              campaignResource(this.state.campaign.id, url),
+              campaignResource(url),
               fadeInDuration,
               this.globalVolume(type)
             ),
@@ -189,7 +189,7 @@ class App extends Component {
   // NOTES
   //
   loadDocument(label, path) {
-    fetch(campaignResource(this.state.campaign.id, path))
+    fetch(campaignResource(path))
       .then((response) => response.text())
       .then((text) => {
         this.setState({
@@ -346,32 +346,27 @@ class App extends Component {
     }
 
     // Get current campaign from cookie
-    const currentCampaign = getCookie('currentCampaign')
+    fetch(`/campaign`)
+      .then((response) => response.json())
+      .then((campaign) => {
+        // Update state with loaded data
+        const savedImages = getCookie('screenImages')
+        const initiatives = getCookie('initiativeTracker')
 
-    // If current campaign is set, load it
-    if (currentCampaign) {
-      fetch(`/campaign/${currentCampaign}`)
-        .then((response) => response.json())
-        .then((campaign) => {
-          // Update state with loaded data
-          const savedImages = getCookie('screenImages')
-          const initiatives = getCookie('initiativeTracker')
-
-          this.setState({
-            campaign,
-            screen: {
-              ...this.state.screen,
-              images: savedImages
-                ? JSON.parse(savedImages)
-                : this.state.screen.images,
-            },
-            combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
-          })
+        this.setState({
+          campaign,
+          screen: {
+            ...this.state.screen,
+            images: savedImages
+              ? JSON.parse(savedImages)
+              : this.state.screen.images,
+          },
+          combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
         })
-        .catch((error) => {
-          console.error('Error loading data from campaigns.json:', error)
-        })
-    }
+      })
+      .catch((error) => {
+        console.error('Error loading data from campaigns.json:', error)
+      })
 
     setInterval(() => {
       this.setState({
@@ -473,10 +468,7 @@ class App extends Component {
               <div class="${location}-container">
                 <${FramedImage}
                   type=${location}
-                  url=${campaignResource(
-                    this.state.campaign.id,
-                    this.state.screen.images[location]
-                  )}
+                  url=${campaignResource(this.state.screen.images[location])}
                   cover=${location === 'background'
                     ? this.state.screen.images.cover
                     : false}
@@ -663,7 +655,6 @@ class App extends Component {
           ${this.state.modals[location] &&
           html`
             <${ImageSelectorModal}
-              campaign=${this.state.campaign.id}
               images=${this.state.campaign.images.map(
                 (imageData) => imageData.path
               )}

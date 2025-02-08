@@ -11,7 +11,6 @@ const extractResourceName = (name) =>
     .join(' ')
 
 export const ImageSelectorModal = ({
-  campaign,
   images,
   onSelect,
   onClose,
@@ -35,7 +34,7 @@ export const ImageSelectorModal = ({
             </div>
             <img
               class="image"
-              src="${campaignResource(campaign, image)}"
+              src="${campaignResource(image)}"
               onClick=${() => {
                 onSelect(image)
                 onClose()

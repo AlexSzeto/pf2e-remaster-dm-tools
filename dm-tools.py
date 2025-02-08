@@ -8,15 +8,23 @@ import re
 
 app = Flask(__name__)
 
-# File path for current campaign data
-CAMPAIGN_FOLDER = "campaigns"
+JSON_TEMPLATES_FOLDER = "json-templates"
+
+def campaign_root():
+    return settings["campaign"]["root"]
+
+def campaign_folder():
+    return os.path.join(campaign_root(), settings["campaign"]["current"])
+
+def campaign_file():
+    return os.path.join(campaign_folder(), "campaign.json")
 
 # Home page
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/tools/<page_name>")
+@app.route("/<page_name>")
 def render_page(page_name):
     try:
         if page_name == "":
@@ -25,8 +33,8 @@ def render_page(page_name):
     except Exception as e:
         return f"Error loading page {page_name}: {e}", 404
 
-@app.route("/campaign-resource/<campaign_name>/<resource_name>")
-def get_campaign_resource(campaign_name, resource_name):
+@app.route("/resource/<resource_name>")
+def get_resource(resource_name):
     try:
         # Capture the file extension from resource_name
         file_extension = os.path.splitext(resource_name)[1]
@@ -37,94 +45,93 @@ def get_campaign_resource(campaign_name, resource_name):
         elif file_extension in [".md", ".txt"]:
             resource_folder = "docs"
         
-        return send_from_directory(os.path.join(CAMPAIGN_FOLDER, campaign_name, resource_folder), resource_name)
+        return send_from_directory(os.path.join(campaign_folder(), resource_folder), resource_name)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/campaign-resource/<campaign_name>/<resource_type>", methods=["POST"])
-def insert_update_campaign_resource(campaign_name, resource_type):
-    if resource_type == "card":
-        try:
-            # Get JSON payload
-            data = request.get_json()
-            if not data:
-                return jsonify({"error": "Invalid or missing JSON payload"}), 400
-            
-            # Create the campaign data point if it doesn't exist
-            campaign_path = os.path.join(CAMPAIGN_FOLDER, campaign_name, "campaign.json")
-            if os.path.exists(campaign_path):
-                # Read and return contents of project.json
-                with open(campaign_path, "r") as f:
-                    campaign_data = json.load(f)
-                    campaign_data["cards"].append(data)
-                    with open(campaign_path, "w") as f:
+@app.route("/resource", methods=["POST"])
+def insert_update_resource():
+    try:
+        # Get the file from the request
+        file = request.files["file"]
+        # Capture the file extension from resource_name
+        file_extension = os.path.splitext(file.filename)[1]
+        if file_extension in [".jpg", ".jpeg", ".png", ".gif", ".svg"]:
+            resource_folder = "images"
+        elif file_extension in [".mp3", ".wav", ".ogg"]:
+            resource_folder = "audio"
+        elif file_extension in [".md", ".txt"]:
+            resource_folder = "docs"
+
+        # Create the campaign data point if it doesn't exist
+        if os.path.exists(campaign_file()):
+            # Read and return contents of project.json
+            with open(campaign_file(), "r") as f:
+                campaign_data = json.load(f)
+                if resource_type == "audio":
+                    resource_type = "ambiences" if "-ambience" in file.filename else "bgms"
+
+                resource_data = next((item for item in campaign_data[resource_type] if item["path"] == file.filename), None)
+                if resource_data == None:
+                    campaign_data[resource_type].append({
+                        "path": file.filename,
+                        "label": file.filename
+                    })
+                    with open(campaign_file(), "w") as f:
                         json.dump(campaign_data, f, indent=2)
-                        return jsonify({"message": "Data saved successfully"}), 200
-            else:
-                return jsonify({"error": "Campaign does not exist"}), 404
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
-    else:
-        try:
-            # Get the file from the request
-            file = request.files["file"]
-            # Capture the file extension from resource_name
-            file_extension = os.path.splitext(file.filename)[1]
-            if file_extension in [".jpg", ".jpeg", ".png", ".gif", ".svg"]:
-                resource_folder = "images"
-            elif file_extension in [".mp3", ".wav", ".ogg"]:
-                resource_folder = "audio"
-            elif file_extension in [".md", ".txt"]:
-                resource_folder = "docs"
+        
+        # Save the file to the campaign folder
+        file.save(os.path.join(campaign_folder(), resource_folder, file.filename))
+        return jsonify({"message": "File uploaded successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-            # Create the campaign data point if it doesn't exist
-            campaign_path = os.path.join(CAMPAIGN_FOLDER, f"{campaign_name}.json")
-            if os.path.exists(campaign_path):
-                # Read and return contents of project.json
-                with open(campaign_path, "r") as f:
-                    campaign_data = json.load(f)
-                    if resource_type == "audio":
-                        resource_type = "ambiences" if "-ambience" in file.filename else "bgms"
-
-                    resource_data = next((item for item in campaign_data[resource_type] if item["path"] == file.filename), None)
-                    if resource_data == None:
-                        campaign_data[resource_type].append({
-                            "path": file.filename,
-                            "label": file.filename
-                        })
-                        with open(campaign_path, "w") as f:
-                            json.dump(campaign_data, f, indent=2)
-            
-            # Save the file to the campaign folder
-            file.save(os.path.join(CAMPAIGN_FOLDER, campaign_name, resource_folder, file.filename))
-            return jsonify({"message": "File uploaded successfully"}), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+@app.route("/card", methods=["POST"])
+def insert_update_card():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid or missing JSON payload"}), 500
     
-# List all campaigns
+    try:
+        # Create the campaign data point if it doesn't exist
+        campaign_path = campaign_file()
+        if os.path.exists(campaign_path):
+            # Read and return contents of project.json
+            with open(campaign_path, "r") as f:
+                campaign_data = json.load(f)
+                campaign_data["cards"].append(data)
+                with open(campaign_path, "w") as f:
+                    json.dump(campaign_data, f, indent=2)
+                    return jsonify({"message": "Data saved successfully"}), 200
+        else:
+            return jsonify({"error": "Campaign does not exist"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Manage campaigns
 @app.route("/campaigns", methods=["POST", "GET"])
 def manage_campaigns():
     if request.method == "POST":
         try:
             # Convert form payload into JSON
             data = request.get_json()
-            if not data or "name" not in data:
-                return jsonify({"error": "Invalid or missing JSON payload"}), 400
             
-            # Create basic campaign structure: name and description
-            data["description"] = data.get("description", "")
-
-            # Create image, ambiences, bgm, and cards data structures
-            data["images"] = data.get("images", [])
-            data["ambiences"] = data.get("ambiences", [])
-            data["bgms"] = data.get("bgms", [])
-            data["cards"] = data.get("cards", [])
-            data["docs"] = data.get("docs", [])
-
+            with open(os.path.join(JSON_TEMPLATES_FOLDER, "campaign.json"), "r") as f:
+                template = json.load(f)
+                
+            data = {
+                **template,
+                **data
+            }
+                
             # Create new JSON file in campaigns directory
             id = re.sub(r"[',.]", "", data["name"].strip().replace(" ", "-")).lower()
             data["id"] = id
-            campaign_path = os.path.join(CAMPAIGN_FOLDER, f"{id}.json")
+            
+            # Create a new folder for the campaign
+            os.makedirs(os.path.join(campaign_root(), id), exist_ok=True)
+            
+            campaign_path = os.path.join(campaign_root(), id, "campaign.json")
             
             # Write payload to project.json
             with open(campaign_path, "w") as f:
@@ -132,28 +139,48 @@ def manage_campaigns():
             return jsonify({"message": "Data saved successfully"}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
-    try:
-        # Get list of all folders in campaigns directory
-        campaign_folders = [d for d in os.listdir(CAMPAIGN_FOLDER) if os.path.isdir(os.path.join(CAMPAIGN_FOLDER, d))]
-        campaigns = []
-        for folder in campaign_folders:
-            campaign_file = os.path.join(CAMPAIGN_FOLDER, folder, "campaign.json")
-            if os.path.exists(campaign_file):
-                with open(campaign_file, "r") as f:
-                    data = json.load(f)
-                    campaigns.append({
-                    "name": data["name"],
-                    "description": data["description"],
-                    "id": data["id"]
-                    })
-        return jsonify({"campaigns": campaigns}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    if request.method == "GET":
+        try:
+            # Get list of all folders in campaigns directory
+            campaign_folders = [d for d in os.listdir(campaign_root()) if os.path.isdir(os.path.join(campaign_root(), d))]
+            campaigns = []
+            for folder in campaign_folders:
+                campaign_file = os.path.join(campaign_root(), folder, "campaign.json")
+                if os.path.exists(campaign_file):
+                    with open(campaign_file, "r") as f:
+                        data = json.load(f)
+                        campaigns.append({
+                        "name": data["name"],
+                        "description": data["description"],
+                        "id": data["id"]
+                        })
+            return jsonify({"campaigns": campaigns, "current": settings["campaign"]["current"]}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
+@app.route("/campaign/current", methods=["POST", "GET"])
+def current_campaign():
+    if request.method == "POST":
+        try:
+            data = request.get_json()
+            if not data:
+                return jsonify({"error": "Invalid or missing JSON payload"}), 400             
+            settings["campaign"]["current"] = data["id"]            
+            with open("settings.json", "w") as f:
+                json.dump(settings, f, indent=2)
+            return jsonify({"message": "Data saved successfully"}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    if request.method == "GET":
+        try:
+            return jsonify({"id": settings["campaign"]["current"]}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        
 # CRUD operations for specific campaign
-@app.route("/campaign/<name>", methods=["POST", "PUT", "GET", "DELETE"])
-def campaign_data(name):
-    campaign_path = os.path.join(CAMPAIGN_FOLDER, name, "campaign.json")
+@app.route("/campaign", methods=["POST", "PUT", "GET", "DELETE"])
+def campaign_data():
+    campaign_path = os.path.join(campaign_folder(), "campaign.json")
     if request.method in ["POST", "PUT"]:
         try:
             # Get JSON payload
@@ -224,6 +251,20 @@ def open_browser():
 
 # Run the app
 if __name__ == "__main__":
+    # Create empty settings file if it doesn't exist
+    if not os.path.exists("settings.json"):
+        # Copy the settings template to settings.json
+        with open(os.path.join(JSON_TEMPLATES_FOLDER, "settings.json"), "r") as f:
+            settings_template = json.load(f)
+        with open("settings.json", "w") as f:
+            json.dump(settings_template, f, indent=2)
+            
+    # Open settings.json and store its content in the settings variable
+    with open("settings.json", "r") as f:
+        settings = json.load(f)
+        
+    print(settings["campaign"]["root"])
+        
     # Run the browser in a separate thread to prevent blocking
     threading.Thread(target=open_browser).start()
     app.run(debug=True)
