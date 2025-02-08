@@ -6,10 +6,6 @@
   path = pf2e
   url = https://github.com/foundryvtt/pf2e.git
 
-[submodule "static/ace-editor"]
-	path = static/ace-editor
-	url = https://github.com/ajaxorg/ace.git
-
 [submodule "static/js/ace-editor"]
 	path = static/js/ace-editor
 	url = https://github.com/ajaxorg/ace.git
