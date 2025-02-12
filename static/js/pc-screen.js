@@ -43,7 +43,8 @@ class App extends Component {
   render() {
     return html`
       <div
-        class="images-container ${this.state.initiativeTracker.inUse
+        class="images-container ${this.state.initiativeTracker &&
+        this.state.initiativeTracker.inUse
           ? 'faded'
           : ''}"
       >
@@ -61,11 +62,14 @@ class App extends Component {
         </div>
       </div>
       <div
-        class="initiative-display-container ${this.state.initiativeTracker.inUse
+        class="initiative-display-container ${this.state.initiativeTracker &&
+        this.state.initiativeTracker.inUse
           ? 'active'
           : ''}"
       >
-        <${InitiativeDisplay} data=${this.state.initiativeTracker} />
+        ${this.state.initiativeTracker &&
+        this.state.initiativeTracker.inUse &&
+        html`<${InitiativeDisplay} data=${this.state.initiativeTracker} />`}
       </div>
     `
   }
