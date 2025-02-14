@@ -58,6 +58,7 @@ export class MarkdownDocument extends Component {
     const previewElement = componentElement.querySelector('.preview')
 
     const editor = ace.edit(editorElement)
+    editor.setAutoScrollEditorIntoView(true)
     editor.setTheme('ace/theme/solarized_light')
     editor.session.setMode('ace/mode/markdown')
     editor.commands.addCommand({

@@ -207,7 +207,7 @@ class App extends Component {
 
     formData.append('file', blob, path)
 
-    fetch(`/campaign-resource/${this.state.campaign.id}/docs`, {
+    fetch(`/resource`, {
       method: 'POST',
       body: formData,
     }).then((response) => {

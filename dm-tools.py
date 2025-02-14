@@ -53,7 +53,9 @@ def get_resource(resource_name):
 def insert_update_resource():
     try:
         # Get the file from the request
-        file = request.files["file"]
+        file = request.files["file"]        
+        print(f"saving {file.filename}")
+        
         # Capture the file extension from resource_name
         file_extension = os.path.splitext(file.filename)[1]
         if file_extension in [".jpg", ".jpeg", ".png", ".gif", ".svg"]:
@@ -63,6 +65,8 @@ def insert_update_resource():
         elif file_extension in [".md", ".txt"]:
             resource_folder = "docs"
 
+        resource_type = resource_folder
+        
         # Create the campaign data point if it doesn't exist
         if os.path.exists(campaign_file()):
             # Read and return contents of project.json
