@@ -1,26 +1,30 @@
-// DCs
-export const rollBetween = (min, max) => parseInt(Math.random() * (max - min + 1) + min)
+export const rollBetween = (min, max) =>
+  parseInt(Math.random() * (max - min + 1) + min)
 
 export const actionCostLabels = [
-  "Non-Action",
-  "Free",
-  "Reaction",
-  "Single",
-  "Double",
-  "Full Turn",
+  'Non-Action',
+  'Free',
+  'Reaction',
+  'Single',
+  'Double',
+  'Full Turn',
 ]
 
 export const actionCostIcons = [
   undefined,
-  "free",
-  "reaction",
-  "single",
-  "double",
-  "turn"
+  'free',
+  'reaction',
+  'single',
+  'double',
+  'turn',
 ]
 
+/*************************************/
+/* DCs and Difficulty */
+/*************************************/
+
 // untrained, trained, expert, master, legendary
-export const simpleDC = [10, 15, 20, 30, 40];
+export const simpleDC = [10, 15, 20, 30, 40]
 
 // Format: level, DC
 export const levelDC = [
@@ -50,7 +54,7 @@ export const levelDC = [
   [23, 46],
   [24, 48],
   [25, 50],
-];
+]
 
 // Format: level, DC
 export const spellRankDC = [
@@ -64,44 +68,46 @@ export const spellRankDC = [
   [8, 34],
   [9, 36],
   [10, 39],
-];
+]
 
 export const difficultyAdjustmentsForDCLabels = [
-  "Incredibly easy",
-  "Very easy",
-  "Easy",
-  "Moderate",
-  "Hard",
-  "Very hard",
-  "Incredibly hard",
-];
-export const difficultyAdjustmentsForDC = [-10, -5, -2, 0, 2, 5, 10];
+  'Incredibly easy',
+  'Very easy',
+  'Easy',
+  'Moderate',
+  'Hard',
+  'Very hard',
+  'Incredibly hard',
+]
+export const difficultyAdjustmentsForDC = [-10, -5, -2, 0, 2, 5, 10]
 
 export const rarityAdjustmentsForDCLabels = [
-  "Common",
-  "Uncommon",
-  "Rare",
-  "Unique",
-];
-export const rarityAdjustmentsForDC = [0, 2, 5, 10];
+  'Common',
+  'Uncommon',
+  'Rare',
+  'Unique',
+]
+export const rarityAdjustmentsForDC = [0, 2, 5, 10]
 
-// Creature Creation
+/*************************************/
+/* Creature Creation */
+/*************************************/
 
 export const creatureSizeLabels = [
-  "Tiny",
-  "Small",
-  "Medium",
-  "Large",
-  "Huge",
-  "Gargantuan",
-  "Colossal",
-];
+  'Tiny',
+  'Small',
+  'Medium',
+  'Large',
+  'Huge',
+  'Gargantuan',
+  'Colossal',
+]
 export const creatureAttributeModifierScalesLabels = [
-  "Extreme",
-  "High",
-  "Moderate",
-  "Low",
-];
+  'Extreme',
+  'High',
+  'Moderate',
+  'Low',
+]
 export const creatureAttributeModifierScales = [
   [-1, 5, 3, 2, 0],
   [0, 5, 3, 2, 0],
@@ -129,15 +135,15 @@ export const creatureAttributeModifierScales = [
   [22, 12, 10, 8, 6],
   [23, 12, 10, 8, 6],
   [24, 13, 12, 9, 7],
-];
+]
 
 export const creaturePerceptionLabels = [
-  "Extreme",
-  "High",
-  "Moderate",
-  "Low",
-  "Terrible",
-];
+  'Extreme',
+  'High',
+  'Moderate',
+  'Low',
+  'Terrible',
+]
 export const creaturePerception = [
   [-1, 9, 8, 5, 2, 0],
   [0, 10, 9, 6, 3, 1],
@@ -165,30 +171,30 @@ export const creaturePerception = [
   [22, 43, 39, 36, 33, 30],
   [23, 44, 40, 37, 34, 31],
   [24, 46, 42, 38, 36, 32],
-];
+]
 
 export const creatureSkillsList = [
-  "Acrobatics",
-  "Arcana",
-  "Athletics",
-  "Crafting",
-  "Deception",
-  "Diplomacy",
-  "Intimidation",
-  "Lore",
-  "Medicine",
-  "Nature",
-  "Occultism",
-  "Performance",
-  "Religion",
-  "Society",
-  "Stealth",
-  "Survival",
-  "Thievery",
-  "Other",
+  'Acrobatics',
+  'Arcana',
+  'Athletics',
+  'Crafting',
+  'Deception',
+  'Diplomacy',
+  'Intimidation',
+  'Lore',
+  'Medicine',
+  'Nature',
+  'Occultism',
+  'Performance',
+  'Religion',
+  'Society',
+  'Stealth',
+  'Survival',
+  'Thievery',
+  'Other',
 ]
 // Format: level, extreme, high, moderate, low - max min
-export const creatureSkillsLabels = ["Extreme", "High", "Moderate", "Low"];
+export const creatureSkillsLabels = ['Extreme', 'High', 'Moderate', 'Low']
 export const creatureSkills = [
   [-1, 8, 8, 5, 5, 4, 4, 2, 1],
   [0, 9, 9, 6, 6, 5, 5, 3, 2],
@@ -216,7 +222,7 @@ export const creatureSkills = [
   [22, 45, 45, 42, 42, 37, 37, 35, 31],
   [23, 46, 46, 43, 43, 38, 38, 36, 32],
   [24, 48, 48, 45, 45, 40, 40, 38, 33],
-];
+]
 
 export const creatureSafeItemLevels = [
   [-1, 0],
@@ -245,9 +251,9 @@ export const creatureSafeItemLevels = [
   [22, 18],
   [23, 19],
   [24, 20],
-];
+]
 
-export const creatureACLabels = ["Extreme", "High", "Moderate", "Low"];
+export const creatureACLabels = ['Extreme', 'High', 'Moderate', 'Low']
 export const creatureAC = [
   [-1, 18, 15, 14, 12],
   [0, 19, 16, 15, 13],
@@ -275,15 +281,15 @@ export const creatureAC = [
   [22, 51, 48, 47, 45],
   [23, 52, 49, 48, 46],
   [24, 54, 51, 50, 48],
-];
+]
 
 export const creatureSavingThrowsLabels = [
-  "Extreme",
-  "High",
-  "Moderate",
-  "Low",
-  "Terrible",
-];
+  'Extreme',
+  'High',
+  'Moderate',
+  'Low',
+  'Terrible',
+]
 export const creatureSavingThrows = [
   [-1, 9, 8, 5, 2, 0],
   [0, 10, 9, 6, 3, 1],
@@ -311,10 +317,10 @@ export const creatureSavingThrows = [
   [22, 43, 39, 36, 33, 30],
   [23, 44, 40, 37, 34, 31],
   [24, 46, 42, 38, 36, 32],
-];
+]
 
 // Format: level, high, moderate, low - max min
-export const creatureHitPointsLabels = ["High", "Moderate", "Low"];
+export const creatureHitPointsLabels = ['High', 'Moderate', 'Low']
 export const creatureHitPoints = [
   [-1, 9, 9, 8, 7, 6, 5],
   [0, 20, 17, 16, 14, 13, 11],
@@ -342,7 +348,7 @@ export const creatureHitPoints = [
   [22, 544, 532, 436, 424, 329, 317],
   [23, 581, 569, 466, 454, 351, 339],
   [24, 633, 617, 508, 492, 383, 367],
-];
+]
 
 // Format: level, maximum, minimum
 export const creatureResistancesAndWeaknesses = [
@@ -372,15 +378,15 @@ export const creatureResistancesAndWeaknesses = [
   [22, 24, 12],
   [23, 25, 13],
   [24, 26, 13],
-];
+]
 
 // Format: level, extreme, high, moderate, low
 export const creatureAttackBonusesLabels = [
-  "Extreme",
-  "High",
-  "Moderate",
-  "Low",
-];
+  'Extreme',
+  'High',
+  'Moderate',
+  'Low',
+]
 export const creatureAttackBonuses = [
   [-1, 10, 8, 6, 4],
   [0, 10, 8, 6, 4],
@@ -408,16 +414,11 @@ export const creatureAttackBonuses = [
   [22, 43, 41, 39, 33],
   [23, 44, 42, 40, 35],
   [24, 46, 44, 42, 36],
-];
+]
 
 // Format: level, then for each of extreme high moderate low:
 //  roll count, dice face, bonus
-export const creatureStrikeDamageLabels = [
-  "Extreme",
-  "High",
-  "Moderate",
-  "Low",
-];
+export const creatureStrikeDamageLabels = ['Extreme', 'High', 'Moderate', 'Low']
 const creatureStrikeData = [
   [-1, 1, 6, 1, 1, 4, 1, 1, 4, 0, 1, 4, 0],
   [0, 1, 6, 3, 1, 6, 2, 1, 4, 2, 1, 4, 1],
@@ -445,64 +446,64 @@ const creatureStrikeData = [
   [22, 4, 12, 37, 4, 10, 26, 4, 8, 22, 4, 6, 18],
   [23, 4, 12, 39, 4, 12, 24, 4, 10, 20, 4, 6, 19],
   [24, 4, 12, 42, 4, 12, 26, 4, 10, 22, 4, 6, 21],
-];
-export const creatureStrikeCount = creatureStrikeData.map(data => [
+]
+export const creatureStrikeCount = creatureStrikeData.map((data) => [
   data[0],
   data[1],
   data[4],
   data[7],
   data[10],
-]);
-export const creatureStrikeSides = creatureStrikeData.map(data => [
+])
+export const creatureStrikeSides = creatureStrikeData.map((data) => [
   data[0],
   data[2],
   data[5],
   data[8],
   data[11],
-]);
-export const creatureStrikeBonuses = creatureStrikeData.map(data => [
+])
+export const creatureStrikeBonuses = creatureStrikeData.map((data) => [
   data[0],
   data[3],
   data[6],
   data[9],
   data[12],
-]);
+])
 
-export const creatureDamageTypesShort = ["B", "P", "S"];
+export const creatureDamageTypesShort = ['B', 'P', 'S']
 export const creatureDamageTypes = [
-  "Bludgeoning",
-  "Piercing",
-  "Slashing",
-  "Acid",
-  "Cold",
-  "Electricity",
-  "Fire",
-  "Sonic",
-  "Vitality",
-  "Void",
-  "Spirit",
-  "Mental",
-  "Poison",
-  "Bleed",
-  "Precision",
+  'Bludgeoning',
+  'Piercing',
+  'Slashing',
+  'Acid',
+  'Cold',
+  'Electricity',
+  'Fire',
+  'Sonic',
+  'Vitality',
+  'Void',
+  'Spirit',
+  'Mental',
+  'Poison',
+  'Bleed',
+  'Precision',
 ]
 
 export const creatureSpellLevelLabels = [
-  "Cantrips",
-  "1st",
-  "2nd",
-  "3rd",
-  "4th",
-  "5th",
-  "6th",
-  "7th",
-  "8th",
-  "9th",
-  "10th"
-];
+  'Cantrips',
+  '1st',
+  '2nd',
+  '3rd',
+  '4th',
+  '5th',
+  '6th',
+  '7th',
+  '8th',
+  '9th',
+  '10th',
+]
 
 // Format: extreme DC, extreme modifier, high DC, high modifier, moderate DC, moderate modifier
-export const creatureSpellDCsLabels = ["Extreme", "High", "Moderate"];
+export const creatureSpellDCsLabels = ['Extreme', 'High', 'Moderate']
 export const creatureSpellDCs = [
   [-1, 19, 11, 16, 8, 13, 5],
   [0, 19, 11, 16, 8, 13, 5],
@@ -530,23 +531,23 @@ export const creatureSpellDCs = [
   [22, 50, 42, 45, 37, 42, 34],
   [23, 51, 43, 46, 38, 43, 35],
   [24, 52, 44, 48, 40, 45, 37],
-];
+]
 
 export const createDiceRoll = () => ({
   count: 1,
   sides: 4,
   bonus: 0,
-});
+})
 
 // For almost all stats: extreme-0, high-1, moderate-2, low-3
-// Stats with terrible-4: per, 
+// Stats with terrible-4: per,
 // For health: high-0, moderate-1, low-2
 export const creatureRoadMaps = [
   {
-    name: "None",
+    name: 'None',
   },
   {
-    name: "Base - Brute",
+    name: 'Base - Brute',
     per: [3],
     str: [0, 1],
     con: [1, 2],
@@ -559,64 +560,95 @@ export const creatureRoadMaps = [
     will: [2, 3],
     hp: [0],
     strikes: [
-      { name: "Melee", description: "club", actions: 3, bonus: 0, damage: 1, type: "B" },
-    ]
+      {
+        name: 'Melee',
+        description: 'club',
+        actions: 3,
+        bonus: 0,
+        damage: 1,
+        type: 'B',
+      },
+    ],
   },
   {
-    name: "Base - Sniper",
+    name: 'Base - Sniper',
     per: [1],
     dex: [1],
     fort: [3],
     ref: [1],
-    hp: [1,2],
+    hp: [1, 2],
     strikes: [
-      { name: "Melee", description: "club", actions: 3, bonus: 2, damage: 3, type: "B" },
-      { name: "Ranged", description: "bow", actions: 3, bonus: 1, damage: 0, type: "P" },
-    ]
+      {
+        name: 'Melee',
+        description: 'club',
+        actions: 3,
+        bonus: 2,
+        damage: 3,
+        type: 'B',
+      },
+      {
+        name: 'Ranged',
+        description: 'bow',
+        actions: 3,
+        bonus: 1,
+        damage: 0,
+        type: 'P',
+      },
+    ],
   },
   {
-    name: "Class - Cleric (Warpriest)",
+    name: 'Class - Cleric (Warpriest)',
     per: [2],
     skills: [
-      { name: "Religion", value: [2] },
-      { name: "Other", value: [1, 2] },
+      { name: 'Religion', value: [2] },
+      { name: 'Other', value: [1, 2] },
     ],
     str: [1],
-    wis: [2],    
+    wis: [2],
     ac: [3],
     ref: [3],
     will: [1],
     spellDC: [0, 1],
   },
   {
-    name: "Class - Fighter (Strength)",
-    skills: [
-      { name: ["Athletics", "Acrobatics"], value: [1] },
-    ],
+    name: 'Class - Fighter (Strength)',
+    skills: [{ name: ['Athletics', 'Acrobatics'], value: [1] }],
     str: [1],
     ac: [1],
     will: [3],
     strikes: [
-      { name: "Melee", description: "sword", actions: 3, bonus: 1, damage: 1, type: "S" },
-    ]
+      {
+        name: 'Melee',
+        description: 'sword',
+        actions: 3,
+        bonus: 1,
+        damage: 1,
+        type: 'S',
+      },
+    ],
   },
   {
-    name: "Class - Fighter (Dexterity)",
-    skills: [
-      { name: ["Athletics", "Acrobatics"], value: [1] },
-    ],
+    name: 'Class - Fighter (Dexterity)',
+    skills: [{ name: ['Athletics', 'Acrobatics'], value: [1] }],
     dex: [1],
     ac: [1],
     will: [3],
     strikes: [
-      { name: "Ranged", description: "bow", actions: 3, bonus: 1, damage: 1, type: "P" },
-    ]
+      {
+        name: 'Ranged',
+        description: 'bow',
+        actions: 3,
+        bonus: 1,
+        damage: 1,
+        type: 'P',
+      },
+    ],
   },
   {
-    name: "Class - Rogue",
+    name: 'Class - Rogue',
     skills: [
-      { name: "Stealth", value: [1] },
-      { name: "Thievery", value: [1] },      
+      { name: 'Stealth', value: [1] },
+      { name: 'Thievery', value: [1] },
     ],
     dex: [1],
     ac: [1],
@@ -624,41 +656,86 @@ export const creatureRoadMaps = [
     ref: [1],
     hp: [1, 2],
     strikes: [
-      { name: "Melee", description: "dagger", actions: 3, bonus: 2, damage: 2, type: "P" },      
-      { name: "Sneak Attack", description: "", actions: 0, bonus: 0, damage: 1, type: "P" }
+      {
+        name: 'Melee',
+        description: 'dagger',
+        actions: 3,
+        bonus: 2,
+        damage: 2,
+        type: 'P',
+      },
+      {
+        name: 'Sneak Attack',
+        description: '',
+        actions: 0,
+        bonus: 0,
+        damage: 1,
+        type: 'P',
+      },
     ],
     abilities: [
-      { name: "Surprise Attack", type: 1, description: "if you roll Deception or Stealth for initiative, creatures that haven't acted are off-guard to you" },
-      { name: "Deny Advantage", type: 1, description: " You aren't off-guard to hidden, undetected, or flanking creatures of your level or lower, or creatures of your level or lower using surprise attack." },
-      { name: "Debilitating Strike", type: 1, description: "-10 ft speed penalty or enfeebled 1 on off-guard hit" },
-      { name: "Master Strike", type: 1, description: "" },
-    ]
+      {
+        name: 'Surprise Attack',
+        type: 1,
+        description:
+          "if you roll Deception or Stealth for initiative, creatures that haven't acted are off-guard to you",
+      },
+      {
+        name: 'Deny Advantage',
+        type: 1,
+        description:
+          " You aren't off-guard to hidden, undetected, or flanking creatures of your level or lower, or creatures of your level or lower using surprise attack.",
+      },
+      {
+        name: 'Debilitating Strike',
+        type: 1,
+        description: '-10 ft speed penalty or enfeebled 1 on off-guard hit',
+      },
+      { name: 'Master Strike', type: 1, description: '' },
+    ],
   },
   {
-    name: "Class - Ranger",
+    name: 'Class - Ranger',
     skills: [
-      { name: "Nature", value: [2] },      
-      { name: "Survival", value: [1, 2 ] },
+      { name: 'Nature', value: [2] },
+      { name: 'Survival', value: [1, 2] },
     ],
     str: [1, 2],
     dex: [1, 2],
     ac: [1],
     strikes: [
-      { name: "Ranged", description: "bow", actions: 3, bonus: 2, damage: 1, type: "P" },      
+      {
+        name: 'Ranged',
+        description: 'bow',
+        actions: 3,
+        bonus: 2,
+        damage: 1,
+        type: 'P',
+      },
     ],
     abilities: [
-      { name: "Hunt Prey", type: 1, description: "You gain a +2 circumstance bonus to Perception checks when you Seek your prey and a +2 circumstance bonus to Survival checks when you Track your prey." },
-      { name: "Hunter's Edge", type: 1, description: "+1d8 damage on prey or another edge" },
-      { name: "Nature's Edge", type: 1, description: "" },
-      { name: "Masterful Hunter", type: 1, description: "" },
-      { name: "Swift Prey", type: 1, description: "" },
-    ]
+      {
+        name: 'Hunt Prey',
+        type: 1,
+        description:
+          'You gain a +2 circumstance bonus to Perception checks when you Seek your prey and a +2 circumstance bonus to Survival checks when you Track your prey.',
+      },
+      {
+        name: "Hunter's Edge",
+        type: 1,
+        description: '+1d8 damage on prey or another edge',
+      },
+      { name: "Nature's Edge", type: 1, description: '' },
+      { name: 'Masterful Hunter', type: 1, description: '' },
+      { name: 'Swift Prey', type: 1, description: '' },
+    ],
   },
 ]
+
 // Creature Template
 
 export const createCreatureTemplate = () => ({
-  name: "",
+  name: '',
   level: -1,
 
   // tiny, small, medium, large, huge, gargantuan, colossal
@@ -712,53 +789,142 @@ export const createCreatureTemplate = () => ({
   // action actions, name, bonus, damage, damage type
   strikes: [
     {
-      name: "Melee",
+      name: 'Melee',
       actions: 3,
-      description: "",
+      description: '',
       bonus: 2,
       damage: 2,
-      type: "B",
+      type: 'B',
     },
   ],
 
   spellDC: 2,
   spells: [],
-});
+})
 
 export const createSkillTemplate = () => ({
-  name: "Acrobatics",
+  name: 'Acrobatics',
   value: 2,
-});
+})
 
 export const createWeaknessResistTemplate = () => ({
-  name: "Bludgeoning",
+  name: 'Bludgeoning',
   value: 0,
-});
+})
 
 export const createAbilityTemplate = () => ({
-  name: "Spells",
+  name: 'Spells',
   type: 1,
-  description: ""
-});
+  description: '',
+})
 
 export const createStrikeTemplate = () => ({
-  name: "Melee",
+  name: 'Melee',
   actions: 3,
   bonus: 2,
   damage: 2,
-  type: "B",
-  description: "",
-});
+  type: 'B',
+  description: '',
+})
 
 export const createSpellTemplate = () => ({
   level: 0,
-  text: "",
-});
+  text: '',
+})
 
 export const createSkillOutput = () => ({
-  name: "", value: 0
+  name: '',
+  value: 0,
 })
 
 export const createWeaknessResistOutput = () => ({
-  name: "", value: 0
+  name: '',
+  value: 0,
 })
+
+/*************************************/
+/* Encounter Design */
+/*************************************/
+
+// Format: threat level, XP budget, character adjustment (outside of default 4 characters)
+export const encounterBudget = [
+  ['Trivial', 40, 10],
+  ['Low', 60, 20],
+  ['Moderate', 80, 20],
+  ['Severe', 120, 30],
+  ['Extreme', 160, 40],
+]
+
+// Format: level, total treasure, permanant items (level-count), consumeable items (level-count), extra party gp, extra gp per character (outside of default 4 characters)
+export const treasureByLevel = [
+  [1,175,[[1,2],[2,2]],[[0,2],[1,2],[2,2]],40,10],
+  [2,300,[[2,2],[3,2]],[[1,2],[2,2],[3,2]],70,18],
+  [3,500,[[3,2],[4,2]],[[2,2],[3,2],[4,2]],120,30],
+  [4,850,[[4,2],[5,2]],[[3,2],[4,2],[5,2]],200,50],
+  [5,1350,[[5,2],[6,2]],[[4,2],[5,2],[6,2]],320,80],
+  [6,2000,[[6,2],[7,2]],[[5,2],[6,2],[7,2]],500,125],
+  [7,2900,[[7,2],[8,2]],[[6,2],[7,2],[8,2]],720,180],
+  [8,4000,[[8,2],[9,2]],[[7,2],[8,2],[9,2]],1000,250],
+  [9,5700,[[9,2],[10,2]],[[8,2],[9,2],[10,2]],1400,350],
+  [10,8000,[[10,2],[11,2]],[[9,2],[10,2],[11,2]],2000,500],
+  [11,11500,[[11,2],[12,2]],[[10,2],[11,2],[12,2]],2800,700],
+  [12,16500,[[12,2],[13,2]],[[11,2],[12,2],[13,2]],4000,1000],
+  [13,25000,[[13,2],[14,2]],[[12,2],[13,2],[14,2]],6000,1500],
+  [14,36500,[[14,2],[15,2]],[[13,2],[14,2],[15,2]],9000,2250],
+  [15,54500,[[15,2],[16,2]],[[14,2],[15,2],[16,2]],13000,3250],
+  [16,82500,[[16,2],[17,2]],[[15,2],[16,2],[17,2]],20000,5000],
+  [17,128000,[[17,2],[18,2]],[[16,2],[17,2],[18,2]],30000,7500],
+  [18,208000,[[18,2],[19,2]],[[17,2],[18,2],[19,2]],48000,12000],
+  [19,355000,[[19,2],[20,2]],[[18,2],[19,2],[20,2]],80000,20000],
+  [20,490000,[[20,2],[21,2]],[[19,2],[20,2],[21,2]],140000,35000],
+]
+
+// Format: level, total gp for level, low, moderate, high, extreme, extra treasure
+export const treasureByEncounter = [
+  [1, 175, 13, 18, 26, 35, 35],
+  [2, 300, 23, 30, 45, 60, 60],
+  [3, 500, 38, 50, 75, 100, 100],
+  [4, 850, 65, 85, 130, 170, 170],
+  [5, 1350, 100, 135, 200, 270, 270],
+  [6, 2000, 150, 200, 300, 400, 400],
+  [7, 2900, 220, 290, 440, 580, 580],
+  [8, 4000, 300, 400, 600, 800, 800],
+  [9, 5700, 430, 570, 860, 1140, 1140],
+  [10, 8000, 600, 800, 1200, 1600, 1600],
+  [11, 11500, 865, 1150, 1725, 2300, 2300],
+  [12, 16500, 1250, 1650, 2475, 3300, 3300],
+  [13, 25000, 1875, 2500, 3750, 5000, 5000],
+  [14, 36500, 2750, 3650, 5500, 7300, 7300],
+  [15, 54500, 4100, 5450, 8200, 10900, 10900],
+  [16, 82500, 6200, 8250, 12400, 16500, 16500],
+  [17, 128000, 9600, 12800, 19200, 25600, 25600],
+  [18, 208000, 15600, 20800, 31200, 41600, 41600],
+  [19, 355000, 26600, 35500, 53250, 71000, 71000],
+  [20, 490000, 36800, 49000, 73500, 98000, 98000],
+]
+
+// Format: level relative to party, XP given, role
+export const creatureXPAndRole = [
+  [-4, 10, 'Low threat lackey'],
+  [-3, 15, 'Low to moderate threat lackey'],
+  [-2, 20, 'Any lackey or standard creature'],
+  [-1, 30, 'Any standard creature'],
+  [0, 40, 'Any standard creature or low threat boss'],
+  [1, 60, 'Low or moderate threat boss'],
+  [2, 80, 'Moderate or severe threat boss'],
+  [3, 120, 'Severe or extreme threat boss'],
+  [4, 160, 'Extreme threat solo boss'],
+]
+
+// Format: level relative to party, XP for simple hazard, XP for complex hazard
+export const hazardXP = [
+  [-4, 2, 10],
+  [-3, 3, 15],
+  [-2, 4, 20],
+  [-1, 6, 30],
+  [0, 8, 40],
+  [1, 12, 60],
+  [2, 16, 80],
+  [3, 24, 120],
+  [4, 30, 150],
+]

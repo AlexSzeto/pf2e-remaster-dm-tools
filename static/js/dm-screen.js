@@ -306,6 +306,13 @@ class App extends Component {
         cards: [],
         docs: [],
       },
+      players: {
+        name: '',
+        id: '',
+        partyLevel: 1,
+        players: [],
+        ledger: [],
+      },
       screen: {
         images: {
           background: '',
@@ -366,6 +373,21 @@ class App extends Component {
       })
       .catch((error) => {
         console.error('Error loading data from campaigns.json:', error)
+      })
+
+    fetch(`/players`)
+      .then((response) => response.json())
+      .then((players) => {
+        this.setState({
+          players,
+        })
+
+        requestAnimationFrame(() => {
+          this.addPlayersToInitiativeList(this.state.players.characters)
+        })
+      })
+      .catch((error) => {
+        console.error('Error loading data from players.json:', error)
       })
 
     setInterval(() => {
@@ -439,6 +461,32 @@ class App extends Component {
         [...getConsumables('Items'), ...getSpells()]
       )
     )
+    this.setState({
+      combat,
+    })
+  }
+
+  addPlayersToInitiativeList(characters) {
+    const insert = characters
+      .filter(
+        (player) =>
+          !this.state.combat.list.find((item) => item.name === player.name)
+      )
+      .map(
+        (player) =>
+          new InitiativeListItem(
+            player.name,
+            0,
+            player.hp,
+            [],
+            `PER ${player.perception}`,
+            true
+          )
+      )
+    const combat = {
+      ...this.state.combat,
+      list: [...this.state.combat.list, ...insert],
+    }
     this.setState({
       combat,
     })

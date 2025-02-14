@@ -1,33 +1,32 @@
 import { Component } from 'preact'
 import { html } from 'htm/preact'
-import { getCookie, setCookie } from '../common/util.js'
 
-export class CampaignManager extends Component {
+export class PlayersManager extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      campaigns: [],
+      players: [],
       current: '',
     }
-    this.loadCampaigns()
+    this.loadPlayerGroups()
   }
 
-  loadCampaigns() {
-    fetch('./campaign/manage')
+  loadPlayerGroups() {
+    fetch('./players/manage')
       .then((response) => response.json())
-      .then((campaignData) => {
+      .then((data) => {
         const nextState = {
-          ...campaignData,
+          ...data,
         }
         this.setState(nextState)
         console.log(nextState)
       })
       .catch((error) => {
-        console.error('Error loading campaign data:', error)
+        console.error('Error loading players data:', error)
       })
   }
 
-  createCampaign(event) {
+  createPlayerGroup(event) {
     event.preventDefault()
     const form = event.target
     const formData = new FormData(form)
@@ -35,7 +34,7 @@ export class CampaignManager extends Component {
     if (!name || name.length === 0) {
       return
     }
-    fetch('./campaign/manage', {
+    fetch('./players/manage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -43,42 +42,42 @@ export class CampaignManager extends Component {
       body: JSON.stringify({ name }),
     })
       .then(() => {
-        this.loadCampaigns()
+        this.loadPlayerGroups()
         form.reset()
       })
       .catch((error) => {
-        console.error('Error creating campaign:', error)
+        console.error('Error creating player group:', error)
       })
   }
 
-  setCurrentCampaign(current) {
+  setCurrentGroup(current) {
     this.setState({ current })
-    fetch('./campaign/current', {
+    fetch('./players/current', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ current }),
     }).catch((error) => {
-      console.error('Error setting current campaign:', error)
+      console.error('Error setting current player group:', error)
     })
   }
 
   render() {
     return html`
-      <h1>Campaigns</h1>
+      <h1>Players</h1>
       <div class="subsection">
         <h2>Select</h2>
         <div class="subsection vertical-list">
-          ${this.state.campaigns.map(
-            (campaign) => html`
+          ${this.state.players.map(
+            (group) => html`
               <div>
                 <a
                   href="#"
-                  class=${campaign.id === this.state.current ? 'selected' : ''}
-                  onClick=${() => this.setCurrentCampaign(campaign.id)}
+                  class=${group.id === this.state.current ? 'selected' : ''}
+                  onClick=${() => this.setCurrentGroup(group.id)}
                 >
-                  ${campaign.name}
+                  ${group.name}
                 </a>
               </div>
             `
@@ -88,7 +87,7 @@ export class CampaignManager extends Component {
       <div class="subsection">
         <h2>Create</h2>
         <div class="subsection">
-          <form onSubmit=${this.createCampaign.bind(this)}>
+          <form onSubmit=${this.createPlayerGroup.bind(this)}>
             <label>
               <input type="text" name="name" />
             </label>

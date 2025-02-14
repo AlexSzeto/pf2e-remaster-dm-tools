@@ -19,6 +19,12 @@ def campaign_folder():
 def campaign_file():
     return os.path.join(campaign_folder(), "campaign.json")
 
+def players_root():
+    return settings["players"]["root"]
+
+def players_file():
+    return os.path.join(players_root(), f"{settings["players"]["current"]}.json")
+
 # Home page
 @app.route("/")
 def index():
@@ -112,8 +118,114 @@ def insert_update_card():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+def manage_current_setting(request, setting_name):
+    if request.method == "POST":
+        try:
+            data = request.get_json()
+            if not data:
+                return jsonify({"error": "Invalid or missing JSON payload"}), 400             
+            settings[setting_name]["current"] = data["current"]            
+            with open("settings.json", "w") as f:
+                json.dump(settings, f, indent=2)
+            return jsonify({"message": "Data saved successfully"}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    if request.method == "GET":
+        try:
+            return jsonify({"current": settings[setting_name]["current"]}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    
+def crud_for_data_file(request, file_path):
+    if request.method in ["POST", "PUT"]:
+        try:
+            # Get JSON payload
+            data = request.get_json()
+            if not data:
+                return jsonify({"error": "Invalid or missing JSON payload"}), 400
+            
+            # Write payload to project.json
+            with open(file_path, "w") as f:
+                json.dump(data, f, indent=2)
+            return jsonify({"message": "Data saved successfully"}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    elif request.method == "GET":
+        try:
+            if os.path.exists(file_path):
+                # Read and return contents of project.json
+                with open(file_path, "r") as f:
+                    data = json.load(f)
+                return jsonify(data), 200
+            else:
+                # Return blank JSON object if file doesn't exist
+                return jsonify({}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    elif request.method == "DELETE":
+        try:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                return jsonify({"message": "File deleted successfully"}), 200
+            else:
+                return jsonify({"message": "File does not exist"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+# Manage players
+@app.route("/players/manage", methods=["POST", "GET"])
+def manage_players():
+    if request.method == "POST":
+        try:
+            # Convert form payload into JSON
+            data = request.get_json()
+            
+            with open(os.path.join(JSON_TEMPLATES_FOLDER, "players.json"), "r") as f:
+                template = json.load(f)
+                
+            data = {
+                **template,
+                **data
+            }
+                
+            # Create new JSON file in campaigns directory
+            id = re.sub(r"[',.]", "", data["name"].strip().replace(" ", "-")).lower()
+            data["id"] = id
+            
+            # Create a new folder for the campaign
+            players_file = os.path.join(players_root(), f"{id}.json")
+            
+            # Write payload to project.json
+            with open(players_file, "w") as f:
+                json.dump(data, f, indent=2)
+            return jsonify({"message": "Data saved successfully"}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    if request.method == "GET":
+        try:
+            # Get list of all folders in campaigns directory
+            files = [f for f in os.listdir(players_root()) if f.endswith(".json")]
+            groups = []
+            for file in files:
+                with open(os.path.join(players_root(), file), "r") as f:
+                    data = json.load(f)
+                    groups.append(data)
+            return jsonify({"players": groups, "current": settings["players"]["current"]}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+@app.route("/players/current", methods=["POST", "GET"])
+def current_players():
+    return manage_current_setting(request, "players")
+
+@app.route("/players", methods=["POST", "PUT", "GET", "DELETE"])
+def players_data():
+    return crud_for_data_file(request, players_file())
+
 # Manage campaigns
-@app.route("/campaigns", methods=["POST", "GET"])
+@app.route("/campaign/manage", methods=["POST", "GET"])
 def manage_campaigns():
     if request.method == "POST":
         try:
@@ -164,63 +276,12 @@ def manage_campaigns():
 
 @app.route("/campaign/current", methods=["POST", "GET"])
 def current_campaign():
-    if request.method == "POST":
-        try:
-            data = request.get_json()
-            if not data:
-                return jsonify({"error": "Invalid or missing JSON payload"}), 400             
-            settings["campaign"]["current"] = data["current"]            
-            with open("settings.json", "w") as f:
-                json.dump(settings, f, indent=2)
-            return jsonify({"message": "Data saved successfully"}), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
-    if request.method == "GET":
-        try:
-            return jsonify({"current": settings["campaign"]["current"]}), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+    return manage_current_setting(request, "campaign")
         
 # CRUD operations for specific campaign
 @app.route("/campaign", methods=["POST", "PUT", "GET", "DELETE"])
 def campaign_data():
-    campaign_path = os.path.join(campaign_folder(), "campaign.json")
-    if request.method in ["POST", "PUT"]:
-        try:
-            # Get JSON payload
-            data = request.get_json()
-            if not data:
-                return jsonify({"error": "Invalid or missing JSON payload"}), 400
-            
-            # Write payload to project.json
-            with open(campaign_path, "w") as f:
-                json.dump(data, f, indent=2)
-            return jsonify({"message": "Data saved successfully"}), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
-
-    elif request.method == "GET":
-        try:
-            if os.path.exists(campaign_path):
-                # Read and return contents of project.json
-                with open(campaign_path, "r") as f:
-                    data = json.load(f)
-                return jsonify(data), 200
-            else:
-                # Return blank JSON object if file doesn't exist
-                return jsonify({}), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
-
-    elif request.method == "DELETE":
-        try:
-            if os.path.exists(campaign_path):
-                os.remove(campaign_path)
-                return jsonify({"message": "File deleted successfully"}), 200
-            else:
-                return jsonify({"message": "File does not exist"}), 404
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+    return crud_for_data_file(request, campaign_file())
 
 # Pull an item from the foundry vtt pf2e module and return it
 @app.route("/rule/<folder>/<query>", methods=["GET"])

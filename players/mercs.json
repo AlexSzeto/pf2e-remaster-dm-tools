@@ -1,0 +1,47 @@
+{
+  "name": "Mercs",
+  "id": "mercs",
+  "partyLevel": 2,
+  "characters": [
+    {
+      "name": "Grom",
+      "class": "Cleric",
+      "hp": 30,
+      "perception": 6
+    },
+    {
+      "name": "Typha",
+      "class": "Druid",
+      "hp": 0,
+      "perception": 0
+    },
+    {
+      "name": "Lemmy",
+      "class": "Bard",
+      "hp": 24,
+      "perception": 7
+    },
+    {
+      "name": "Fayla",
+      "class": "Rogue",
+      "hp": 26,
+      "perception": 7
+    }
+  ],
+  "ledger": [
+    {
+      "date": "2023-01-18",
+      "level": 2,
+      "gp": 23,
+      "items": [],
+      "note": "bracelet stolen from a noble"
+    },
+    {
+      "date": "2023-01-18",
+      "level": 2,
+      "gp": 0,
+      "items": [[1, 1]],
+      "note": "darkstone amulet"
+    }
+  ]
+}
