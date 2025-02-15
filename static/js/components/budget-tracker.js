@@ -96,7 +96,7 @@ export const calculateRemainder = (budget, spent) => {
         remainder[type].push({ level: itemSpent.level, count: -itemSpent.count })
       }
     })
-    remainder[type] = remainder[type].filter((i) => i.count > 0)
+    remainder[type] = remainder[type].filter((i) => i.level > 0 && i.count > 0)
   }
 
   subtractItemByType('permanents')
@@ -213,15 +213,16 @@ export class BudgetTracker extends Component {
                             </button>`
                           }
   
-                          ${line.items.map(
-                            (item, index) =>
-                              html`<strong>lv${item.level}</strong> ${item.name} `
-                          )}
                           <strong>
                             ${line.gp > 0 && html`${line.gp}gp`}
                             ${line.sp > 0 && html`${line.sp}sp`}
                             ${line.cp > 0 && html`${line.cp}cp`}
                           </strong>
+                          ${line.items.map(
+                            (item, index) =>
+                              html`<strong>lv${item.level}</strong> ${item.name} `
+                          )}
+
                           ${line.notes && html` <em>(${line.notes})</em>`}
                         </li>
                       `

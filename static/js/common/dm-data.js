@@ -1150,7 +1150,7 @@ export const treasureByLevel = [
   ],
 ]
 
-// Format: level, total gp for level, low, moderate, high, extreme, extra treasure
+// Format: level, total gp for level, low, moderate, severe, extreme, extra treasure
 export const treasureByEncounter = [
   [1, 175, 13, 18, 26, 35, 35],
   [2, 300, 23, 30, 45, 60, 60],
