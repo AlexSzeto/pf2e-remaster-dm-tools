@@ -4,4 +4,6 @@ DM Toolkit for Pathfinder 2 Remastered
 # Requirements
 - `/campaign` folder with valid campaign data
 - `/pf2e`
-# TODO
+
+# Starting name generator:
+`Ollama run llama3.2`
