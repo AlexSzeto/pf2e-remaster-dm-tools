@@ -421,3 +421,60 @@
     width: 90em;
   }
 }
+
+/*****************************************************/
+/* BUDGET TRACKERS */
+/*****************************************************/
+
+.budget-display-container {
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.budget-display {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  margin-bottom: 4px;
+}
+
+.budget-tracker {
+
+  .level-display {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.75em;
+    align-items: center;
+    
+    .title, .value {
+      font-size: 1.5em;
+      margin-right: 4px;
+    }
+
+    .value {
+      font-weight: bold;
+    }
+  }
+
+  .tracker-content {
+    height: 20em;
+    overflow-y: scroll;
+  }
+
+  .line-items-list {
+    ul {
+      list-style-type: none;
+      padding-inline-start: 0;
+    }
+    li {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.1em;
+
+      button.square {
+        font-size: 0.75em;
+      }
+    }
+  }
+}

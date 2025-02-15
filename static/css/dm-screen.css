@@ -118,6 +118,12 @@ body {
   grid-gap: 1em;
 }
 
+.budget-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1em;
+}
+
 .doc-grid {
   display: flex;
   flex-direction: row;

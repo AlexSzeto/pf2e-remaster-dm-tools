@@ -12,6 +12,7 @@ import {
 import { campaignResource, getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
 import { MarkdownDocument } from './components/md-doc.js'
+import { BudgetDisplay, BudgetTracker, calculateRemainder, countBudget, totalBudgetByLevel } from './components/budget-tracker.js'
 
 import { ImageSelectorModal } from './modals/image-selector-modal.js'
 import { FileSelectorModal } from './modals/file-modal.js'
@@ -186,6 +187,38 @@ class App extends Component {
   }
 
   //
+  // BUDGET
+  //
+  updatePlayersLevel(level) {
+    this.setState({
+      players: {
+        ...this.state.players,
+        partyLevel: level,
+      },
+    }, () => this.savePlayersData())
+  }
+
+  savePlayersData() {
+    fetch(`/players`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.players),
+    })
+  }
+
+  saveCampaignData() {
+    fetch(`/campaign`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.campaign),
+    })
+  }
+
+  //
   // NOTES
   //
   loadDocument(label, path) {
@@ -305,12 +338,13 @@ class App extends Component {
         ambiences: [],
         cards: [],
         docs: [],
+        treasures: [],
       },
       players: {
         name: '',
         id: '',
         partyLevel: 1,
-        players: [],
+        characters: [],
         ledger: [],
       },
       screen: {
@@ -380,9 +414,7 @@ class App extends Component {
       .then((players) => {
         this.setState({
           players,
-        })
-
-        requestAnimationFrame(() => {
+        }, () => {
           this.addPlayersToInitiativeList(this.state.players.characters)
         })
       })
@@ -688,6 +720,88 @@ class App extends Component {
     </div>
     `
 
+    const upkeepTab = html`
+    <h2 class="collapsible">Upkeep</h2>
+    <div class="tab">
+      <div class="tab-content budget-grid">
+        <div>
+          <${BudgetTracker}
+            id="party-budget"
+            label="Party Ledger"
+            level=${this.state.players.partyLevel}
+            items=${this.state.players.ledger}
+
+            onUpdateLevel=${(level) => {this.updatePlayersLevel(level)}}
+            onAddLine=${(line) => {
+              this.setState({
+                players: {
+                  ...this.state.players,
+                  ledger: [...this.state.players.ledger, line],
+                },
+              }, () => this.savePlayersData())
+            }}
+            onDeleteLine=${(line) => {
+              this.setState({
+                players: {
+                  ...this.state.players,
+                  ledger: this.state.players.ledger.filter((l) => l !== line),
+                },
+              }, () => this.savePlayersData())
+            }}
+          />
+          <strong>ACCQUIRED</strong>
+          <${BudgetDisplay}
+            budget=${countBudget(this.state.players.ledger, this.state.players.partyLevel, this.state.players.partyLevel)}
+          />
+        </div>
+        <div>
+          <${BudgetTracker}
+            id="treasure-budget"
+            label="Treasure by Level"
+            level=${this.state.players.partyLevel}
+            items=${this.state.campaign.treasures}
+
+            onUpdateLevel=${(level) => {this.updatePlayersLevel(level)}}
+            onAddLine=${(line) => {
+              this.setState({
+                campaign: {
+                  ...this.state.campaign,
+                  treasures: [...this.state.campaign.treasures, line],
+                },
+              }, () => this.saveCampaignData())
+            }}
+            onSendLine=${(line) => {
+              this.setState({
+                players: {
+                  ...this.state.players,
+                  ledger: [...this.state.players.ledger, line],
+                },
+              }, () => {
+                this.savePlayersData()
+              })
+            }}
+          />
+          <div>
+            <strong>SPENT</strong>
+            <${BudgetDisplay}
+              budget=${countBudget(this.state.campaign.treasures, this.state.players.partyLevel, this.state.players.partyLevel)}
+            />
+          </div>
+          <div>
+            <strong>REMAINING</strong>
+            <${BudgetDisplay}
+              budget=${
+                calculateRemainder(
+                  totalBudgetByLevel(this.state.players.partyLevel, this.state.players.characters.length),
+                  countBudget(this.state.campaign.treasures, this.state.players.partyLevel, this.state.players.partyLevel)
+                )              
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    `
     return html`
       <div class="header">
         <h1 class="name">${this.state.campaign.name}</h1>
@@ -695,7 +809,7 @@ class App extends Component {
         <h1 class="logo">PF2E Tools - DM Screen</h1>
       </div>
       <div class="page-content">
-        <div class="tabs">${explorationTab} ${notesTab} ${combatTab}</div>
+        <div class="tabs">${explorationTab} ${notesTab} ${combatTab} ${upkeepTab}</div>
       </div>
 
       ${imageLocations.map(
