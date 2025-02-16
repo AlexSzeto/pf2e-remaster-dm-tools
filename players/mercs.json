@@ -8,9 +8,9 @@
     },
     {
       "class": "Druid",
-      "hp": 0,
+      "hp": 26,
       "name": "Typha",
-      "perception": 0
+      "perception": 6
     },
     {
       "class": "Bard",

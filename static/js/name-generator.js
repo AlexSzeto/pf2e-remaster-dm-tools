@@ -31,7 +31,7 @@ class NameGenerator extends Component {
   }
 
   generateNames( retry = 0 ) {
-    this.setState({ disabled: true }, () => {
+    this.setState({ disabled: true, generateNames: [] }, () => {
       fetch('http://localhost:11434/api/generate', {
         method: 'POST',
         body: JSON.stringify({

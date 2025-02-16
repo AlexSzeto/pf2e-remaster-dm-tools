@@ -23,7 +23,7 @@ def players_root():
     return settings["players"]["root"]
 
 def players_file():
-    return os.path.join(players_root(), f"{settings["players"]["current"]}.json")
+    return os.path.join(players_root(), settings["players"]["current"] + ".json")
 
 # Home page
 @app.route("/")

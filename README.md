@@ -6,4 +6,5 @@ DM Toolkit for Pathfinder 2 Remastered
 - `/pf2e`
 
 # Starting name generator:
-`Ollama run llama3.2`
+`Ollama pull llama3.2`
+`Ollama serve`
