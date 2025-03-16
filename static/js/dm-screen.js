@@ -19,6 +19,7 @@ import { FileSelectorModal } from './modals/file-modal.js'
 import { CardSelectorModal } from './modals/card-modal.js'
 import { RulesSearchModal } from './modals/rules-search-modal.js'
 import { ImageViewerModal } from './modals/image-viewer-modal.js'
+import { PinnedItemsList } from './components/pinned-items-list.js'
 
 const imageLocations = ['background', 'left', 'right']
 const audioTypes = ['bgm', 'ambience']
@@ -326,6 +327,39 @@ class App extends Component {
     })
   }
 
+  togglePin(type, label, id) {
+    if(this.isPinned(type, id)) {
+      this.unpinItem(type, id)
+    } else {
+      this.pinItem(type, label, id)
+    }
+  }
+  
+  pinItem(type, label, id) {
+    if(this.isPinned(type, id)) {
+      return
+    }
+    this.setState({
+      pinned: {
+        ...this.state.pinned,
+        [type]: [...this.state.pinned[type], { label, id }],
+      },
+    }, () => setCookie('pinnedItems', JSON.stringify(this.state.pinned)))
+  }
+
+  unpinItem(type, id) {
+    this.setState({
+      pinned: {
+        ...this.state.pinned,
+        [type]: this.state.pinned[type].filter(item => item.id !== id),
+      },
+    }, () => setCookie('pinnedItems', JSON.stringify(this.state.pinned)))
+  }
+
+  isPinned(type, id) {
+    return this.state.pinned[type].find(item => item.id === id)
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -384,6 +418,13 @@ class App extends Component {
         docs: false,
         viewer: '',
       },
+      pinned: {
+        images: [],
+        bgm: [],
+        ambience: [],
+        card: [],
+        docs: []
+      }
     }
 
     // Get current campaign from cookie
@@ -391,6 +432,7 @@ class App extends Component {
       .then((response) => response.json())
       .then((campaign) => {
         // Update state with loaded data
+        const pinnedItems = getCookie('pinnedItems')
         const savedImages = getCookie('screenImages')
         const initiatives = getCookie('initiativeTracker')
 
@@ -403,6 +445,7 @@ class App extends Component {
               : this.state.screen.images,
           },
           combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
+          pinned: pinnedItems ? JSON.parse(pinnedItems) : this.state.pinned,  
         })
       })
       .catch((error) => {
@@ -617,6 +660,13 @@ class App extends Component {
     const explorationTab = html`
       <h2 class="collapsible">Immersive Mode</h2>
       <div class="tab">
+        <div class="tab-content">
+          <${PinnedItemsList} 
+            items=${this.state.pinned.images}
+            onClick=${id => console.log('clicked')}
+            onUnpin=${id => this.unpinItem('images', id)}
+          />
+        </div>
         <div class="tab-content immersive-mode-grid">
           ${explorationImage} ${explorationAudio}
         </div>
@@ -640,6 +690,14 @@ class App extends Component {
             },
           ]}
         >
+          <${PinnedItemsList} 
+            items=${
+              this.state.pinned.docs
+                .filter(item => !this.state.notes.docs.some(doc => doc.path === item.id))
+            }
+            onClick=${item => this.loadDocument(item.label, item.id)}
+            onUnpin=${id => this.unpinItem('docs', id)}
+          />
           <div class="doc-grid">
             ${this.state.notes.docs.map(
               (doc) => html`
@@ -817,10 +875,12 @@ class App extends Component {
           ${this.state.modals[location] &&
           html`
             <${ImageSelectorModal}
-              images=${this.state.campaign.images.map(
-                (imageData) => imageData.path
-              )}
+              tags=${location === 'background' ? ['location', 'map'] : ['portrait', 'npc']}
+              images=${this.state.campaign.images
+                  .map(image => ({...image, pinned: this.isPinned('images', image.path)}))
+              }
               onSelect=${(url) => this.showImage(location, url)}
+              onPin=${(image) => this.togglePin('images', image.label, image.path)}
               onClose=${() => this.hideModal(location)}
             />
           `}
@@ -831,9 +891,12 @@ class App extends Component {
           ${this.state.modals[type] &&
           html`
             <${FileSelectorModal}
-              files=${this.state.campaign[audioTypeMaps[type].dataSource]}
+              files=${this.state.campaign[audioTypeMaps[type].dataSource]
+                .map(audio => ({...audio, pinned: this.isPinned(type, audio.path)}))
+              }
               onSelect=${(label, path) =>
                 this.startAudioLoop(type, label, path)}
+              onPin=${(audio) => this.togglePin(type, audio.label, audio.path)}
               onSelectNone=${() => this.stopAudio(type)}
               onClose=${() => this.hideModal(type)}
             />
@@ -860,7 +923,11 @@ class App extends Component {
       ${this.state.modals.docs &&
       html`
         <${FileSelectorModal}
-          files=${this.state.campaign.docs}
+          files=${this.state.campaign.docs.map(file => ({
+            ...file, 
+            pinned: this.isPinned('docs', file.path)
+          }))}
+          onPin=${(file) => this.togglePin('docs', file.label, file.path)}
           onSelect=${(label, path) => this.loadDocument(label, path)}
           onClose=${() => this.hideModal('docs')}
         />

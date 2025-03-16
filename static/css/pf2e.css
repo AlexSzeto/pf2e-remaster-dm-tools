@@ -250,9 +250,17 @@ body {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3 {
   font-family: 'Taroca', sans-serif;
   font-weight: normal;
+  margin: 0;
+  padding: 0 0 1em 0;
+}
+
+h4, h5, h6 {
+  font-family: 'FF Good Pro Cond', sans-serif;
+  font-size: 1.5em;
+  font-weight: bold;
   margin: 0;
   padding: 0 0 1em 0;
 }
@@ -328,6 +336,8 @@ textarea {
 }
 
 button {
+  cursor: pointer;
+  
   font-family: 'FF Good Pro Cond', sans-serif;
   font-size: 1em;
   padding: 0.5em;
@@ -338,6 +348,22 @@ button {
   border: none;
   border-radius: 4px;
 
+  &inverted {
+    color: #472c2c;
+    background-color: white;
+  }
+
+  &.outlined {
+    border: 1px solid white;
+    background: none;
+    color: white;
+
+    &.inverted {
+      border-color: #472c2c;
+      color: #472c2c;
+    }
+  }
+
   &:disabled {
     background-color: rgba(118, 118, 118, 0.25);
     color: #664e47;
@@ -345,9 +371,11 @@ button {
 
   &:not(:disabled):hover {
     background-color: #664e47;
+    color: white;
   }
 
   &:not(:disabled):active {
     background-color: #351a1a;
+    color: white;
   }
 }

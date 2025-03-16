@@ -15,7 +15,7 @@ export const FramedImage = ({url, type, cover, onClick, onModal}) => html`
       ` : html`
         <img src=${url} onClick=${onClick}/>
       `}
-      <button class="square top-left" onClick=${onModal(url)}>
+      <button class="outlined square top-left" onClick=${onModal(url)}>
         <${FeatherIcon} icon="zoom-in" />
       </button>
     `}

@@ -37,7 +37,7 @@ export class MarkdownDocument extends Component {
         html`
           <div class="album-image">
             <button
-              class="square top-left"
+              class="outlined square top-left"
               onClick=${() => this.props.onPreviewImage(url)}
             >
               <${FeatherIcon} icon="zoom-in" />

@@ -38,18 +38,21 @@
 
     background-color: white;
     padding: 1em;
+    padding-right: 3.5em;
     border-radius: 1em;
 
     overflow-y: hidden;
+
+    .top-right {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+    }
   }
 
   .image-selector,
-  .card-selector {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-    row-gap: 1em;
-    column-gap: 0.5em;
-
+  .card-selector,
+  .file-selector {
     width: 100%;
     height: 100%;
 
@@ -58,32 +61,66 @@
   }
 
   .image-selector {
-    .image-container {
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 10em);
+      grid-template-rows: repeat(auto-fill, 12em);
+      row-gap: 1em;
+      column-gap: 0.5em;
+  
+      padding-bottom: 1em;
+    }
+    
+    .selector-container {
       display: flex;
       flex-direction: column;
 
       .description {
         text-align: center;
         margin-bottom: 0.25em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      img {
-        border-radius: 6px;
+      .image-container {
+        position: relative;
+
+        button {
+          position: absolute;
+          right: 0.25em;
+          top: 0.25em;
+        }
+      }
+
+      .image {
+        border-radius: 4px;
         width: 100%;
+        height: 10em;
+        background-size: cover;
+        background-position: top center;
       }
     }
   }
 
   .image-viewer {
     img {
+      border-radius: 4px;
       max-width: 80vw;
       max-height: 80vh;
     }
   }
 
   .card-selector {
-    grid-template-columns: repeat(auto-fill, 24em);
-    grid-template-rows: repeat(20, min-content);
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 24em);
+      grid-template-rows: repeat(auto-fill, min-content);
+        row-gap: 1em;
+      column-gap: 0.5em;
+  
+      padding-bottom: 1em;
+    }
 
     .card-container {
       position: relative;
@@ -102,13 +139,25 @@
   }
 
   .file-selector {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25em;
-    font-size: 1.5em;
-
-    a {
-      display: block;
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25em;
+      font-size: 1.5em;
+  
+      padding-bottom: 1em;
+  
+      .description {
+        display: flex;
+        flex-direction: row;
+        height: 2em;
+      }
+  
+      a {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+      }
     }
   }
 }
@@ -324,7 +373,7 @@
 
 .framed-image,
 .album-image {
-  border-radius: 6px;
+  border-radius: 4px;
   position: relative;
 
   .centered {
@@ -336,16 +385,16 @@
 
   .top-left {
     position: absolute;
-    top: 6px;
-    left: 6px;
+    top: 0.25em;
+    left: 0.25em;
   }
 
   .cover {
-    border-radius: 6px;
+    border-radius: 4px;
   }
 
   img {
-    border-radius: 6px;
+    border-radius: 4px;
 
     width: 100%;
     height: 100%;
@@ -475,6 +524,43 @@
       button.square {
         font-size: 0.75em;
       }
+    }
+  }
+}
+
+/*****************************************************/
+/* PINNED ITEMS */
+/*****************************************************/
+
+.pinned-items-list {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  flex-wrap: wrap;
+
+  padding-bottom: 1em;
+
+  .pinned-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background: #472c2c;
+    border-radius: 4px;
+    padding: 0.25em;
+
+    width: 12em;
+
+    .text {
+      cursor: pointer;
+      color: white;
+      flex-grow: 1;
+      padding-left: 0.25em;
+    }
+
+    button {
+      margin-right: 0;
+      margin-left: 0;
     }
   }
 }
