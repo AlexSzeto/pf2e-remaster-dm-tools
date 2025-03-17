@@ -1,4 +1,6 @@
 import { html } from "htm/preact";
+import { openFloatingMenu } from "../common/floating-menu.js";
+import { getSelectedText } from "../common/util.js";
 
 const addMarkdownAndIconTo = (text) => text != null ? text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -9,8 +11,24 @@ const addMarkdownAndIconTo = (text) => text != null ? text
     .replace(/\n/g, '<br>')
     : '';
 
-export const Card = ({data, darkMode}) => html`
-    <div class="pf2e-stats ${darkMode ? 'dark' : ''}">
+export const Card = ({data, darkMode, onSearch}) => html`
+    <div
+      class="pf2e-stats ${darkMode ? 'dark' : ''}"
+      onContextMenu=${clickEvent => {
+        if(!onSearch) {
+          return
+        }
+        const selectedText = getSelectedText()
+        if(selectedText) {
+          openFloatingMenu(clickEvent, [
+            {
+              label: 'Search',
+              action: () => onSearch(selectedText)
+            }
+          ])
+        }
+      }} 
+    >
       ${ !!data.fullFrameImage
         && html`<div class="full-frame-image" style="background-image: url('${ data.fullFrameImage }')" />`
       }

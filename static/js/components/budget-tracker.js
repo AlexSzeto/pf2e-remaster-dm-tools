@@ -5,6 +5,11 @@ import { ContentSection } from './content-section.js'
 import { treasureByLevel } from '../common/dm-data.js'
 import { FeatherIcon } from './feather-icon.js'
 
+export const rawLine = (line) => {
+  const { level, gp, sp, cp, items, notes } = line
+  return { level, gp, sp, cp, items, notes }
+}
+
 const labelWrap = (label, content) => html`
   <div>
     <label><span class="label-text">${label}: </span>${content} </label>
@@ -152,7 +157,7 @@ export class BudgetTracker extends Component {
 
     const parseToNumber = value => isNaN(parseInt(value)) ? 0 : parseInt(value)
     const line = {
-      date: budgetLineDate(),
+      date: this.props.trackDate ? budgetLineDate() : undefined,
       gp: parseToNumber(form.querySelector('input[name="gp"]').value),
       sp: parseToNumber(form.querySelector('input[name="sp"]').value),
       cp: parseToNumber(form.querySelector('input[name="cp"]').value),
@@ -177,7 +182,6 @@ export class BudgetTracker extends Component {
           label=${this.props.label}
           actions=${[
             { icon: 'plus', onClick: () => this.setState({ view: 'add' }) },
-            { icon: 'search', onClick: () => this.setState({ view: 'list' }) },
           ]}
         >
           <div class="level-display">
@@ -190,29 +194,37 @@ export class BudgetTracker extends Component {
           </div>
           <div class="tracker-content">
           ${
-            this.state.view === 'list' &&
-            html`
+            this.state.view === 'list' && (
+              this.props.trackDate
+              ? this.props.items.reduce((dateList, line) => {
+                if (line.level === this.props.level && !dateList.includes(line.date)) {
+                  dateList.push(line.date)
+                }
+                return dateList
+              }, [])
+              : [null]
+            ).map((date) => html`
+              ${ this.props.trackDate && html`<div class="date">${date}</div>`}
               <div class="line-items-list">
                 <ul>
                   ${this.props.items
+                    .filter((item) => ! this.props.trackDate || item.date === date)
                     .filter((item) => item.level === this.props.level)
                     .map(
                       (line) => html`
-                        <li>
-                          ${this.props.onSendLine &&
-                          html`<button class="square" onClick=${() => this.props.onSendLine({
-                            ...line,
-                            date: budgetLineDate(),
-                          })}>
-                            <${FeatherIcon} icon="send"/>
-                          </button>`
-                          }
+                        <li class="${line.used ? 'used' : ''}">
                           ${this.props.onDeleteLine &&
-                            html`<button class="square" onClick=${() => this.props.onDeleteLine(line)}>
+                            html`<button class="square" onClick=${() => this.props.onDeleteLine(rawLine(line))}>
                               <${FeatherIcon} icon="trash"/>
                             </button>`
                           }
-  
+                          ${this.props.onSendLine &&
+                          html`<button class="square" disabled=${line.used} onClick=${() => {
+                            this.props.onSendLine(rawLine(line), budgetLineDate())
+                          }}>
+                            <${FeatherIcon} icon="log-in"/>
+                          </button>`
+                          }
                           <strong>
                             ${line.gp > 0 && html`${line.gp}gp`}
                             ${line.sp > 0 && html`${line.sp}sp`}
@@ -229,7 +241,7 @@ export class BudgetTracker extends Component {
                     )}
                 </ul>
               </div>
-            `
+            `)
           }
           ${
             this.state.view === 'add' &&
@@ -248,6 +260,7 @@ export class BudgetTracker extends Component {
                     html`<input name="consumables" />`
                   )}
                   ${labelWrap('notes', html`<input name="notes" />`)}
+                  <button onClick=${() => this.setState({ view: 'list' })}>Cancel</button>
                   <button onClick=${() => this.addLine()}>Add</button>
                 </div>
               </div>

@@ -1,57 +1,97 @@
 {
-  "characters": [
-    {
-      "class": "Cleric",
-      "hp": 30,
-      "name": "Grom",
-      "perception": 6
-    },
-    {
-      "class": "Druid",
-      "hp": 26,
-      "name": "Typha",
-      "perception": 6
-    },
-    {
-      "class": "Bard",
-      "hp": 24,
-      "name": "Lemmy",
-      "perception": 7
-    },
-    {
-      "class": "Rogue",
-      "hp": 26,
-      "name": "Fayla",
-      "perception": 7
-    }
-  ],
-  "id": "mercs",
-  "ledger": [
-    {
-      "cp": 0,
-      "date": "2023-01-18",
-      "gp": 23,
-      "items": [],
-      "level": 2,
-      "notes": "bracelet stolen from a noble",
-      "sp": 0
-    },
-    {
-      "cp": 0,
-      "date": "2023-01-18",
-      "gp": 0,
-      "items": [
-        {
-          "level": 1,
-          "name": "Darkstone Amulet",
-          "type": "permanent"
-        }
-      ],
-      "level": 2,
-      "notes": "",
-      "sp": 0
-    }
-  ],
-  "name": "Mercs",
-  "partyLevel": 2
+  "players": {
+    "characters": [
+      {
+        "class": "Cleric",
+        "hp": 30,
+        "name": "Grom",
+        "perception": 6
+      },
+      {
+        "class": "Druid",
+        "hp": 26,
+        "name": "Typha",
+        "perception": 6
+      },
+      {
+        "class": "Bard",
+        "hp": 24,
+        "name": "Lemmy",
+        "perception": 7
+      },
+      {
+        "class": "Rogue",
+        "hp": 26,
+        "name": "Fayla",
+        "perception": 7
+      }
+    ],
+    "id": "mercs",
+    "ledger": [
+      {
+        "cp": 0,
+        "date": "2023-01-18",
+        "gp": 23,
+        "items": [],
+        "level": 2,
+        "notes": "bracelet stolen from a noble",
+        "sp": 0
+      },
+      {
+        "cp": 0,
+        "date": "2023-01-18",
+        "gp": 0,
+        "items": [
+          {
+            "level": 1,
+            "name": "Darkstone Amulet",
+            "type": "permanent"
+          }
+        ],
+        "level": 2,
+        "notes": "",
+        "sp": 0
+      },
+      {
+        "cp": 0,
+        "date": "2025-02-15",
+        "gp": 16,
+        "items": [
+          {
+            "level": 1,
+            "name": "Lesser Alchemist's Fire",
+            "type": "consumable"
+          }
+        ],
+        "level": 2,
+        "notes": "Reaven's personal items",
+        "sp": 0
+      },
+      {
+        "level": 2,
+        "gp": 0,
+        "sp": 0,
+        "cp": 0,
+        "items": [
+          {
+            "level": 1,
+            "name": "Highmountain Ceremonial Battle Axe",
+            "type": "permanent"
+          }
+        ],
+        "notes": "Additional loot for Reaven",
+        "date": "2025-02-15"
+      }
+    ],
+    "name": "Mercs",
+    "partyLevel": 2
+  },
+  "pinned": {
+    "ambience": [],
+    "bgm": [],
+    "cards": [],
+    "docs": [],
+    "images": [],
+    "rules": []
+  }
 }

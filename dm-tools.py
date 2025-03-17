@@ -283,6 +283,34 @@ def current_campaign():
 def campaign_data():
     return crud_for_data_file(request, campaign_file())
 
+@app.route("/rule/search/<query>", methods=["GET"])
+def search_rule(query):
+    rule_folders = ["spells"]
+    rule_path = os.path.join("external-resources/pf2e", "packs")
+    try:
+        if not os.path.exists(rule_path):
+            return jsonify({"error": "Folder does not exist"}), 404
+        
+        results = []        
+        for folder in rule_folders:
+            rule_folder = os.path.join(rule_path, folder)
+
+            # List all files in the specified folder
+            files = os.listdir(rule_folder)
+            
+            # Search for the first file that partially matches the query
+            for file in files:
+                if query.lower() in file.lower():
+                    results.append({
+                        "folder": folder,
+                        "file": file,
+                        "label": file
+                    })
+                    
+        return jsonify(results), 200    
+    except Exception as e:        
+        return jsonify({"error": str(e)}), 500
+
 # Pull an item from the foundry vtt pf2e module and return it
 @app.route("/rule/<folder>/<query>", methods=["GET"])
 def get_rule(folder, query):

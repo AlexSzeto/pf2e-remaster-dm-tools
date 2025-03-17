@@ -9,15 +9,15 @@ import {
   InitiativeListItem,
   InitiativeTracker,
 } from './components/initiative-tracker.js'
-import { campaignResource, getCookie, setCookie } from './common/util.js'
+import { campaignResource, deepCompare, getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
 import { MarkdownDocument } from './components/md-doc.js'
-import { BudgetDisplay, BudgetTracker, calculateRemainder, countBudget, totalBudgetByLevel } from './components/budget-tracker.js'
+import { rawLine, BudgetDisplay, BudgetTracker, calculateRemainder, countBudget, totalBudgetByLevel } from './components/budget-tracker.js'
 
 import { ImageSelectorModal } from './modals/image-selector-modal.js'
 import { FileSelectorModal } from './modals/file-modal.js'
 import { CardSelectorModal } from './modals/card-modal.js'
-import { RulesSearchModal } from './modals/rules-search-modal.js'
+import { loadRule, RulesSearchModal } from './modals/rules-search-modal.js'
 import { ImageViewerModal } from './modals/image-viewer-modal.js'
 import { PinnedItemsList } from './components/pinned-items-list.js'
 
@@ -205,7 +205,10 @@ class App extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(this.state.players),
+      body: JSON.stringify({
+        players: this.state.players,
+        pinned: this.state.pinned
+      }),
     })
   }
 
@@ -266,6 +269,34 @@ class App extends Component {
         ...this.state.notes,
         docs: [],
       },
+    })
+  }
+
+  //
+  // CARDS
+  //
+  addCard(name) {
+    const card = this.state.campaign.cards.find((c) => c.name === name)
+    if(this.state.notes.cards.find(c => c.name === card.name)) {
+      return
+    }
+    this.setState({
+      notes: {
+        ...this.state.notes,
+        cards: [...this.state.notes.cards, card],
+      },
+    })
+  }
+
+  addRule(id) {
+    const [type, rule] = id.split('/')
+    loadRule(type, rule).then((data) => {
+      this.setState({
+        notes: {
+          ...this.state.notes,
+          cards: [...this.state.notes.cards, data],
+        },
+      })
     })
   }
 
@@ -344,16 +375,17 @@ class App extends Component {
         ...this.state.pinned,
         [type]: [...this.state.pinned[type], { label, id }],
       },
-    }, () => setCookie('pinnedItems', JSON.stringify(this.state.pinned)))
+    }, () => this.savePlayersData())
   }
 
   unpinItem(type, id) {
+    console.log('unpinning', type, id)
     this.setState({
       pinned: {
         ...this.state.pinned,
         [type]: this.state.pinned[type].filter(item => item.id !== id),
       },
-    }, () => setCookie('pinnedItems', JSON.stringify(this.state.pinned)))
+    }, () => this.savePlayersData())
   }
 
   isPinned(type, id) {
@@ -422,7 +454,8 @@ class App extends Component {
         images: [],
         bgm: [],
         ambience: [],
-        card: [],
+        rules: [],
+        cards: [],
         docs: []
       }
     }
@@ -432,7 +465,6 @@ class App extends Component {
       .then((response) => response.json())
       .then((campaign) => {
         // Update state with loaded data
-        const pinnedItems = getCookie('pinnedItems')
         const savedImages = getCookie('screenImages')
         const initiatives = getCookie('initiativeTracker')
 
@@ -445,7 +477,6 @@ class App extends Component {
               : this.state.screen.images,
           },
           combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
-          pinned: pinnedItems ? JSON.parse(pinnedItems) : this.state.pinned,  
         })
       })
       .catch((error) => {
@@ -454,9 +485,11 @@ class App extends Component {
 
     fetch(`/players`)
       .then((response) => response.json())
-      .then((players) => {
+      .then((data) => {
+        const { pinned, players } = data
         this.setState({
           players,
+          pinned
         }, () => {
           this.addPlayersToInitiativeList(this.state.players.characters)
         })
@@ -660,13 +693,6 @@ class App extends Component {
     const explorationTab = html`
       <h2 class="collapsible">Immersive Mode</h2>
       <div class="tab">
-        <div class="tab-content">
-          <${PinnedItemsList} 
-            items=${this.state.pinned.images}
-            onClick=${id => console.log('clicked')}
-            onUnpin=${id => this.unpinItem('images', id)}
-          />
-        </div>
         <div class="tab-content immersive-mode-grid">
           ${explorationImage} ${explorationAudio}
         </div>
@@ -740,6 +766,16 @@ class App extends Component {
             },
           ]}
         >
+          <${PinnedItemsList}
+            items=${this.state.pinned.cards}
+            onUnpin=${id => this.unpinItem('cards', id)}
+            onClick=${card => this.addCard(card.id)}
+          />
+          <${PinnedItemsList}
+            items=${this.state.pinned.rules}
+            onUnpin=${id => this.unpinItem('rules', id)}
+            onClick=${rule => this.addRule(rule.id)}
+          />
           <div class="card-grid">
             ${this.state.notes.cards.map(
               (card) => html`
@@ -748,12 +784,22 @@ class App extends Component {
                 label=""
                 actions=${[
                   {
+                    icon: 'bookmark',
+                    onClick: () => card.ref 
+                      ? this.togglePin('rules', card.name, `${card.ref.type}/${card.ref.rule}`)
+                      : this.togglePin('cards', card.name, card.name),
+                  },
+                  {
+                    icon: 'log-in',
+                    onClick: () => this.addCharacterToInitiative(card),
+                  },
+                  {
                     icon: 'x',
                     onClick: () => this.removeNotesCard(card),
                   },
                 ]}
               >
-                  <${Card} data=${card} />
+                  <${Card} data=${card} onSearch=${query => this.addRule(`spells/${query}`)}/>
               </${ContentSection}>
               </div>
               `
@@ -788,6 +834,7 @@ class App extends Component {
             label="Party Ledger"
             level=${this.state.players.partyLevel}
             items=${this.state.players.ledger}
+            trackDate=${true}
 
             onUpdateLevel=${(level) => {this.updatePlayersLevel(level)}}
             onAddLine=${(line) => {
@@ -802,7 +849,7 @@ class App extends Component {
               this.setState({
                 players: {
                   ...this.state.players,
-                  ledger: this.state.players.ledger.filter((l) => l !== line),
+                  ledger: this.state.players.ledger.filter((l) => !deepCompare(rawLine(l), line)),
                 },
               }, () => this.savePlayersData())
             }}
@@ -817,7 +864,13 @@ class App extends Component {
             id="treasure-budget"
             label="Treasure by Level"
             level=${this.state.players.partyLevel}
-            items=${this.state.campaign.treasures}
+            items=${this.state.campaign.treasures.map(line => ({
+              ...line,
+              used: this.state.players.ledger.some(l => {
+                const { date, ...stripped } = l
+                return deepCompare(stripped, line)
+              })
+            }))}
 
             onUpdateLevel=${(level) => {this.updatePlayersLevel(level)}}
             onAddLine=${(line) => {
@@ -828,15 +881,23 @@ class App extends Component {
                 },
               }, () => this.saveCampaignData())
             }}
-            onSendLine=${(line) => {
+            onSendLine=${(line, date) => {
               this.setState({
                 players: {
                   ...this.state.players,
-                  ledger: [...this.state.players.ledger, line],
+                  ledger: [...this.state.players.ledger, { ...line, date }],
                 },
               }, () => {
                 this.savePlayersData()
               })
+            }}
+            onDeleteLine=${(line) => {
+              this.setState({
+                campaign: {
+                  ...this.state.campaign,
+                  treasures: this.state.campaign.treasures.filter((l) => !deepCompare(rawLine(l), line)),
+                },
+              }, () => this.saveCampaignData())
             }}
           />
           <div>

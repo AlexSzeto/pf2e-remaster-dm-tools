@@ -45,18 +45,20 @@ export const ImageSelectorModal = ({
 }) => html`
   <${Modal} onClose=${onClose}>
     <div class="image-selector">
-      <h4>Pinned</h4>
-      <div class="grid">
-        <${ImageSelectorList}
-          images=${images
-          .filter(image => image.pinned)
-          .filter(image => !tags || tags.some(tag => image.path.indexOf(tag) !== -1))
-          }
-          onPin=${onPin}
-          onSelect=${onSelect}
-          onClose=${onClose}
-        />
-      </div>
+      ${images.some(image => image.pinned) && html`
+        <h4>Pinned</h4>
+        <div class="grid">
+          <${ImageSelectorList}
+            images=${images
+            .filter(image => image.pinned)
+            .filter(image => !tags || tags.some(tag => image.path.indexOf(tag) !== -1))
+            }
+            onPin=${onPin}
+            onSelect=${onSelect}
+            onClose=${onClose}
+          />
+        </div>
+      `}
       <h4>Unpinned</h4>
       <div class="grid">
         <div class="selector-container" onClick=${() => {
