@@ -6,6 +6,7 @@ export const FileSelectorSection = ({
   files,
   onPin,
   onSelect,
+  onClose,
 }) => html`
 ${files.map(
   (file) => html`
@@ -38,7 +39,7 @@ export const FileSelectorModal = ({
       ${files.some(file => file.pinned) && html`
         <h4>Pinned</h4>
         <div class="grid">
-          <${FileSelectorSection} files=${files.filter((file) => file.pinned)} onPin=${onPin} onSelect=${onSelect} />
+          <${FileSelectorSection} files=${files.filter((file) => file.pinned)} onPin=${onPin} onSelect=${onSelect} onClose=${onClose} />
         </div>
       `}
       <h4>Unpinned</h4>
@@ -55,7 +56,7 @@ export const FileSelectorModal = ({
             None
           </a>
         </div>
-        <${FileSelectorSection} files=${files.filter((file) => !file.pinned)} onPin=${onPin} onSelect=${onSelect} />
+        <${FileSelectorSection} files=${files.filter((file) => !file.pinned)} onPin=${onPin} onSelect=${onSelect} onClose=${onClose} />
       </div>
     </div>
   </${Modal}>

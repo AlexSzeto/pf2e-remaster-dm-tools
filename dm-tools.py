@@ -180,19 +180,15 @@ def manage_players():
     if request.method == "POST":
         try:
             # Convert form payload into JSON
-            data = request.get_json()
+            init_data = request.get_json()
             
             with open(os.path.join(JSON_TEMPLATES_FOLDER, "players.json"), "r") as f:
-                template = json.load(f)
-                
-            data = {
-                **template,
-                **data
-            }
+                data = json.load(f)
                 
             # Create new JSON file in campaigns directory
-            id = re.sub(r"[',.]", "", data["name"].strip().replace(" ", "-")).lower()
-            data["id"] = id
+            id = re.sub(r"[',.]", "", init_data["name"].strip().replace(" ", "-")).lower()
+            data["players"]["name"] = init_data["name"]
+            data["players"]["id"] = id
             
             # Create a new folder for the campaign
             players_file = os.path.join(players_root(), f"{id}.json")

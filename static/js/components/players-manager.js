@@ -70,7 +70,7 @@ export class PlayersManager extends Component {
         <h2>Select</h2>
         <div class="subsection vertical-list">
           ${this.state.players.map(
-            (group) => html`
+            ({players:group}) => html`
               <div>
                 <a
                   href="#"

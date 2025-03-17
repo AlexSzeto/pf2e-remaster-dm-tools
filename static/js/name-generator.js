@@ -37,7 +37,8 @@ class NameGenerator extends Component {
         body: JSON.stringify({
           model: 'llama3.2',
           stream: false,
-          prompt: getNameGenerationPrompt(this.state.criteria)
+          prompt: getNameGenerationPrompt(this.state.criteria),
+          temperature: 4,
         }),
       }).then((response) => {
         if (response.ok) {

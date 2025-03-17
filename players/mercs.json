@@ -68,10 +68,9 @@
         "sp": 0
       },
       {
-        "level": 2,
-        "gp": 0,
-        "sp": 0,
         "cp": 0,
+        "date": "2025-02-15",
+        "gp": 0,
         "items": [
           {
             "level": 1,
@@ -79,19 +78,105 @@
             "type": "permanent"
           }
         ],
+        "level": 2,
         "notes": "Additional loot for Reaven",
-        "date": "2025-02-15"
+        "sp": 0
       }
     ],
     "name": "Mercs",
     "partyLevel": 2
   },
   "pinned": {
-    "ambience": [],
-    "bgm": [],
-    "cards": [],
-    "docs": [],
-    "images": [],
+    "ambience": [
+      {
+        "label": "Bazaar Ambience",
+        "id": "bazaar-ambience.mp3"
+      },
+      {
+        "label": "Archives Ambience",
+        "id": "archives-ambience.mp3"
+      },
+      {
+        "label": "Tavern Ambience",
+        "id": "tavern-ambience.mp3"
+      }
+    ],
+    "bgm": [
+      {
+        "label": "Ode To Stormhaven",
+        "id": "ode-to-stormhaven-bgm.mp3"
+      }
+    ],
+    "cards": [
+      {
+        "label": "Stormhaven Guard",
+        "id": "Stormhaven Guard"
+      }
+    ],
+    "docs": [
+      {
+        "label": "Characters",
+        "id": "characters.md"
+      },
+      {
+        "label": "Campaign Events",
+        "id": "events.md"
+      },
+      {
+        "label": "Location - Stormhaven",
+        "id": "stormhaven.md"
+      }
+    ],
+    "images": [
+      {
+        "label": "Map Stormhaven",
+        "id": "map-stormhaven.jpg"
+      },
+      {
+        "label": "Map Uruzad",
+        "id": "map-uruzad.jpg"
+      },
+      {
+        "label": "Location Stormhaven",
+        "id": "location-stormhaven.jpg"
+      },
+      {
+        "label": "Location Bazarr",
+        "id": "location-bazaar.jpg"
+      },
+      {
+        "label": "Location Archives",
+        "id": "location-archives.jpg"
+      },
+      {
+        "label": "Location Ruins Clearing",
+        "id": "location-ruins-clearing.jpg"
+      },
+      {
+        "label": "Location Ruins Catacomb Entrance",
+        "id": "location-ruins-catacomb-entrance.jpg"
+      },
+      {
+        "label": "Location Ruins Keep",
+        "id": "location-ruins-keep.jpg"
+      },
+      {
+        "label": "Portrait Borja",
+        "id": "portrait-borja.jpg"
+      },
+      {
+        "label": "Portrait Burt",
+        "id": "portrait-burt.jpg"
+      },
+      {
+        "label": "Portrait Edwin",
+        "id": "portrait-edwin.jpg"
+      },
+      {
+        "label": "Portrait Fadon",
+        "id": "portrait-fadon.jpg"
+      }
+    ],
     "rules": []
   }
 }
