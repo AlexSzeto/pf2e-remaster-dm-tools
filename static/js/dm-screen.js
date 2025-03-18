@@ -226,13 +226,23 @@ class App extends Component {
   // NOTES
   //
   loadDocument(label, path) {
+    if(this.state.notes.docs.find(doc => doc.path === path)) {
+      this.setState({
+        notes: {
+          ...this.state.notes,
+          docs: this.state.notes.docs.map(doc => doc.path === path ? { ...doc, loaded: true } : doc)
+        }
+      })
+      return
+    }
+
     fetch(campaignResource(path))
       .then((response) => response.text())
       .then((text) => {
         this.setState({
           notes: {
             ...this.state.notes,
-            docs: [...this.state.notes.docs, { label, path, text }],
+            docs: [...this.state.notes.docs, { label, path, text, loaded: true }],
           },
         })
       })
@@ -258,7 +268,7 @@ class App extends Component {
     this.setState({
       notes: {
         ...this.state.notes,
-        docs: this.state.notes.docs.filter((d) => d.path !== path),
+        docs: this.state.notes.docs.map((d) => d.path === path ? { ...d, loaded: false } : d),
       },
     })
   }
@@ -322,7 +332,6 @@ class App extends Component {
   // MODALS
   //
   showModal(modal) {
-    console.log('showing modal:', modal)
     this.setState({
       modals: {
         ...this.state.modals,
@@ -379,7 +388,6 @@ class App extends Component {
   }
 
   unpinItem(type, id) {
-    console.log('unpinning', type, id)
     this.setState({
       pinned: {
         ...this.state.pinned,
@@ -719,7 +727,7 @@ class App extends Component {
           <${PinnedItemsList} 
             items=${
               this.state.pinned.docs
-                .filter(item => !this.state.notes.docs.some(doc => doc.path === item.id))
+                .filter(item => !this.state.notes.docs.some(doc => doc.loaded && doc.path === item.id))
             }
             onClick=${item => this.loadDocument(item.label, item.id)}
             onUnpin=${id => this.unpinItem('docs', id)}
@@ -727,8 +735,9 @@ class App extends Component {
           <div class="doc-grid">
             ${this.state.notes.docs.map(
               (doc) => html`
-                <div class="doc-container">
+                <div class="doc-container ${doc.loaded ? '' : 'hidden'}">
                   <${MarkdownDocument}
+                    loaded=${doc.loaded}
                     label=${doc.label}
                     path=${doc.path}
                     text=${doc.text}

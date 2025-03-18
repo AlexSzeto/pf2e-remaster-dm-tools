@@ -5,15 +5,11 @@ import { getCookie } from '../common/util.js'
 import { FeatherIcon } from './feather-icon.js'
 
 export class MarkdownDocument extends Component {
-  constructor({ label, path, text, onEdit, onClose, onPreviewImage }) {
-    super()
+  editor = null
 
-    this.state = {
-      label,
-      path,
-      text,
-      readonly: true,
-    }
+  constructor({ label, path, text, loaded, onEdit, onClose, onPreviewImage }) {
+    super()
+    this.state = { readonly: true }
   }
 
   enhanceMarkdownText(text) {
@@ -25,7 +21,7 @@ export class MarkdownDocument extends Component {
 
   createImageLinks() {
     const previewElement = document.querySelector(
-      `[data-path="${this.state.path}"] .preview`
+      `[data-path="${this.props.path}"] .preview`
     )
     const images = previewElement.querySelectorAll('img')
 
@@ -50,14 +46,26 @@ export class MarkdownDocument extends Component {
     })
   }
 
+  updateText() {
+    const componentElement = document.querySelector(
+      `[data-path="${this.props.path}"]`
+    )
+    const previewElement = componentElement.querySelector('.preview')
+    previewElement.innerHTML = marked.parse(
+      this.enhanceMarkdownText(this.editor.getValue())
+    )
+    this.createImageLinks()
+  }
+
   updateEditor() {
     const componentElement = document.querySelector(
-      `[data-path="${this.state.path}"]`
+      `[data-path="${this.props.path}"]`
     )
     const editorElement = componentElement.querySelector('.editor')
     const previewElement = componentElement.querySelector('.preview')
 
-    const editor = ace.edit(editorElement)
+    this.editor = ace.edit(editorElement)
+    const editor = this.editor
     editor.setAutoScrollEditorIntoView(true)
     editor.setTheme('ace/theme/solarized_light')
     editor.session.setMode('ace/mode/markdown')
@@ -66,18 +74,11 @@ export class MarkdownDocument extends Component {
       exec: () => this.setState({ readonly: true }),
       bindKey: { win: 'Esc', mac: 'Esc' },
     })
-    const updateText = () => {
-      previewElement.innerHTML = marked.parse(
-        this.enhanceMarkdownText(editor.getValue())
-      )
-      this.createImageLinks()
-      this.setState({ text: editor.getValue() })
+    const onEditorUpdate = () => {
+      this.updateText()
     }
-    editor.session.on('change', updateText)
-    previewElement.innerHTML = marked.parse(
-      this.enhanceMarkdownText(editor.getValue())
-    )
-    this.createImageLinks()
+    editor.session.on('change', onEditorUpdate)
+    this.updateText()
   }
 
   componentDidMount() {
@@ -85,48 +86,58 @@ export class MarkdownDocument extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.readonly !== this.state.readonly && !this.state.readonly) {
-      this.updateEditor()
+    if (prevProps.path !== this.props.path) {
+        this.editor.setValue(this.props.text)
+        this.updateEditor()
+    } else {
+      if(prevProps.loaded !== this.props.loaded && this.props.loaded) {
+        this.setState({ readonly: true }, () => this.updateText())
+      }
+      if(prevProps.readonly !== this.props.readonly && !this.props.readonly) {
+        this.updateEditor()
+      }
     }
   }
 
   editOrSaveDocument() {
     if (this.state.readonly) {
-      this.setState({ readonly: false })
+      this.setState({ readonly: false }, () => this.updateEditor())
     } else {
-      this.props.onEdit(this.state.path, this.state.text)
+      this.props.onEdit(this.props.path, this.editor.getValue())
       this.setState({ readonly: true })
     }
   }
 
   saveAndCloseDocument() {
     if (!this.state.readonly) {
-      this.props.onEdit(this.state.path, this.state.text)
+      this.props.onEdit(this.props.path, this.editor.getValue())
     }
-    requestAnimationFrame(() => this.props.onClose(this.state.path))
+    requestAnimationFrame(() => this.props.onClose(this.props.path))
   }
 
   render() {
     return html`
-      <div data-path="${this.state.path}" class="markdown-document">
-        <${ContentSection} label=${this.state.label} actions=${[
-      {
-        icon: this.state.readonly ? 'edit' : 'save',
-        onClick: () => this.editOrSaveDocument(),
-      },
-      {
-        icon: 'x',
-        onClick: () => this.saveAndCloseDocument(),
-      },
-    ]}>
+      ${ this.props.loaded && html`
+        <div data-path="${this.props.path}" class="markdown-document">
+          <${ContentSection} label=${this.props.label} actions=${[
+            {
+              icon: this.state.readonly ? 'edit' : 'save',
+              onClick: () => this.editOrSaveDocument(),
+            },
+            {
+              icon: 'x',
+              onClick: () => this.saveAndCloseDocument(),
+            },
+          ]}>
           <div class="text-container">
             <div class="preview ${this.state.readonly ? '' : 'hidden'}"></div>
             <pre class="editor ${this.state.readonly ? 'hidden' : ''}">${
-      this.state.text
-    }</pre>
+              this.props.text
+            }</pre>
           </div>
         </${ContentSection}>
       </div>
+      `}
     `
   }
 }

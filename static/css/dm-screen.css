@@ -105,7 +105,7 @@ body {
 }
 
 .notes-grid {
-  width: min-content;
+  /* width: min-content; */
   min-width: 32em;
 }
 
