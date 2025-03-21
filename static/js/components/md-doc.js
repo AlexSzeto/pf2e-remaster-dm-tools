@@ -69,6 +69,7 @@ export class MarkdownDocument extends Component {
     editor.setAutoScrollEditorIntoView(true)
     editor.setTheme('ace/theme/solarized_light')
     editor.session.setMode('ace/mode/markdown')
+    editor.setOption("showInvisibles", true)
     editor.commands.addCommand({
       name: 'exit',
       exec: () => this.setState({ readonly: true }),
