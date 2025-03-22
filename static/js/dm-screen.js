@@ -948,7 +948,7 @@ class App extends Component {
           ${this.state.modals[location] &&
           html`
             <${ImageSelectorModal}
-              tags=${location === 'background' ? ['location', 'map'] : ['portrait', 'npc']}
+              tags=${location === 'background' ? ['location', 'map'] : ['portrait', 'npc', 'item']}
               images=${this.state.campaign.images
                   .map(image => ({...image, pinned: this.isPinned('images', image.path)}))
               }

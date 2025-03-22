@@ -89,92 +89,156 @@
   "pinned": {
     "ambience": [
       {
-        "label": "Bazaar Ambience",
-        "id": "bazaar-ambience.mp3"
+        "id": "bazaar-ambience.mp3",
+        "label": "Bazaar Ambience"
       },
       {
-        "label": "Archives Ambience",
-        "id": "archives-ambience.mp3"
+        "id": "archives-ambience.mp3",
+        "label": "Archives Ambience"
       },
       {
-        "label": "Tavern Ambience",
-        "id": "tavern-ambience.mp3"
+        "id": "tavern-ambience.mp3",
+        "label": "Tavern Ambience"
+      },
+      {
+        "id": "ruins-ambience.mp3",
+        "label": "Ruins Ambience"
+      },
+      {
+        "id": "ambience-great-fire.mp3",
+        "label": "Great Fire"
+      },
+      {
+        "label": "Night Fireworks",
+        "id": "ambience-night-fireworks.mp3"
       }
     ],
     "bgm": [
       {
-        "label": "Ode To Stormhaven",
-        "id": "ode-to-stormhaven-bgm.mp3"
+        "id": "ode-to-stormhaven-bgm.mp3",
+        "label": "Ode To Stormhaven"
+      },
+      {
+        "id": "bgm-your-chance-to-escape.mp3",
+        "label": "Your Chance To Escape"
+      },
+      {
+        "id": "bgm-seedy-harbor-nights.mp3",
+        "label": "Seedy Harbor Nights"
       }
     ],
     "cards": [
       {
-        "label": "Stormhaven Guard",
-        "id": "Stormhaven Guard"
+        "id": "Stormhaven Guard",
+        "label": "Stormhaven Guard"
+      },
+      {
+        "id": "Burning Hand Cultist",
+        "label": "Burning Hand Cultist"
+      },
+      {
+        "id": "Skeleton Guard",
+        "label": "Skeleton Guard"
       }
     ],
     "docs": [
       {
-        "label": "Characters",
-        "id": "characters.md"
+        "id": "characters.md",
+        "label": "Characters"
       },
       {
-        "label": "Campaign Events",
-        "id": "events.md"
+        "id": "events.md",
+        "label": "Campaign Events"
       },
       {
-        "label": "Location - Stormhaven",
-        "id": "stormhaven.md"
+        "id": "stormhaven.md",
+        "label": "Location - Stormhaven"
       }
     ],
     "images": [
       {
-        "label": "Map Stormhaven",
-        "id": "map-stormhaven.jpg"
+        "id": "map-stormhaven.jpg",
+        "label": "Map Stormhaven"
       },
       {
-        "label": "Map Uruzad",
-        "id": "map-uruzad.jpg"
+        "id": "map-uruzad.jpg",
+        "label": "Map Uruzad"
       },
       {
-        "label": "Location Stormhaven",
-        "id": "location-stormhaven.jpg"
+        "id": "location-stormhaven.jpg",
+        "label": "Location Stormhaven"
       },
       {
-        "label": "Location Bazarr",
-        "id": "location-bazaar.jpg"
+        "id": "location-bazaar.jpg",
+        "label": "Location Bazarr"
       },
       {
-        "label": "Location Archives",
-        "id": "location-archives.jpg"
+        "id": "location-archives.jpg",
+        "label": "Location Archives"
       },
       {
-        "label": "Location Ruins Clearing",
-        "id": "location-ruins-clearing.jpg"
+        "id": "location-ruins-clearing.jpg",
+        "label": "Location Ruins Clearing"
       },
       {
-        "label": "Location Ruins Catacomb Entrance",
-        "id": "location-ruins-catacomb-entrance.jpg"
+        "id": "location-ruins-catacomb-entrance.jpg",
+        "label": "Location Ruins Catacomb Entrance"
       },
       {
-        "label": "Location Ruins Keep",
-        "id": "location-ruins-keep.jpg"
+        "id": "location-ruins-keep.jpg",
+        "label": "Location Ruins Keep"
       },
       {
-        "label": "Portrait Borja",
-        "id": "portrait-borja.jpg"
+        "id": "portrait-borja.jpg",
+        "label": "Portrait Borja"
       },
       {
-        "label": "Portrait Burt",
-        "id": "portrait-burt.jpg"
+        "id": "portrait-burt.jpg",
+        "label": "Portrait Burt"
       },
       {
-        "label": "Portrait Edwin",
-        "id": "portrait-edwin.jpg"
+        "id": "portrait-edwin.jpg",
+        "label": "Portrait Edwin"
       },
       {
-        "label": "Portrait Fadon",
-        "id": "portrait-fadon.jpg"
+        "id": "portrait-fadon.jpg",
+        "label": "Portrait Fadon"
+      },
+      {
+        "id": "portrait-zara-xyndrash.jpg",
+        "label": "Zara Xyndrash"
+      },
+      {
+        "id": "portrait-zekie.png",
+        "label": "Zekie"
+      },
+      {
+        "id": "portrait-reginald-thorne.jpeg",
+        "label": "Reginald Thorne"
+      },
+      {
+        "id": "portrait-bulo.jpg",
+        "label": "Portrait Bulo"
+      },
+      {
+        "id": "item-preserver-ceremonial-axe.jpeg",
+        "label": "Preserver Ceremonial Axe"
+      },
+      {
+        "id": "map-fire-stage-1.jpg",
+        "label": "Fire Stage 1"
+      },
+      {
+        "id": "map-fire-stage-2.jpg",
+        "label": "Fire Stage 2"
+      },
+      {
+        "id": "location-finale-fireworks.jpeg",
+        "label": "Finale Fireworks"
+      },
+      {
+        "id": "location-night-of-flames.jpeg",
+        "label": "Night Of Flames"
       }
     ],
     "rules": []

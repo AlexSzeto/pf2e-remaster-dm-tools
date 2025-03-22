@@ -62,36 +62,62 @@ def insert_update_resource():
         file = request.files["file"]        
         print(f"saving {file.filename}")
         
-        # Capture the file extension from resource_name
         file_extension = os.path.splitext(file.filename)[1]
-        if file_extension in [".jpg", ".jpeg", ".png", ".gif", ".svg"]:
-            resource_folder = "images"
-        elif file_extension in [".mp3", ".wav", ".ogg"]:
-            resource_folder = "audio"
-        elif file_extension in [".md", ".txt"]:
-            resource_folder = "docs"
+        if request.form.get("folder"):
+            resource_folder = request.form.get("folder")
+        else:            
+            # Capture the file extension from resource_name
+            if file_extension in [".jpg", ".jpeg", ".png", ".gif", ".svg"]:
+                resource_folder = "images"
+            elif file_extension in [".mp3", ".wav", ".ogg"]:
+                resource_folder = "audio"
+            elif file_extension in [".md", ".txt"]:
+                resource_folder = "docs"
 
-        resource_type = resource_folder
+        tags = request.form.get("tags")
+        if tags:
+            tags = tags.split(",")
+        else:
+            tags = []
+        
+        if request.form.get("type"):
+            type = request.form.get("type")
+            tags.append(type)
+            resource_type = request.form.get("type")
+            if not resource_type in ["ambience", "bgm"]:
+                resource_type = resource_folder
+            else:
+                resource_type = resource_type + "s"
+        else:
+            resource_type = resource_folder
+            if resource_type == "audio":
+                resource_type = "ambiences" if "-ambience" in file.filename else "bgms"
+                
+        label = request.form.get("name")
+        if label:
+            export_filename = type + "-" + label.replace(" ", "-").lower() + file_extension
+        else:
+            export_filename = file.filename
+            label = file.filename
         
         # Create the campaign data point if it doesn't exist
         if os.path.exists(campaign_file()):
             # Read and return contents of project.json
             with open(campaign_file(), "r") as f:
                 campaign_data = json.load(f)
-                if resource_type == "audio":
-                    resource_type = "ambiences" if "-ambience" in file.filename else "bgms"
 
                 resource_data = next((item for item in campaign_data[resource_type] if item["path"] == file.filename), None)
                 if resource_data == None:
                     campaign_data[resource_type].append({
-                        "path": file.filename,
-                        "label": file.filename
+                        "path": export_filename,
+                        "label": label,
+                        "tags": tags
                     })
                     with open(campaign_file(), "w") as f:
                         json.dump(campaign_data, f, indent=2)
         
         # Save the file to the campaign folder
-        file.save(os.path.join(campaign_folder(), resource_folder, file.filename))
+        file.save(os.path.join(campaign_folder(), resource_folder, export_filename))
         return jsonify({"message": "File uploaded successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

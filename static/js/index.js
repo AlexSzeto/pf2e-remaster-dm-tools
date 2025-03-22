@@ -14,6 +14,9 @@ render(
         <a href="creature-creator">Creature Creator</a>
       </div>
       <div>
+        <a href="insert-media">Insert Media</a>
+      </div>
+      <div>
         <a href="name-generator">Name Generator</a>
       </div>
       <div>
