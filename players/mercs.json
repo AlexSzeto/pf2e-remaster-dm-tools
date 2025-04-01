@@ -81,6 +81,15 @@
         "level": 2,
         "notes": "Additional loot for Reaven",
         "sp": 0
+      },
+      {
+        "level": 2,
+        "gp": 35,
+        "sp": 0,
+        "cp": 0,
+        "items": [],
+        "notes": "Reward from Burt for saving the Hive",
+        "date": "2025-03-23"
       }
     ],
     "name": "Mercs",
@@ -109,8 +118,8 @@
         "label": "Great Fire"
       },
       {
-        "label": "Night Fireworks",
-        "id": "ambience-night-fireworks.mp3"
+        "id": "ambience-night-fireworks.mp3",
+        "label": "Night Fireworks"
       }
     ],
     "bgm": [
