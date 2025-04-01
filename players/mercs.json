@@ -1,0 +1,255 @@
+{
+  "players": {
+    "characters": [
+      {
+        "class": "Cleric",
+        "hp": 30,
+        "name": "Grom",
+        "perception": 6
+      },
+      {
+        "class": "Druid",
+        "hp": 26,
+        "name": "Typha",
+        "perception": 6
+      },
+      {
+        "class": "Bard",
+        "hp": 24,
+        "name": "Lemmy",
+        "perception": 7
+      },
+      {
+        "class": "Rogue",
+        "hp": 26,
+        "name": "Fayla",
+        "perception": 7
+      }
+    ],
+    "id": "mercs",
+    "ledger": [
+      {
+        "cp": 0,
+        "date": "2023-01-18",
+        "gp": 23,
+        "items": [],
+        "level": 2,
+        "notes": "bracelet stolen from a noble",
+        "sp": 0
+      },
+      {
+        "cp": 0,
+        "date": "2023-01-18",
+        "gp": 0,
+        "items": [
+          {
+            "level": 1,
+            "name": "Darkstone Amulet",
+            "type": "permanent"
+          }
+        ],
+        "level": 2,
+        "notes": "",
+        "sp": 0
+      },
+      {
+        "cp": 0,
+        "date": "2025-02-15",
+        "gp": 16,
+        "items": [
+          {
+            "level": 1,
+            "name": "Lesser Alchemist's Fire",
+            "type": "consumable"
+          }
+        ],
+        "level": 2,
+        "notes": "Reaven's personal items",
+        "sp": 0
+      },
+      {
+        "cp": 0,
+        "date": "2025-02-15",
+        "gp": 0,
+        "items": [
+          {
+            "level": 1,
+            "name": "Highmountain Ceremonial Battle Axe",
+            "type": "permanent"
+          }
+        ],
+        "level": 2,
+        "notes": "Additional loot for Reaven",
+        "sp": 0
+      },
+      {
+        "level": 2,
+        "gp": 35,
+        "sp": 0,
+        "cp": 0,
+        "items": [],
+        "notes": "Reward from Burt for saving the Hive",
+        "date": "2025-03-23"
+      }
+    ],
+    "name": "Mercs",
+    "partyLevel": 2
+  },
+  "pinned": {
+    "ambience": [
+      {
+        "id": "bazaar-ambience.mp3",
+        "label": "Bazaar Ambience"
+      },
+      {
+        "id": "archives-ambience.mp3",
+        "label": "Archives Ambience"
+      },
+      {
+        "id": "tavern-ambience.mp3",
+        "label": "Tavern Ambience"
+      },
+      {
+        "id": "ruins-ambience.mp3",
+        "label": "Ruins Ambience"
+      },
+      {
+        "id": "ambience-great-fire.mp3",
+        "label": "Great Fire"
+      },
+      {
+        "id": "ambience-night-fireworks.mp3",
+        "label": "Night Fireworks"
+      }
+    ],
+    "bgm": [
+      {
+        "id": "ode-to-stormhaven-bgm.mp3",
+        "label": "Ode To Stormhaven"
+      },
+      {
+        "id": "bgm-your-chance-to-escape.mp3",
+        "label": "Your Chance To Escape"
+      },
+      {
+        "id": "bgm-seedy-harbor-nights.mp3",
+        "label": "Seedy Harbor Nights"
+      }
+    ],
+    "cards": [
+      {
+        "id": "Stormhaven Guard",
+        "label": "Stormhaven Guard"
+      },
+      {
+        "id": "Burning Hand Cultist",
+        "label": "Burning Hand Cultist"
+      },
+      {
+        "id": "Skeleton Guard",
+        "label": "Skeleton Guard"
+      }
+    ],
+    "docs": [
+      {
+        "id": "characters.md",
+        "label": "Characters"
+      },
+      {
+        "id": "events.md",
+        "label": "Campaign Events"
+      },
+      {
+        "id": "stormhaven.md",
+        "label": "Location - Stormhaven"
+      }
+    ],
+    "images": [
+      {
+        "id": "map-stormhaven.jpg",
+        "label": "Map Stormhaven"
+      },
+      {
+        "id": "map-uruzad.jpg",
+        "label": "Map Uruzad"
+      },
+      {
+        "id": "location-stormhaven.jpg",
+        "label": "Location Stormhaven"
+      },
+      {
+        "id": "location-bazaar.jpg",
+        "label": "Location Bazarr"
+      },
+      {
+        "id": "location-archives.jpg",
+        "label": "Location Archives"
+      },
+      {
+        "id": "location-ruins-clearing.jpg",
+        "label": "Location Ruins Clearing"
+      },
+      {
+        "id": "location-ruins-catacomb-entrance.jpg",
+        "label": "Location Ruins Catacomb Entrance"
+      },
+      {
+        "id": "location-ruins-keep.jpg",
+        "label": "Location Ruins Keep"
+      },
+      {
+        "id": "portrait-borja.jpg",
+        "label": "Portrait Borja"
+      },
+      {
+        "id": "portrait-burt.jpg",
+        "label": "Portrait Burt"
+      },
+      {
+        "id": "portrait-edwin.jpg",
+        "label": "Portrait Edwin"
+      },
+      {
+        "id": "portrait-fadon.jpg",
+        "label": "Portrait Fadon"
+      },
+      {
+        "id": "portrait-zara-xyndrash.jpg",
+        "label": "Zara Xyndrash"
+      },
+      {
+        "id": "portrait-zekie.png",
+        "label": "Zekie"
+      },
+      {
+        "id": "portrait-reginald-thorne.jpeg",
+        "label": "Reginald Thorne"
+      },
+      {
+        "id": "portrait-bulo.jpg",
+        "label": "Portrait Bulo"
+      },
+      {
+        "id": "item-preserver-ceremonial-axe.jpeg",
+        "label": "Preserver Ceremonial Axe"
+      },
+      {
+        "id": "map-fire-stage-1.jpg",
+        "label": "Fire Stage 1"
+      },
+      {
+        "id": "map-fire-stage-2.jpg",
+        "label": "Fire Stage 2"
+      },
+      {
+        "id": "location-finale-fireworks.jpeg",
+        "label": "Finale Fireworks"
+      },
+      {
+        "id": "location-night-of-flames.jpeg",
+        "label": "Night Of Flames"
+      }
+    ],
+    "rules": []
+  }
+}

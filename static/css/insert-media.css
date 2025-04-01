@@ -1,0 +1,11 @@
+.flat-page {
+  display: flex;
+  flex-direction: column;
+}
+
+#media-form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 50%;
+}

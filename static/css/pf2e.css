@@ -1,0 +1,381 @@
+@font-face {
+  font-family: 'Taroca';
+  src: url('../fonts/taroca.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FF Good Pro Cond';
+  src: url('../fonts/ff-good-pro-cond-regular.woff') format('woff');
+  font-weight: normal;
+  font-sytle: normal;
+}
+
+@font-face {
+  font-family: 'FF Good Pro Cond';
+  src: url('../fonts/ff-good-pro-cond-bold.woff') format('woff');
+  font-weight: bold;
+  font-sytle: normal;
+}
+
+@font-face {
+  font-family: 'Crimson Pro';
+  src: url('../fonts/crimson-pro-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Crimson Pro';
+  src: url('../fonts/crimson-pro-bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Crimson Pro';
+  src: url('../fonts/crimson-pro-italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'PF2E Actions';
+  src: url('../fonts/pf2e-actions.woff') format('woff');
+  font-weight: normal;
+}
+
+body {
+  font-family: 'FF Good Pro Cond', sans-serif;
+  font-weight: normal;
+
+  /* repeating background image */
+  background-image: url('../images/parchment-background.jpg');
+}
+
+.hidden {
+  display: none;
+}
+
+.printed-card-frame {
+  border: 1px dashed #472c2c;
+  padding: 3em;
+  width: 50em;
+  height: 70em;
+  font-size: 5px;
+}
+
+.card {
+  position: relative;
+
+  width: auto;
+  height: auto;
+  border: 2em solid #472c2c;
+}
+
+.card-border {
+  position: absolute;
+  top: -2em;
+  left: -2em;
+  right: -2em;
+  bottom: -2em;
+  border: 2em solid #472c2c;
+  border-radius: 5em;
+  border-width: 4em;
+  padding: 3.2em 1.5em;
+}
+
+.pf2e-stats {
+  .full-frame-image {
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .text-outline {
+    color: white;
+    -webkit-text-stroke: 0.2em black;
+    paint-order: stroke fill;
+  }
+
+  .title {
+    display: flex;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    .name {
+      font-size: 4.2em;
+      flex-grow: 1;
+    }
+
+    .type {
+      font-size: 3.6em;
+      align-self: flex-end;
+    }
+  }
+
+  .illustration {
+    width: 62em;
+    height: 36em;
+    object-fit: cover; /* Crop the image */
+    object-position: center; /* Center the image within the container */
+    border: 0.4em solid black;
+    background-color: white;
+  }
+
+  .traits {
+    margin-top: 0.25em;
+
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    font-size: 2.4em;
+    gap: 0.25em;
+
+    .trait-item {
+      min-width: 4em;
+      min-height: 1.5em;
+      padding: 0 0.5em;
+
+      color: white;
+
+      background-color: #472c2c;
+      border: 0.2em solid #c99d51;
+      &.uncommon {
+        background-color: #664e47;
+      }
+
+      &.size {
+        background-color: #478c42;
+      }
+
+      display: flex;
+      span {
+        font-weight: bold;
+        text-transform: uppercase;
+
+        display: block;
+        flex-grow: 1;
+        text-align: center;
+        align-self: center;
+      }
+    }
+  }
+
+  .stats {
+    margin-top: 1.5em;
+
+    .stat-name {
+      font-size: 3.2em;
+      font-weight: bold;
+      margin-right: 0.2em;
+      line-height: 1.2em;
+    }
+    .stat-text {
+      font-size: 3.2em;
+      margin-right: 0.2em;
+      line-height: 1.2em;
+
+      span.icon {
+        font-size: 1.3125em;
+      }
+    }
+  }
+
+  hr {
+    &.divider {
+      margin-top: 2em;
+    }
+    display: block;
+    height: 0.2em;
+    border: 0;
+    border-top: 0.2em solid black;
+  }
+
+  .description {
+    font-size: 3.2em;
+
+    margin-top: 0.4em;
+    line-height: 1.2em;
+  }
+
+  span.icon {
+    font-family: 'PF2E Actions', sans-serif;
+    font-size: 4.2em;
+
+    &.free::before {
+      content: 'f';
+    }
+
+    &.single::before {
+      content: 'a';
+    }
+
+    &.double::before {
+      content: 'd';
+    }
+
+    &.turn::before {
+      content: 't';
+    }
+
+    &.reaction::before {
+      content: 'r';
+    }
+  }
+}
+
+.pf2e-stats.dark {
+  hr {
+    border-top: 0.2em solid white;
+  }
+}
+
+.disabled-text {
+  display: inline-block;
+  background-color: #efefef;
+  border: 1px solid rgb(118, 118, 118);
+  box-sizing: border-box;
+  position: relative;
+
+  span {
+    vertical-align: middle;
+  }
+}
+
+h1, h2, h3 {
+  font-family: 'Taroca', sans-serif;
+  font-weight: normal;
+  margin: 0;
+  padding: 0 0 1em 0;
+}
+
+h4, h5, h6 {
+  font-family: 'FF Good Pro Cond', sans-serif;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 0 1em 0;
+}
+
+select,
+input,
+.disabled-text {
+  font-family: 'FF Good Pro Cond', sans-serif;
+  font-size: 1em;
+  border: 1px solid rgb(118, 118, 118);
+  margin: 0.125em 0.125em;
+  border-radius: 4px;
+  padding: 0.25em;
+}
+
+a {
+  display: inline;
+  color: black;
+  text-decoration: none;
+  padding: 0.125em 0.25em;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+
+  &:disabled {
+    color: rgb(118, 118, 118);
+  }
+
+  &:not(:disabled):hover {
+    color: white;
+    background-color: #664e47;
+  }  
+
+  &:not(:disabled):active {
+    color: white;
+    background-color: #351a1a;
+  }  
+}
+
+a.selected {
+  border: none;
+  outline: 3px solid black;
+}
+
+input {
+  box-sizing: border-box;
+  padding: 0.5em;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+textarea {
+  font-family: 'FF Good Pro Cond', sans-serif;
+  font-size: 1em;
+  border: 1px solid rgb(118, 118, 118);
+  border-radius: 4px;
+  padding: 0.25em;
+
+  margin: 0.5em 0;
+  display: block;
+  width: 20em;
+  height: 4em;
+  resize: none;
+}
+
+.label-text {
+  display: inline-block;
+  text-align: right;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+button {
+  cursor: pointer;
+  
+  font-family: 'FF Good Pro Cond', sans-serif;
+  font-size: 1em;
+  padding: 0.5em;
+  margin: 0.125em 0.25em;
+
+  background-color: #472c2c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+
+  &inverted {
+    color: #472c2c;
+    background-color: white;
+  }
+
+  &.outlined {
+    border: 1px solid white;
+    background: none;
+    color: white;
+
+    &.inverted {
+      border-color: #472c2c;
+      color: #472c2c;
+    }
+  }
+
+  &:disabled {
+    background-color: rgba(118, 118, 118, 0.25);
+    color: #664e47;
+  }
+
+  &:not(:disabled):hover {
+    background-color: #664e47;
+    color: white;
+  }
+
+  &:not(:disabled):active {
+    background-color: #351a1a;
+    color: white;
+  }
+}

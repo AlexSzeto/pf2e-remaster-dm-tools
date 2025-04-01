@@ -1,0 +1,589 @@
+/*****************************************************/
+/* MODALS */
+/*****************************************************/
+
+.screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  .close-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal {
+    position: fixed;
+
+    &:not(.minimal) {
+      top: 10vh;
+      bottom: 10vh;
+      left: 10vw;
+      right: 10vw;
+    }
+
+    &.minimal {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    background-color: white;
+    padding: 1em;
+    padding-right: 3.5em;
+    border-radius: 1em;
+
+    overflow-y: hidden;
+
+    .top-right {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+    }
+  }
+
+  .image-selector,
+  .card-selector,
+  .file-selector {
+    width: 100%;
+    height: 100%;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .image-selector {
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 10em);
+      grid-template-rows: repeat(auto-fill, 12em);
+      row-gap: 1em;
+      column-gap: 0.5em;
+  
+      padding-bottom: 1em;
+    }
+    
+    .selector-container {
+      display: flex;
+      flex-direction: column;
+
+      .description {
+        text-align: center;
+        margin-bottom: 0.25em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .image-container {
+        position: relative;
+
+        button {
+          position: absolute;
+          right: 0.25em;
+          top: 0.25em;
+        }
+      }
+
+      .image {
+        border-radius: 4px;
+        width: 100%;
+        height: 10em;
+        background-size: cover;
+        background-position: top center;
+      }
+    }
+  }
+
+  .image-viewer {
+    img {
+      border-radius: 4px;
+      max-width: 80vw;
+      max-height: 80vh;
+    }
+  }
+
+  .card-selector {
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 24em);
+      grid-template-rows: repeat(auto-fill, min-content);
+        row-gap: 1em;
+      column-gap: 0.5em;
+  
+      padding-bottom: 1em;
+    }
+
+    .card-container {
+      position: relative;
+      font-size: 0.4em;
+      color: black;
+      background-color: rgba(0, 0, 0, 0.1);
+      padding: 1.25em;
+      border-radius: 4px;
+      height: min-content;
+
+      &.selected {
+        background-color: #351a1a;
+        color: white;
+      }
+    }
+  }
+
+  .file-selector {
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25em;
+      font-size: 1.5em;
+  
+      padding-bottom: 1em;
+  
+      .description {
+        display: flex;
+        flex-direction: row;
+        height: 2em;
+      }
+  
+      a {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+      }
+    }
+  }
+}
+
+/*****************************************************/
+/* MARKDOWN DOCUMENT */
+/*****************************************************/
+
+.markdown-document {
+  display: flex;
+  flex-direction: column;
+
+  .text-container {
+    position: relative;
+    width: 35vw;
+    min-width: 40em;
+    min-height: 30em;
+    border-radius: 4px;
+  }
+
+  .editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .preview {
+    padding: 0.5em;
+    max-height: 30em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    font-size: 16px;
+    line-height: 1.5em;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'FF Good Pro Cond', sans-serif;
+      color: #472c2c;
+      font-weight: bold;
+      margin: 0.5em 0;
+      padding: 0;
+    }
+
+    p {
+      margin: 0.5em 0;
+      padding: 0;
+    }
+
+    ul,
+    ol {
+      margin: 0.5em;
+      padding: 0 0.75em;
+    }
+
+    a {
+      font-weight: normal;
+    }
+
+    blockquote {
+      font-family: 'Crimson Pro', serif;
+      margin: 0.5em 0;
+      padding: 0.75em 2em;
+      background-color: #f5e1bf;
+      color: #472c2c;
+      border: 2px solid rgba(71, 44, 44, 0.5);
+      border-radius: 4px;
+    }
+
+    blockquote p::before {
+      font-size: 20px;
+      font-weight: bold;
+      content: open-quote;
+      padding-right: 4px;
+    }
+
+    blockquote p::after {
+      font-size: 20px;
+      font-weight: bold;
+      content: close-quote;
+      padding-left: 4px;
+    }
+
+    :not(pre) code {
+      font-family: 'FF Good Pro Cond', sans-serif;
+      background-color: #472c2c;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    pre {
+      margin: 1.5em;
+      padding: 0.75em;
+      border-top: 2px solid #472c2c;
+      border-bottom: 2px solid #472c2c;
+
+      code {
+        font-family: 'Crimson Pro', serif;
+        white-space: pre-wrap;
+      }
+    }
+
+    thead {
+      background-color: #472c2c;
+      color: white;
+
+      th {
+        font-weight: normal;
+      }
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #f5e6cd;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f4eae2;
+    }
+
+    th,
+    td {
+      padding: 0.25em 0.5em;
+    }
+
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    .album-image {
+      width: 16em;
+      position: relative;
+    }
+  }
+}
+
+/*****************************************************/
+/* CONTENT SECTION */
+/*****************************************************/
+
+.content-section-with-actions {
+  display: grid;
+
+  grid-template-areas:
+    'title actions'
+    'content content';
+
+  row-gap: 0.5em;
+  column-gap: 0;
+  padding: 0.5em;
+
+  > .title {
+    grid-area: title;
+    font-size: 1.5em;
+    font-weight: bold;
+    align-self: center;
+  }
+
+  > .actions {
+    grid-area: actions;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 0.25em;
+
+    button.square {
+      margin: 0;
+    }
+  }
+
+  > .content {
+    grid-area: content;
+  }
+
+  label {
+    font-size: 1em;
+  }
+}
+
+.labeled-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/*****************************************************/
+/* FRAMED IMAGE */
+/*****************************************************/
+
+/* .insert-frame {
+  border: 1px solid #472c2c;
+} */
+
+.framed-image {
+  background-color: rgba(255, 255, 255, 0.5);
+
+  .cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+  }
+}
+
+.framed-image,
+.album-image {
+  border-radius: 4px;
+  position: relative;
+
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .top-left {
+    position: absolute;
+    top: 0.25em;
+    left: 0.25em;
+  }
+
+  .cover {
+    border-radius: 4px;
+  }
+
+  img {
+    border-radius: 4px;
+
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+/*****************************************************/
+/* CROSSFADE IMAGE */
+/*****************************************************/
+
+.crossfade-image {
+  position: absolute;
+
+  transition: opacity 1s;
+  opacity: 0;
+
+  &.shown {
+    opacity: 1;
+  }
+
+  &.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Scale the image to cover the viewport */
+  }
+
+  &:not(.cover) {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Scale the image to fit the viewport */
+  }
+}
+
+/*****************************************************/
+/* CARD BUILDERS */
+/*****************************************************/
+
+.creature-builder {
+  font-size: 18px;
+
+  .label-text {
+    min-width: 6em;
+    margin-right: 0.5em;
+  }
+
+  .item-list {
+    position: relative;
+    left: 6.5em;
+  }
+
+  .column {
+    display: flex;
+  }
+
+  .two-column {
+    display: grid;
+    grid-template-columns: 15em 15em;
+  }
+
+  #card-preview {
+    font-size: 12px;
+    margin-left: 1em;
+    width: 90em;
+    height: 40em;
+  }
+
+  .reference-card-frame {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    font-size: 5px;
+    padding: 2em;
+    width: 90em;
+  }
+}
+
+/*****************************************************/
+/* REFERENCE SEARCH */
+/*****************************************************/
+
+.results-list {
+  font-size: 1.5em;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+/*****************************************************/
+/* BUDGET TRACKERS */
+/*****************************************************/
+
+.budget-display-container {
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.budget-display {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  margin-bottom: 4px;
+}
+
+.budget-tracker {
+  .date {
+    margin-top: 1em;
+    font-weight: bold;
+    color: #472c2c;
+  }
+
+  .level-display {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.75em;
+    align-items: center;
+    
+    .title, .value {
+      font-size: 1.5em;
+      margin-right: 4px;
+    }
+
+    .value {
+      font-weight: bold;
+    }
+  }
+
+  .tracker-content {
+    height: 20em;
+    overflow-y: scroll;
+  }
+
+  .line-items-list {
+    ul {
+      list-style-type: none;
+      padding-inline-start: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
+    }
+    li {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.1em;
+
+      button.square {
+        font-size: 0.75em;
+      }
+
+      &.used {
+        color: #666;
+      }
+    }
+  }
+}
+
+/*****************************************************/
+/* PINNED ITEMS */
+/*****************************************************/
+
+.pinned-items-list {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  flex-wrap: wrap;
+
+  padding-bottom: 1em;
+
+  .pinned-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background: #472c2c;
+    border-radius: 4px;
+    padding: 0.25em;
+
+    width: 12em;
+
+    .text {
+      cursor: pointer;
+      color: white;
+      flex-grow: 1;
+      padding-left: 0.25em;
+    }
+
+    button {
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Creature Builder</title>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pf2e.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="{{ url_for('static', filename='js/ace-builds/src/ace.js') }}" type="text/javascript" charset="utf-8"></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "preact": "https://esm.sh/preact@10.19.2",
+            "preact/": "https://esm.sh/preact@10.19.2/",
+            "htm/preact": "https://esm.sh/htm@3.1.1/preact?external=preact"
+        }
+    }
+  </script>    
+  <script type="module" src="{{ url_for('static', filename='js/creature-builder.js') }}"></script></head>
+</head>
+<body>
+  <!-- Your content here -->
+</body>
+</html>

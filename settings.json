@@ -1,0 +1,10 @@
+{
+  "campaign": {
+    "root": "campaigns",
+    "current": "shadow-of-ashes"
+  },
+  "players": {
+    "root": "players",
+    "current": "mercs"
+  }
+}

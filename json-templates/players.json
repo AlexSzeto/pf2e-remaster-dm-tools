@@ -1,0 +1,17 @@
+{
+  "players": {
+    "name": "",
+    "id": "",
+    "partyLevel": 1,
+    "characters": [],
+    "ledger": []  
+  },
+  "pinned": {
+    "images": [],
+    "bgm": [],
+    "ambience": [],
+    "rules": [],
+    "cards": [],
+    "docs": []
+  }
+}
