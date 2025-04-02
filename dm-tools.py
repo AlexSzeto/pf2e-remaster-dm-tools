@@ -30,6 +30,10 @@ def players_file():
 def index():
     return render_template("index.html")
 
+@app.route("/lib/ace/<path:filename>")
+def ace_static(filename):
+    return send_from_directory(os.path.join("external-resources", "ace-builds"), filename)
+
 @app.route("/<page_name>")
 def render_page(page_name):
     try:
@@ -359,7 +363,25 @@ def get_rule(folder, query):
         return jsonify({"error": "No matching rule found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-  
+
+@app.route("/tileset", methods=["GET"])
+def get_tilesets():
+    tileset_path = os.path.join("editor-resources", "tiles.json")
+    try:
+        if not os.path.exists(tileset_path):
+            return jsonify({"error": "Tileset file does not exist"}), 404
+
+        with open(tileset_path, "r") as f:
+            data = json.load(f)
+            return jsonify(data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/tile/<filename>", methods=["GET"])
+def get_tile(filename):
+    tileset_folder = os.path.join("editor-resources", "tiles")
+    return send_from_directory(tileset_folder, filename)
+    
 def open_browser():
     """Opens the default web browser to the Flask server."""
     webbrowser.open_new("http://127.0.0.1:5000/")
