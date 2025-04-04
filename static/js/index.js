@@ -14,6 +14,9 @@ render(
         <a href="creature-creator">Creature Creator</a>
       </div>
       <div>
+        <a href="map-editor">Map Editor</a>
+      </div>
+      <div>
         <a href="insert-media">Insert Media</a>
       </div>
       <div>

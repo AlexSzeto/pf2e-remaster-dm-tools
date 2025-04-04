@@ -1,346 +1,399 @@
-const GRID_SIZE = 60
-const TILE_WIDTH = 2 * GRID_SIZE
-const TRUE_WIDTH = 20 * GRID_SIZE * 4
-const TRUE_HEIGHT = 20 * GRID_SIZE * 4
+import { render } from "preact"
+import { useState } from "preact/hooks"
+import { html } from "htm/preact"
+import { getTaggedData, getTagsList, TagList, toggleTag } from "./components/tag-list.js"
 
-let tilesLibrary = []
-let mapTiles = []
-
-let canvasTransform = {
-  scale: 1,
-  offsetX: 0,
-  offsetY: 0,
-}
-
-let dragging = {
-  canvas: false,
-  tile: null,
-  image: null,
-  offsetX: 0,
-  offsetY: 0,
-}
-
-let mouse = {
-  scaled: { x: 0, y: 0 },
-  true: { x: 0, y: 0 },
-}
-
-const screenCanvas = document.getElementById('canvas')
-const screen = screenCanvas.getContext('2d')
-
-const canvas = document.createElement('canvas')
-canvas.width = screenCanvas.width
-canvas.height = screenCanvas.height
-let ctx = canvas.getContext('2d')
-
-rescaleCanvas()
-
-const tileSelector = document.getElementById('tileSelector')
-const loadButton = document.getElementById('loadTile')
-
-function getCookie(name) {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop().split(';').shift()
-  return null
-}
-
-function setCookie(name, value) {
-  const date = new Date()
-  date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000) // 30 days expiration
-  const expires = '; expires=' + date.toUTCString()
-
-  document.cookie = `${name}=${value || ''}${expires}; samesite=lax`
-}
-
-async function loadTiles() {
-  fetch('/tileset')
-    .then(result => result.json())
-    .then((data) => {
-      tilesLibrary = data.tiles
-      tilesLibrary.forEach(async (tile) => {
-        await new Promise((resolve) => {
-          const img = new Image()
-          img.src = `tile/${tile.path}`
-          tile.image = img
-          img.onload = () => {
-            resolve()
-          }
-        })
-
-        const option = document.createElement('option')
-        option.value = tile.path
-        option.textContent = tile.name
-        tileSelector.appendChild(option)    
-      })
-    })
-}
-
-function rescaleCanvas(scale = 0.5, offsetX = 0, offsetY = 0) {
-  canvasTransform = {
-    scale,
-    offsetX,
-    offsetY,
+class MapEditor {
+  static GRID_WIDTH = 60
+  static UNIT_WIDTH = 2 * MapEditor.GRID_WIDTH
+  static COLORS = {
+    background: '#000000',
+    tile: '#f0f0f0',
+    gridLine: '#aaaaaa',
+    unitLine: '#000000',    
   }
-  redrawCanvas()
-}
 
-function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = 'white'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-}
+  // {
+  //   background: '#000000',
+  //   tile: '#333333',
+  //   gridLine: '#ffffff',
+  //   unitLine: '#aaaaaa',    
+  // }
 
-function drawGrid() {
-  const globalWidth = TRUE_WIDTH
-  const globalHeight = TRUE_HEIGHT
-
-  ctx.clearRect(0, 0, globalWidth, globalHeight)
-  ctx.fillStyle = '#f0f0f0'
-  ctx.fillRect(0, 0, globalWidth, globalHeight)
-
-  for (let x = 0; x <= globalWidth; x += GRID_SIZE) {
-    if (x % TILE_WIDTH === 0) ctx.strokeStyle = 'black'
-    else ctx.strokeStyle = '#aaaaaa'
-    ctx.beginPath()
-    ctx.moveTo(x, 0)
-    ctx.lineTo(x, globalHeight)
-    ctx.stroke()
+  mapData = {
+    width: 40,
+    height: 40,
+    tiles: [],
   }
-  for (let y = 0; y <= globalHeight; y += GRID_SIZE) {
-    if (y % TILE_WIDTH === 0) ctx.strokeStyle = 'black'
-    else ctx.strokeStyle = '#aaaaaa'
-    ctx.beginPath()
-    ctx.moveTo(0, y)
-    ctx.lineTo(globalWidth, y)
-    ctx.stroke()
-  }
-}
 
-function drawTiles() {
-  mapTiles.forEach((tile) => {
-    const img = tile.image
-    ctx.save()
-    ctx.translate(tile.x, tile.y)
-    ctx.rotate((tile.rotation * Math.PI) / 180)
-    switch (tile.rotation) {
-      case 90:
-        ctx.translate(0, -img.height)
-        break
-      case 180:
-        ctx.translate(-img.width, -img.height)
-        break
-      case 270:
-        ctx.translate(-img.width, 0)
-        break
+  tilesLibrary = []
+  tileTags = []
+  selectedTags = []
+
+  #canvasTransform = {
+    scale: 1,
+    offsetX: 0,
+    offsetY: 0,
+  }
+  
+  #DRAG_NONE = 0
+  #DRAG_CANVAS = 1
+  #DRAG_TILE = 2
+  #DRAG_DRAW = 3
+
+  #drag = {
+    type: null,
+    target: null,
+    offsetX: 0,
+    offsetY: 0,
+  }
+
+  #mouse = {
+    relative: { x: 0, y: 0 },
+    absolute: { x: 0, y: 0 },
+  }
+
+  #screen = null
+  #buffer = null
+
+  get #mapPixelWidth() {
+    return this.mapData.width * MapEditor.UNIT_WIDTH
+  }
+  get #mapPixelHeight() {
+    return this.mapData.height * MapEditor.UNIT_WIDTH
+  }
+
+  #snapGrid(pos, floor = true) {
+    return floor
+      ? Math.floor(pos / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH
+      : Math.ceil(pos / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH
+  }
+
+  #tileDataOf(path) {
+    return this.tilesLibrary.find((tile) => tile.path === path)
+  }
+
+  #relativeCursorPositionOf(event) {
+    return {
+      x: event.offsetX / this.#canvasTransform.scale,
+      y: event.offsetY / this.#canvasTransform.scale,
     }
-    ctx.drawImage(img, 0, 0, img.width, img.height)
-    ctx.restore()
-  })
-}
+  }
 
-function redrawCanvas() {
-  clearCanvas()
-  ctx.save()
-  ctx.scale(canvasTransform.scale, canvasTransform.scale)
-  ctx.translate(canvasTransform.offsetX, canvasTransform.offsetY)
-  drawGrid()
-  drawTiles()
-  ctx.restore()
+  #absoluteCursorPositionOf(event) {
+    return {
+      x: event.offsetX / this.#canvasTransform.scale - this.#canvasTransform.offsetX,
+      y: event.offsetY / this.#canvasTransform.scale - this.#canvasTransform.offsetY,
+    }
+  }
 
-  screen.drawImage(canvas, 0, 0)
-}
+  constructor(screenCanvas) {
+    this.#screen = screenCanvas.getContext('2d')
 
-function saveMap() {
-  const saveText = JSON.stringify(mapTiles)
-  setCookie('map', btoa(saveText))
-}
+    const bufferCanvas = document.createElement('canvas')
+    bufferCanvas.width = screenCanvas.width
+    bufferCanvas.height = screenCanvas.height
+    this.#buffer = bufferCanvas.getContext('2d')
 
-function addTile(x, y) {
-  const selectedTile = tileSelector.value
-  const tileData = tilesLibrary.find((tile) => tile.path === selectedTile)
-  if (tileData) {
-    mapTiles.push({
-      path: tileData.path,
-      name: tileData.name,
-      image: tileData.image,
+    this.rescaleCanvas()
+
+    screenCanvas.addEventListener('contextmenu', (event) => {
+      event.preventDefault()
+    })
+
+    screenCanvas.addEventListener('mousedown', (event) => {
+      const { x, y } = this.#absoluteCursorPositionOf(event)
+
+      switch (event.button) {
+        case 0: // left button
+          const tile = this.#getCursorTile(x, y)
+          if (tile) {
+            this.#drag = {
+              type: this.#DRAG_TILE,
+              target: tile,
+              offsetX: this.#snapGrid(x - tile.x),
+              offsetY: this.#snapGrid(y - tile.y),
+            }
+          } else {
+            this.#drag = {
+              type: this.#DRAG_CANVAS,
+              offsetX: this.#mouse.relative.x,
+              offsetY: this.#mouse.relative.y,
+            }
+          }
+          break
+        case 2: // right button
+          this.#drag = {
+            type: this.#DRAG_DRAW,
+            offsetX: this.#snapGrid(this.#mouse.relative.x),
+            offsetY: this.#snapGrid(this.#mouse.relative.y),
+          }
+          break          
+      }
+    })
+    
+    screenCanvas.addEventListener('mousemove', (event) => {
+      this.#mouse.relative = this.#relativeCursorPositionOf(event)
+      this.#mouse.absolute = this.#absoluteCursorPositionOf(event)
+    
+      let x, y
+      switch (this.#drag.type) {
+        case this.#DRAG_TILE:
+          ({ x, y } = this.#absoluteCursorPositionOf(event))
+          this.#drag.target.x =
+            Math.floor((x - this.#drag.offsetX) / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH
+          this.#drag.target.y =
+            Math.floor((y - this.#drag.offsetY) / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH            
+          break
+        case this.#DRAG_CANVAS:
+          ({ x, y } = this.#relativeCursorPositionOf(event))
+          this.#canvasTransform.offsetX += x - this.#drag.offsetX
+          this.#canvasTransform.offsetY += y - this.#drag.offsetY
+          this.#drag.offsetX = x
+          this.#drag.offsetY = y
+          break
+      }
+
+      this.#redrawCanvas()
+
+    })
+    
+    const mouseExitEvent = () => {      
+      switch (this.#drag.type) {
+        case this.#DRAG_TILE:
+          this.#redrawCanvas()
+          break
+      }
+      this.#drag.type = this.#DRAG_NONE
+    }
+
+    screenCanvas.addEventListener('mouseup', mouseExitEvent)
+    screenCanvas.addEventListener('mouseleave', mouseExitEvent)
+
+    document.addEventListener('keydown', (event) => {
+      let { x, y } = this.#mouse.absolute
+      switch (event.key) {
+        case 'a':
+          this.addTile(
+            Math.floor(x / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH,
+            Math.floor(y / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH,
+            this.tilesLibrary[0].path
+          )
+          break
+        case 'd':
+          this.mapData.tiles = this.mapData.tiles.filter((tile) => !this.#tileOnCursor(tile, x, y))
+          this.#redrawCanvas()
+          break
+        case 'r':
+          const tile = this.#getCursorTile(x, y)
+          if (tile) {
+            tile.rotation = (tile.rotation + 90) % 360
+            this.#redrawCanvas()
+          }
+          break
+      }
+    })
+    
+    screenCanvas.addEventListener(
+      'wheel',
+      (event) => {
+        let rescale = this.#canvasTransform.scale
+        if (event.deltaY > 0) {
+          rescale = Math.max(0.2, this.#canvasTransform.scale - 0.1)
+        } else {
+          rescale = Math.min(1.0, this.#canvasTransform.scale + 0.1)
+        }
+    
+        const { x, y } = this.#mouse.absolute
+        const ox = event.offsetX
+        const oy = event.offsetY
+    
+        const offsetX = -x + ox / rescale
+        const offsetY = -y + oy / rescale
+    
+        this.rescaleCanvas(rescale, offsetX, offsetY)
+        this.#redrawCanvas()
+      },
+      { passive: false }
+    )    
+  }
+
+  loadTiles(url) {
+    return fetch('/tileset')
+      .then(result => result.json())
+      .then((data) => {
+        this.tileTags = getTagsList(data.tiles)
+        this.tilesLibrary = data.tiles
+        return Promise.allSettled(this.tilesLibrary.map((tile) => {
+          return new Promise((resolve) => {
+            const img = new Image()
+            img.src = `tile/${tile.path}`
+            tile.image = img
+            img.onload = () => {
+              resolve()
+            }
+          })
+        }))
+      })
+  }
+
+  rescaleCanvas(scale = 0.5, offsetX = 0, offsetY = 0) {
+    this.#canvasTransform = {
+      scale,
+      offsetX,
+      offsetY,
+    }
+    this.#redrawCanvas()
+  }
+
+  #clearCanvas() {
+    this.#buffer.clearRect(0, 0, this.#buffer.canvas.width, this.#buffer.canvas.height)
+    this.#buffer.fillStyle = MapEditor.COLORS.background
+    this.#buffer.fillRect(0, 0, this.#buffer.canvas.width, this.#buffer.canvas.height)
+  }
+
+  #drawGrid() {
+    const mapWidth = this.#mapPixelWidth
+    const mapHeight = this.#mapPixelHeight
+
+    this.#buffer.fillStyle = MapEditor.COLORS.tile
+    this.#buffer.fillRect(0, 0, mapWidth, mapHeight)
+
+    for (let x = 0; x <= mapWidth; x += MapEditor.GRID_WIDTH) {
+      this.#buffer.strokeStyle = x % MapEditor.UNIT_WIDTH === 0
+        ? MapEditor.COLORS.unitLine
+        : MapEditor.COLORS.gridLine
+      this.#buffer.beginPath()
+      this.#buffer.moveTo(x, 0)
+      this.#buffer.lineTo(x, mapHeight)
+      this.#buffer.stroke()
+    }
+
+    for (let y = 0; y <= mapHeight; y += MapEditor.GRID_WIDTH) {
+      this.#buffer.strokeStyle = y % MapEditor.UNIT_WIDTH === 0
+        ? MapEditor.COLORS.unitLine
+        : MapEditor.COLORS.gridLine
+      this.#buffer.beginPath()
+      this.#buffer.moveTo(0, y)
+      this.#buffer.lineTo(mapWidth, y)
+      this.#buffer.stroke()
+    }
+  }
+
+  #drawTiles() {
+    this.mapData.tiles.forEach((tile) => {
+      const img = this.#tileDataOf(tile.path).image
+      this.#buffer.save()
+      this.#buffer.translate(tile.x, tile.y)
+      this.#buffer.rotate((tile.rotation * Math.PI) / 180)
+      switch (tile.rotation) {
+        case 90:
+          this.#buffer.translate(0, -img.height)
+          break
+        case 180:
+          this.#buffer.translate(-img.width, -img.height)
+          break
+        case 270:
+          this.#buffer.translate(-img.width, 0)
+          break
+      }
+      this.#buffer.drawImage(img, 0, 0, img.width, img.height)
+      this.#buffer.restore()
+    })
+  }
+
+  #drawCursor() {
+    const { x, y } = this.#mouse.absolute
+    this.#buffer.save()
+    this.#buffer.fillStyle = 'rgba(255, 0, 0, 0.5)'
+
+    if(this.#drag.type === this.#DRAG_DRAW) {
+      const w = this.#snapGrid(x) - this.#drag.offsetX + MapEditor.GRID_WIDTH
+      const h = this.#snapGrid(y) - this.#drag.offsetY + MapEditor.GRID_WIDTH
+      this.#buffer.fillRect(this.#drag.offsetX, this.#drag.offsetY, w, h)
+    } else {
+      this.#buffer.fillRect(this.#snapGrid(x), this.#snapGrid(y), 60, 60)
+    }
+    this.#buffer.restore()
+  }
+
+  #redrawCanvas() {
+    this.#clearCanvas()
+    this.#buffer.save()
+    this.#buffer.scale(this.#canvasTransform.scale, this.#canvasTransform.scale)
+    this.#buffer.translate(this.#canvasTransform.offsetX, this.#canvasTransform.offsetY)
+    this.#drawGrid()
+    this.#drawTiles()
+    this.#drawCursor()
+    this.#buffer.restore()
+
+    this.#screen.drawImage(this.#buffer.canvas, 0, 0)
+  }
+
+  addTile(x, y, path) {
+    this.mapData.tiles.push({
+      path,
       rotation: 0,
       x,
       y,
     })
-    redrawCanvas()
-    saveMap()
+    this.#redrawCanvas()
   }
-}
 
-tileSelector.addEventListener('change', () => {
-  tileSelector.blur()
-})
-
-loadButton.addEventListener('click', () => {
-  addTile(0, 0)
-})
-
-function getScaledMousePosition(event) {
-  return {
-    x: event.offsetX / canvasTransform.scale,
-    y: event.offsetY / canvasTransform.scale,
-  }
-}
-
-function getTrueMousePosition(event) {
-  return {
-    x: event.offsetX / canvasTransform.scale - canvasTransform.offsetX,
-    y: event.offsetY / canvasTransform.scale - canvasTransform.offsetY,
-  }
-}
-
-function tileInPosition(tile, x, y) {
-  const img = tile.image
-  switch (tile.rotation) {
-    case 0:
-    case 180:
-      return (
-        x >= tile.x &&
-        x < tile.x + img.width &&
-        y >= tile.y &&
-        y < tile.y + img.height
-      )
-    default:
-      return (
-        x >= tile.x &&
-        x < tile.x + img.height &&
-        y >= tile.y &&
-        y < tile.y + img.width
-      )
-  }
-}
-
-function getTileInPosition(x, y) {
-  return mapTiles.find((tile) => tileInPosition(tile, x, y))
-}
-
-screenCanvas.addEventListener('mousedown', (event) => {
-  const { x, y } = getTrueMousePosition(event)
-  const tile = getTileInPosition(x, y)
-  if (tile) {
-    tileSelector.value = tile.path
-    dragging = {
-      tile,
-      offsetX: Math.floor((x - tile.x) / GRID_SIZE) * GRID_SIZE,
-      offsetY: Math.floor((y - tile.y) / GRID_SIZE) * GRID_SIZE,
-    }
-  } else {
-    dragging = {
-      canvas: true,
-      offsetX: mouse.scaled.x,
-      offsetY: mouse.scaled.y,
+  #tileOnCursor(tile, x, y) {
+    const img = this.#tileDataOf(tile.path).image
+    switch (tile.rotation) {
+      case 0:
+      case 180:
+        return (
+          x >= tile.x &&
+          x < tile.x + img.width &&
+          y >= tile.y &&
+          y < tile.y + img.height
+        )
+      default:
+        return (
+          x >= tile.x &&
+          x < tile.x + img.height &&
+          y >= tile.y &&
+          y < tile.y + img.width
+        )
     }
   }
-})
 
-screenCanvas.addEventListener('mousemove', (event) => {
-  mouse.scaled = getScaledMousePosition(event)
-  mouse.true = getTrueMousePosition(event)
+  #getCursorTile(x, y) {
+    return this.mapData.tiles.find((tile) => this.#tileOnCursor(tile, x, y))
+  }  
+}
 
-  if (dragging.tile) {
-    const { x, y } = getTrueMousePosition(event)
-    dragging.tile.x =
-      Math.floor((x - dragging.offsetX) / GRID_SIZE) * GRID_SIZE
-    dragging.tile.y =
-      Math.floor((y - dragging.offsetY) / GRID_SIZE) * GRID_SIZE
+const App = ({ editor }) => {  
+  const [tags, setTags] = useState(editor.tileTags)
+  const [selected, setSelected] = useState(editor.selectedTags)
 
-    redrawCanvas()
-  } else if (dragging.canvas) {
-    const { x, y } = getScaledMousePosition(event)
-    canvasTransform.offsetX += x - dragging.offsetX
-    canvasTransform.offsetY += y - dragging.offsetY
-    dragging.offsetX = x
-    dragging.offsetY = y
-    redrawCanvas()
-  }
-})
+  return html`
+  <${TagList}
+    tags=${tags}
+    selected=${selected}
+    onSelect=${tag => {
+      const next = toggleTag(tag, selected)
+      setSelected(next)
+      editor.selectedTags = next
+    }}
+  />
+  <div class="tile-list">
+    ${getTaggedData(editor.tilesLibrary, selected).map((tile) => html`
+      <div class="tile">
+        <div class="label">${tile.label}</div>
+        <div class="image-container">
+          <img src=${`tile/${tile.path}`} alt=${tile.label} />
+        </div>
+      </div>
+    `)}
+  </div>
+  `
+}
 
-screenCanvas.addEventListener('mouseup', () => {
-  if (dragging.tile) {
-    dragging.tile = null
-    redrawCanvas()
-    saveMap()
-  }
-  dragging.canvas = false
-})
-
-document.addEventListener('keydown', (event) => {
-  let { x, y } = mouse.true
-  switch (event.key) {
-    case 'a':
-      addTile(
-        Math.floor(x / GRID_SIZE) * GRID_SIZE,
-        Math.floor(y / GRID_SIZE) * GRID_SIZE
-      )
-      break
-    case 'd':
-      mapTiles = mapTiles.filter((tile) => !tileInPosition(tile, x, y))
-      redrawCanvas()
-      saveMap()
-      break
-    case 'r':
-      const tile = getTileInPosition(x, y)
-      if (tile) {
-        tile.rotation = (tile.rotation + 90) % 360
-        redrawCanvas()
-        saveMap()
-      }
-      break
-    case ' ':
-      dragging.canvas = true
-      dragging.offsetX = mouse.scaled.x
-      dragging.offsetY = mouse.scaled.y
-      break
-  }
-})
-
-document.addEventListener('keyup', () => {
-  switch (event.key) {
-    case ' ':
-      dragging.canvas = false
-      break
-  }
-})
-
-document.addEventListener(
-  'wheel',
-  (event) => {
-    let rescale = canvasTransform.scale
-    if (event.deltaY > 0) {
-      rescale = Math.max(0.2, canvasTransform.scale - 0.1)
-    } else {
-      rescale = Math.min(1.0, canvasTransform.scale + 0.1)
-    }
-
-    const { x, y } = mouse.true
-    const ox = event.offsetX
-    const oy = event.offsetY
-
-    const offsetX = -x + ox / rescale
-    const offsetY = -y + oy / rescale
-
-    rescaleCanvas(rescale, offsetX, offsetY)
-    redrawCanvas()
-  },
-  { passive: false }
-)
-
-loadTiles().then(() => {
-  const loadMap = getCookie('map')
-  if (loadMap) {
-    mapTiles = JSON.parse(atob(loadMap))
-  }
-
-  mapTiles = mapTiles.map((tile) => ({
-    ...tile,
-    image: tilesLibrary.find((t) => t.path === tile.path).image,
-  }))
-
-  redrawCanvas()
+const editor = new MapEditor(document.getElementById('canvas'))
+editor.loadTiles('/tileset').then(() => {
+  render(html`<${App} editor=${editor} />`, document.getElementById('ui'))
 })
