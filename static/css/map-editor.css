@@ -13,6 +13,12 @@
 
 .tag-list {
   margin-bottom: 1em;
+
+  .tag.selected {
+    border: 2px solid #000;
+    border-radius: 4px;
+    padding: 0.25em;
+  }
 }
 
 .tile-list {
@@ -25,6 +31,12 @@
 
     display: flex;
     flex-direction: column;
+
+    &.selected {
+      border: 2px solid #000;
+      border-radius: 4px;
+      padding: 0.5em;
+    }
 
     .label {
       width: 6em;
@@ -39,6 +51,8 @@
       img {
         transform: scale(0.25);
         transform-origin: top left;
+        max-width: 24em;
+        max-height: 24em;
       }
     }
   }

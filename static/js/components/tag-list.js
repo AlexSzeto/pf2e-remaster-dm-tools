@@ -34,9 +34,11 @@ export const getTaggedData = (dataList, selected) => {
 export const TagList = ({ tags, selected, onSelect }) => html`
   <div class="tag-list">
     ${tags.map(tag => html`
-      <button class="tag ${selected.includes(tag) ? 'outlined' : ''}" onClick=${() => onSelect(tag)}>
-        ${tag}
-      </button>
+      <div class="tag ${selected.includes(tag) ? 'selected' : ''}">
+        <button onClick=${() => onSelect(tag)}>
+          ${tag}
+        </button>
+      </div>
     `)}
   </div>
 `

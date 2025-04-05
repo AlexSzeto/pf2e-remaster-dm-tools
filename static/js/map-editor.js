@@ -27,8 +27,12 @@ class MapEditor {
   }
 
   tilesLibrary = []
+
   tileTags = []
-  selectedTags = []
+
+  #selectedTags = []
+  #drawTilePath = null
+  #selectedTiles = []
 
   #canvasTransform = {
     scale: 1,
@@ -38,14 +42,15 @@ class MapEditor {
   
   #DRAG_NONE = 0
   #DRAG_CANVAS = 1
-  #DRAG_TILE = 2
+  #DRAG_TILES = 2
   #DRAG_DRAW = 3
+  #DRAG_SELECT = 4
 
   #drag = {
     type: null,
-    target: null,
     offsetX: 0,
     offsetY: 0,
+    offsets: [],
   }
 
   #mouse = {
@@ -106,28 +111,52 @@ class MapEditor {
 
       switch (event.button) {
         case 0: // left button
-          const tile = this.#getCursorTile(x, y)
-          if (tile) {
+          if(
+            this.#selectedTiles
+            && this.#selectedTiles.length > 0
+            && this.#selectedTiles.some(tile => this.#tileOnCursor(tile, x, y))
+          ) {
             this.#drag = {
-              type: this.#DRAG_TILE,
-              target: tile,
-              offsetX: this.#snapGrid(x - tile.x),
-              offsetY: this.#snapGrid(y - tile.y),
+              type: this.#DRAG_TILES,
             }
           } else {
-            this.#drag = {
-              type: this.#DRAG_CANVAS,
-              offsetX: this.#mouse.relative.x,
-              offsetY: this.#mouse.relative.y,
+            const tile = this.#getCursorTile(x, y)
+            if (tile) {
+              this.#drag = {
+                type: this.#DRAG_TILES,
+              }
+              this.#selectedTiles = [tile]
+            } else {
+              this.#drag = {
+                type: this.#DRAG_SELECT,
+                offsetX: x,
+                offsetY: y,
+              }
+              this.#selectedTiles = []
             }
+          }
+
+          if(this.#drag.type === this.#DRAG_TILES) {
+            this.#drag.offsets = this.#selectedTiles.map((tile) => ({
+              x: tile.x - x,
+              y: tile.y - y,
+            }))
+          }
+          break
+        case 1: // middle button
+          this.#drag = {
+            type: this.#DRAG_CANVAS,
+            offsetX: this.#mouse.relative.x,
+            offsetY: this.#mouse.relative.y,
           }
           break
         case 2: // right button
           this.#drag = {
             type: this.#DRAG_DRAW,
-            offsetX: this.#snapGrid(this.#mouse.relative.x),
-            offsetY: this.#snapGrid(this.#mouse.relative.y),
+            offsetX: x,
+            offsetY: y,
           }
+          this.#selectedTiles = []
           break          
       }
     })
@@ -138,15 +167,15 @@ class MapEditor {
     
       let x, y
       switch (this.#drag.type) {
-        case this.#DRAG_TILE:
-          ({ x, y } = this.#absoluteCursorPositionOf(event))
-          this.#drag.target.x =
-            Math.floor((x - this.#drag.offsetX) / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH
-          this.#drag.target.y =
-            Math.floor((y - this.#drag.offsetY) / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH            
+        case this.#DRAG_TILES:
+          ({ x, y } = this.#mouse.absolute)
+          this.#selectedTiles.forEach((tile, index) => {
+            tile.x = this.#snapGrid(x + this.#drag.offsets[index].x)
+            tile.y = this.#snapGrid(y + this.#drag.offsets[index].y)
+          })
           break
         case this.#DRAG_CANVAS:
-          ({ x, y } = this.#relativeCursorPositionOf(event))
+          ({ x, y } = this.#mouse.relative)
           this.#canvasTransform.offsetX += x - this.#drag.offsetX
           this.#canvasTransform.offsetY += y - this.#drag.offsetY
           this.#drag.offsetX = x
@@ -159,10 +188,19 @@ class MapEditor {
     })
     
     const mouseExitEvent = () => {      
+      let x1, y1, x2, y2
       switch (this.#drag.type) {
-        case this.#DRAG_TILE:
+        case this.#DRAG_SELECT:
+          ({ x1, y1, x2, y2 } = this.selectedRegion)
+          this.#selectedTiles = this.mapData.tiles.filter((tile) => this.#tileInRegion(tile, x1, y1, x2, y2))
           this.#redrawCanvas()
           break
+        case this.#DRAG_TILES:
+          this.#redrawCanvas()
+          break
+        case this.#DRAG_DRAW:
+          ({ x1, y1, x2, y2 } = this.selectedRegion)
+          this.fillTiles(x1, y1, x2, y2)
       }
       this.#drag.type = this.#DRAG_NONE
     }
@@ -172,20 +210,26 @@ class MapEditor {
 
     document.addEventListener('keydown', (event) => {
       let { x, y } = this.#mouse.absolute
+      const tile = this.#getCursorTile(x, y)
       switch (event.key) {
         case 'a':
-          this.addTile(
-            Math.floor(x / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH,
-            Math.floor(y / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH,
-            this.tilesLibrary[0].path
-          )
+          if(this.drawTilePath) {
+            this.addTile(
+              this.#drawTilePath,
+              this.#snapGrid(x),
+              this.#snapGrid(y),
+            )
+          }
           break
         case 'd':
-          this.mapData.tiles = this.mapData.tiles.filter((tile) => !this.#tileOnCursor(tile, x, y))
-          this.#redrawCanvas()
+          if(tile) {
+            this.mapData.tiles = this.mapData.tiles.filter((tile) => !this.#tileOnCursor(tile, x, y))
+            this.#redrawCanvas()
+          } else {
+            this.deleteSelectedTiles()
+          }
           break
         case 'r':
-          const tile = this.#getCursorTile(x, y)
           if (tile) {
             tile.rotation = (tile.rotation + 90) % 360
             this.#redrawCanvas()
@@ -235,6 +279,41 @@ class MapEditor {
           })
         }))
       })
+  }
+
+  get sortedFilteredTiles() {
+    return getTaggedData(this.tilesLibrary, this.#selectedTags).sort((a, b) => {
+      if(a.width * a.height === b.width * b.height) {
+        return a.tags.length - b.tags.length
+      } else {
+        return b.width * b.height - a.width * a.height
+      }
+    })
+  }
+
+  get selectedTags() {
+    return this.#selectedTags
+  }
+
+  setSelectedTags(tags) {
+    this.#selectedTags = tags
+    if(this.#drawTilePath) {
+      const selectedTileTags = this.#tileDataOf(this.#drawTilePath).tags
+      if(tags.some(tag => !selectedTileTags.includes(tag))) {
+        this.#drawTilePath = null
+        return
+      }
+    }
+  }
+
+  get drawTilePath() {
+    return this.#drawTilePath
+  }
+
+  toggleDrawTile(path) {
+    this.#drawTilePath = (this.#drawTilePath === path)
+    ? null
+    : path
   }
 
   rescaleCanvas(scale = 0.5, offsetX = 0, offsetY = 0) {
@@ -299,21 +378,56 @@ class MapEditor {
       }
       this.#buffer.drawImage(img, 0, 0, img.width, img.height)
       this.#buffer.restore()
+
+      if(this.#selectedTiles.includes(tile)) {
+        this.#buffer.save()
+        this.#buffer.fillStyle = 'rgba(255, 0, 0, 0.2)'
+        switch (tile.rotation) {
+          case 90:
+          case 270:
+            this.#buffer.fillRect(tile.x, tile.y, img.height, img.width)
+            break
+          default:
+            this.#buffer.fillRect(tile.x, tile.y, img.width, img.height)
+            break
+        }
+        this.#buffer.restore()
+      }
     })
   }
 
-  #drawCursor() {
+  get selectedRegion() {
     const { x, y } = this.#mouse.absolute
+    switch (this.#drag.type) {
+      case this.#DRAG_DRAW:
+      case this.#DRAG_SELECT:
+        const x1 = Math.min(x, this.#drag.offsetX)
+        const y1 = Math.min(y, this.#drag.offsetY)
+        const x2 = Math.max(x, this.#drag.offsetX)
+        const y2 = Math.max(y, this.#drag.offsetY)
+
+        return {
+          x1: this.#snapGrid(x1),
+          y1: this.#snapGrid(y1),
+          x2: this.#snapGrid(x2, false),
+          y2: this.#snapGrid(y2, false)
+        }
+    }
+
+    return {
+      x1: this.#snapGrid(x),
+      y1: this.#snapGrid(y),
+      x2: this.#snapGrid(x, false),
+      y2: this.#snapGrid(y, false)
+    }
+  }
+
+  #drawCursor() {
     this.#buffer.save()
     this.#buffer.fillStyle = 'rgba(255, 0, 0, 0.5)'
 
-    if(this.#drag.type === this.#DRAG_DRAW) {
-      const w = this.#snapGrid(x) - this.#drag.offsetX + MapEditor.GRID_WIDTH
-      const h = this.#snapGrid(y) - this.#drag.offsetY + MapEditor.GRID_WIDTH
-      this.#buffer.fillRect(this.#drag.offsetX, this.#drag.offsetY, w, h)
-    } else {
-      this.#buffer.fillRect(this.#snapGrid(x), this.#snapGrid(y), 60, 60)
-    }
+    const { x1, y1, x2, y2 } = this.selectedRegion
+    this.#buffer.fillRect(x1, y1, x2 - x1, y2 - y1)
     this.#buffer.restore()
   }
 
@@ -330,33 +444,119 @@ class MapEditor {
     this.#screen.drawImage(this.#buffer.canvas, 0, 0)
   }
 
-  addTile(x, y, path) {
+  fillTiles(x1, y1, x2, y2, initial = true) {
+    if(x1 > x2) {
+      const tmp = x1
+      x1 = x2
+      x2 = tmp
+    }
+    if(y1 > y2) {
+      const tmp = y1
+      y1 = y2
+      y2 = tmp
+    }
+
+    const gapWidth = x2 - x1
+    const gapHeight = y2 - y1
+
+    const fillGapWith = (tile) => {
+      const w = tile.width * MapEditor.GRID_WIDTH
+      const h = tile.height * MapEditor.GRID_WIDTH
+
+      if(w <= gapWidth && h <= gapHeight) {
+        this.addTile(
+          tile.path, x1, y1
+        )
+        this.fillTiles(x1 + w, y1, x2, y1 + h, false)
+        this.fillTiles(x1, y1 + h, x2, y2, false)
+        return true
+      } else if (h <= gapWidth && w <= gapHeight) {
+        this.addTile(
+          tile.path, x1, y1, 90
+        )
+        this.fillTiles(x1 + h, y1, x2, y1 + w, false)
+        this.fillTiles(x1, y1 + w, x2, y2, false)
+        return true
+      }
+      return false
+    }
+
+    if(this.#drawTilePath) {
+      const tile = this.#tileDataOf(this.#drawTilePath)
+      if(!fillGapWith(tile) && initial) {
+        this.addTile(this.#drawTilePath, x1, y1)
+      }
+      return
+    }
+
+    for(const tile of this.sortedFilteredTiles) {
+      if(fillGapWith(tile)) {
+        return
+      }
+    }
+  }
+
+  addTile(path, x, y, rotation = 0) {
     this.mapData.tiles.push({
       path,
-      rotation: 0,
+      rotation,
       x,
       y,
     })
     this.#redrawCanvas()
   }
 
+  deleteSelectedTiles() {
+    console.log('del')
+    this.mapData.tiles = this.mapData.tiles.filter((tile) => !this.#selectedTiles.includes(tile))
+    this.#selectedTiles = []
+    this.#redrawCanvas()
+  }
+
+  #tileInRegion(tile, x1, y1, x2, y2) {
+    x1++
+    x2--
+    y1++
+    y2--
+
+    const img = this.#tileDataOf(tile.path).image
+    let x3 = tile.x
+    let y3 = tile.y
+    let x4 = tile.x + img.width
+    let y4 = tile.y + img.height
+
+    switch(tile.rotation) {
+      case 90:
+      case 270:
+        x4 = tile.x + img.height
+        y4 = tile.y + img.width
+        break
+    }
+
+    return (
+      ((x1 >= x3 && x1 <= x4) || (x2 >= x3 && x2 <= x4) || (x3 >= x1 && x3 <= x2) || (x4 >= x1 && x4 <= x2))
+      && ((y1 >= y3 && y1 <= y4) || (y2 >= y3 && y2 <= y4) || (y3 >= y1 && y3 <= y2) || (y4 >= y1 && y4 <= y2))
+    )        
+  }
+
   #tileOnCursor(tile, x, y) {
+    return this.#tileInRegion(tile, x, y)
     const img = this.#tileDataOf(tile.path).image
     switch (tile.rotation) {
       case 0:
       case 180:
         return (
-          x >= tile.x &&
-          x < tile.x + img.width &&
-          y >= tile.y &&
-          y < tile.y + img.height
+          x1 >= tile.x &&
+          x1 < tile.x + img.width &&
+          y1 >= tile.y &&
+          y1 < tile.y + img.height
         )
       default:
         return (
-          x >= tile.x &&
-          x < tile.x + img.height &&
-          y >= tile.y &&
-          y < tile.y + img.width
+          x1 >= tile.x &&
+          x1 < tile.x + img.height &&
+          y1 >= tile.y &&
+          y1 < tile.y + img.width
         )
     }
   }
@@ -368,24 +568,34 @@ class MapEditor {
 
 const App = ({ editor }) => {  
   const [tags, setTags] = useState(editor.tileTags)
-  const [selected, setSelected] = useState(editor.selectedTags)
+  const [selectedTags, setSelectedTags] = useState(editor.selectedTags)
+  const [selectedTile, setSelectedTile] = useState(null)
+  const [filtered, setFiltered] = useState(editor.sortedFilteredTiles)
 
   return html`
   <${TagList}
     tags=${tags}
-    selected=${selected}
+    selected=${selectedTags}
     onSelect=${tag => {
-      const next = toggleTag(tag, selected)
-      setSelected(next)
-      editor.selectedTags = next
+      const next = toggleTag(tag, selectedTags)
+      setSelectedTags(next)
+      editor.setSelectedTags(next)
+      setSelectedTile(editor.selectedTilePath)
+      setFiltered(editor.sortedFilteredTiles)
     }}
   />
   <div class="tile-list">
-    ${getTaggedData(editor.tilesLibrary, selected).map((tile) => html`
-      <div class="tile">
+    ${filtered.map((tile) => html`
+      <div class="tile ${selectedTile === tile.path ? 'selected' : ''}">
         <div class="label">${tile.label}</div>
         <div class="image-container">
-          <img src=${`tile/${tile.path}`} alt=${tile.label} />
+          <img 
+            src=${`tile/${tile.path}`} alt=${tile.label}
+            onClick=${() => {
+              editor.toggleDrawTile(tile.path)
+              setSelectedTile(editor.drawTilePath)
+            }}
+          />
         </div>
       </div>
     `)}
