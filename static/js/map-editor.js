@@ -1,7 +1,7 @@
-import { render } from "preact"
-import { useState } from "preact/hooks"
+import { Component, render } from "preact"
 import { html } from "htm/preact"
 import { getTaggedData, getTagsList, TagList, toggleTag } from "./components/tag-list.js"
+import { FileSelectorModal } from "./modals/file-modal.js"
 
 class MapEditor {
   static GRID_WIDTH = 60
@@ -20,6 +20,7 @@ class MapEditor {
   //   unitLine: '#aaaaaa',    
   // }
 
+  #mapPath = null
   mapData = {
     width: 40,
     height: 40,
@@ -197,10 +198,13 @@ class MapEditor {
           break
         case this.#DRAG_TILES:
           this.#redrawCanvas()
+          this.saveMap()
           break
         case this.#DRAG_DRAW:
           ({ x1, y1, x2, y2 } = this.selectedRegion)
           this.fillTiles(x1, y1, x2, y2)
+          this.saveMap()
+          break
       }
       this.#drag.type = this.#DRAG_NONE
     }
@@ -208,7 +212,7 @@ class MapEditor {
     screenCanvas.addEventListener('mouseup', mouseExitEvent)
     screenCanvas.addEventListener('mouseleave', mouseExitEvent)
 
-    document.addEventListener('keydown', (event) => {
+    screenCanvas.addEventListener('keydown', (event) => {
       let { x, y } = this.#mouse.absolute
       const tile = this.#getCursorTile(x, y)
       switch (event.key) {
@@ -219,6 +223,7 @@ class MapEditor {
               this.#snapGrid(x),
               this.#snapGrid(y),
             )
+            this.saveMap()
           }
           break
         case 'd':
@@ -228,11 +233,13 @@ class MapEditor {
           } else {
             this.deleteSelectedTiles()
           }
+          this.saveMap()
           break
         case 'r':
           if (tile) {
             tile.rotation = (tile.rotation + 90) % 360
             this.#redrawCanvas()
+            this.saveMap()
           }
           break
       }
@@ -241,6 +248,7 @@ class MapEditor {
     screenCanvas.addEventListener(
       'wheel',
       (event) => {
+        event.preventDefault()
         let rescale = this.#canvasTransform.scale
         if (event.deltaY > 0) {
           rescale = Math.max(0.2, this.#canvasTransform.scale - 0.1)
@@ -260,6 +268,42 @@ class MapEditor {
       },
       { passive: false }
     )    
+  }
+
+  loadMap(path) {
+    this.#mapPath = path
+    fetch(`./resource/${path}`)
+      .then((response) => response.json())
+      .then((mapData) => {
+        this.mapData = mapData
+        this.#redrawCanvas()
+      })
+  }
+
+  saveMap(name = null) {
+    let filename = this.#mapPath
+    if(name) { 
+      filename = `${name.toLowerCase().replace(/\s+/g, '-')}.json`
+    }
+    const mapFileData = JSON.stringify(this.mapData)
+    const mapDataBlob = new Blob([mapFileData], { type: 'application/json' })
+
+    const formData = new FormData()
+    formData.append('file', mapDataBlob, filename)
+    if(name) {
+      formData.append('name', name)
+    }
+
+    fetch('./resource', {
+      method: 'POST',
+      body: formData
+    }).then(() => {
+      if(name) {
+        fetch(`/campaign`)
+        .then((response) => response.json())
+        .then((campaign) => { this.setState({ campaign }) })
+      }
+    })
   }
 
   loadTiles(url) {
@@ -541,24 +585,6 @@ class MapEditor {
 
   #tileOnCursor(tile, x, y) {
     return this.#tileInRegion(tile, x, y)
-    const img = this.#tileDataOf(tile.path).image
-    switch (tile.rotation) {
-      case 0:
-      case 180:
-        return (
-          x1 >= tile.x &&
-          x1 < tile.x + img.width &&
-          y1 >= tile.y &&
-          y1 < tile.y + img.height
-        )
-      default:
-        return (
-          x1 >= tile.x &&
-          x1 < tile.x + img.height &&
-          y1 >= tile.y &&
-          y1 < tile.y + img.width
-        )
-    }
   }
 
   #getCursorTile(x, y) {
@@ -566,41 +592,92 @@ class MapEditor {
   }  
 }
 
-const App = ({ editor }) => {  
-  const [tags, setTags] = useState(editor.tileTags)
-  const [selectedTags, setSelectedTags] = useState(editor.selectedTags)
-  const [selectedTile, setSelectedTile] = useState(null)
-  const [filtered, setFiltered] = useState(editor.sortedFilteredTiles)
+class App extends Component {
+  constructor({ editor }) {
+    super()
+    this.editor = editor
+    this.state = {
+      tags: editor.tileTags,
+      filtered: editor.sortedFilteredTiles,
 
-  return html`
-  <${TagList}
-    tags=${tags}
-    selected=${selectedTags}
-    onSelect=${tag => {
-      const next = toggleTag(tag, selectedTags)
-      setSelectedTags(next)
-      editor.setSelectedTags(next)
-      setSelectedTile(editor.selectedTilePath)
-      setFiltered(editor.sortedFilteredTiles)
-    }}
-  />
-  <div class="tile-list">
-    ${filtered.map((tile) => html`
-      <div class="tile ${selectedTile === tile.path ? 'selected' : ''}">
-        <div class="label">${tile.label}</div>
-        <div class="image-container">
-          <img 
-            src=${`tile/${tile.path}`} alt=${tile.label}
-            onClick=${() => {
-              editor.toggleDrawTile(tile.path)
-              setSelectedTile(editor.drawTilePath)
-            }}
-          />
-        </div>
+      selectedTags: editor.selectedTags,
+      selectedTile: null,
+
+      campaign: null,
+      filename: '',
+
+      showFileList: false,
+    }
+
+    fetch(`/campaign`)
+      .then((response) => response.json())
+      .then((campaign) => { this.setState({ campaign }) })
+  }
+
+  createMapFile(filename) {
+    this.editor.saveMap(filename)
+  }
+
+  render() {
+    return html`
+      <div>
+        <label for="filename">File Name:</label>
+        <input type="text" id="filename" name="filename" value=${this.state.filename} onChange=${(event) => {
+          this.setState({ filename: event.target.value })
+        }} />
+        <button
+          onClick=${() => this.createMapFile(this.state.filename)}
+          disabled=${
+            this.state.campaign
+            && this.state.campaign.maps
+            && this.state.campaign.maps
+            .some(map => map.label === this.state.filename)}
+        >Create</button>
+        <button onClick=${() => this.setState({ showFileList: true })}>Load</button>
       </div>
-    `)}
-  </div>
-  `
+      <${TagList}
+        tags=${this.state.tags}
+        selected=${this.state.selectedTags}
+        onSelect=${tag => {
+          const next = toggleTag(tag, this.state.selectedTags)
+          this.editor.setSelectedTags(next)
+          this.setState({
+            selectedTags: next,
+            filtered: this.editor.sortedFilteredTiles,
+          })
+        }}
+      />
+      <div class="tile-list">
+        ${this.state.filtered.map((tile) => html`
+          <div class="tile ${this.state.selectedTile === tile.path ? 'selected' : ''}">
+            <div class="label">${tile.label}</div>
+            <div class="image-container">
+              <img 
+                src=${`tile/${tile.path}`} alt=${tile.label}
+                onClick=${() => {
+                  this.editor.toggleDrawTile(tile.path)
+                  this.setState({ selectedTile: this.editor.drawTilePath })
+                }}
+              />
+            </div>
+          </div>
+        `)}
+      </div>
+      ${this.state.showFileList && html`<${FileSelectorModal}
+        files=${this.state.campaign.maps}
+        onPin=${() => {}}
+        onSelectNone=${() => {}}
+        onClose=${() => this.setState({ showFileList: false })}
+        onSelect=${(label, path) => {
+          this.editor.loadMap(path)
+          this.setState({ 
+            filename: label,
+            showFileList: false 
+          })
+        }}
+      />`}
+    `
+  }
 }
 
 const editor = new MapEditor(document.getElementById('canvas'))

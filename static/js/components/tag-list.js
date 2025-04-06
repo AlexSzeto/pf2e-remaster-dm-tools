@@ -1,15 +1,21 @@
 import { html } from "htm/preact"
 
-export const getTagsList = dataList => dataList.reduce((list, data) => {
-  if (data.tags) {
-    data.tags.forEach(tag => {
-      if (!list.includes(tag)) {
-        list.push(tag)
-      }
-    })
-  }
-  return list
-}, [])
+export const getTagsList = dataList => dataList
+  .reduce((list, data) => {
+    if (data.tags) {
+      data.tags.forEach(tag => {
+        const data = list.find(t => t.tag === tag)
+        if (!data) {
+          list.push({ tag, count: 1 })
+        } else {
+          data.count++
+        }
+      })
+    }
+    return list
+  }, [])
+  .sort((a, b) => b.count - a.count)
+  .map(t => t.tag)
 
 export const toggleTag = (tag, selected) => {
   if(selected.includes(tag)) {

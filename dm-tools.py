@@ -54,6 +54,8 @@ def get_resource(resource_name):
             resource_folder = "audio"
         elif file_extension in [".md", ".txt"]:
             resource_folder = "docs"
+        elif file_extension in [".json"]:
+            resource_folder = "maps"
         
         return send_from_directory(os.path.join(campaign_folder(), resource_folder), resource_name)
     except Exception as e:
@@ -77,6 +79,8 @@ def insert_update_resource():
                 resource_folder = "audio"
             elif file_extension in [".md", ".txt"]:
                 resource_folder = "docs"
+            elif file_extension in [".json"]:
+                resource_folder = "maps"
 
         tags = request.form.get("tags")
         if tags:
