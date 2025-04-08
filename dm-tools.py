@@ -81,6 +81,8 @@ def insert_update_resource():
                 resource_folder = "docs"
             elif file_extension in [".json"]:
                 resource_folder = "maps"
+                
+        print(f"resource folder: {resource_folder}")
 
         tags = request.form.get("tags")
         if tags:
@@ -89,32 +91,39 @@ def insert_update_resource():
             tags = []
         
         if request.form.get("type"):
-            type = request.form.get("type")
-            tags.append(type)
             resource_type = request.form.get("type")
-            if not resource_type in ["ambience", "bgm"]:
+            file_prefix = resource_type
+            tags.append(resource_type)
+            if resource_folder == "images":
+                file_prefix = resource_type
+                resource_type = "images"
+            elif not resource_type in ["ambience", "bgm"]:
                 resource_type = resource_folder
             else:
                 resource_type = resource_type + "s"
         else:
             resource_type = resource_folder
+            file_prefix = resource_folder
             if resource_type == "audio":
                 resource_type = "ambiences" if "-ambience" in file.filename else "bgms"
                 
+        print(f"resource type: {resource_type}")
+                
         label = request.form.get("name")
         if label:
-            export_filename = type + "-" + label.replace(" ", "-").lower() + file_extension
+            export_filename = file_prefix + "-" + label.replace(" ", "-").lower() + file_extension
         else:
             export_filename = file.filename
             label = file.filename
         
+        print(f"export filename: {export_filename}")
         # Create the campaign data point if it doesn't exist
         if os.path.exists(campaign_file()):
             # Read and return contents of project.json
             with open(campaign_file(), "r") as f:
                 campaign_data = json.load(f)
 
-                resource_data = next((item for item in campaign_data[resource_type] if item["path"] == file.filename), None)
+                resource_data = next((item for item in campaign_data[resource_type] if item["path"] == export_filename), None)
                 if resource_data == None:
                     campaign_data[resource_type].append({
                         "path": export_filename,

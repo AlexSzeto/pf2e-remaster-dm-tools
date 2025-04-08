@@ -246,7 +246,7 @@ class MapEditor {
         event.preventDefault()
         let rescale = this.#canvasTransform.scale
         if (event.deltaY > 0) {
-          rescale = Math.max(0.2, this.#canvasTransform.scale - 0.1)
+          rescale = Math.max(0.1, this.#canvasTransform.scale - 0.1)
         } else {
           rescale = Math.min(1.0, this.#canvasTransform.scale + 0.1)
         }
@@ -302,6 +302,38 @@ class MapEditor {
     })
 
     this.onUpdateMapData(this.mapData)
+  }
+
+  exportMap(name) {
+    const exportScale = 0.5
+
+    // create a canvas to render map image
+    const exportCanvas = document.createElement('canvas')
+    exportCanvas.width = this.#mapPixelWidth * exportScale
+    exportCanvas.height = this.#mapPixelHeight * exportScale
+    const exportContext = exportCanvas.getContext('2d')
+
+    this.#clearCanvas(exportContext)
+    exportContext.scale(exportScale, exportScale)
+    this.#drawGrid(exportContext)
+    this.#drawTiles(exportContext)
+
+    // create a blob to prepare for upload
+    exportCanvas.toBlob((blob) => {
+      const formData = new FormData()
+      formData.append('file', blob, `${name.toLowerCase().replace(/\s+/g, '-')}.jpeg`)
+      formData.append('name', name)
+      formData.append('folder', 'images')
+      formData.append('type', 'battlemap')
+
+      fetch('./resource', {
+        method: 'POST',
+        body: formData
+      }).then(() => {
+        // show a system prompt to indicate success
+
+      })
+    }, 'image/jpeg')
   }
 
   loadTiles(url) {
@@ -364,73 +396,73 @@ class MapEditor {
     this.#redrawCanvas()
   }
 
-  #clearCanvas() {
-    this.#buffer.clearRect(0, 0, this.#buffer.canvas.width, this.#buffer.canvas.height)
-    this.#buffer.fillStyle = MapEditor.COLORS.background
-    this.#buffer.fillRect(0, 0, this.#buffer.canvas.width, this.#buffer.canvas.height)
+  #clearCanvas(buffer) {
+    buffer.clearRect(0, 0, buffer.canvas.width, buffer.canvas.height)
+    buffer.fillStyle = MapEditor.COLORS.background
+    buffer.fillRect(0, 0, buffer.canvas.width, buffer.canvas.height)
   }
 
-  #drawGrid() {
+  #drawGrid(buffer) {
     const mapWidth = this.#mapPixelWidth
     const mapHeight = this.#mapPixelHeight
 
-    this.#buffer.fillStyle = MapEditor.COLORS.tile
-    this.#buffer.fillRect(0, 0, mapWidth, mapHeight)
+    buffer.fillStyle = MapEditor.COLORS.tile
+    buffer.fillRect(0, 0, mapWidth, mapHeight)
 
     for (let x = 0; x <= mapWidth; x += MapEditor.GRID_WIDTH) {
-      this.#buffer.strokeStyle = x % MapEditor.UNIT_WIDTH === 0
+      buffer.strokeStyle = x % MapEditor.UNIT_WIDTH === 0
         ? MapEditor.COLORS.unitLine
         : MapEditor.COLORS.gridLine
-      this.#buffer.beginPath()
-      this.#buffer.moveTo(x, 0)
-      this.#buffer.lineTo(x, mapHeight)
-      this.#buffer.stroke()
+      buffer.beginPath()
+      buffer.moveTo(x, 0)
+      buffer.lineTo(x, mapHeight)
+      buffer.stroke()
     }
 
     for (let y = 0; y <= mapHeight; y += MapEditor.GRID_WIDTH) {
-      this.#buffer.strokeStyle = y % MapEditor.UNIT_WIDTH === 0
+      buffer.strokeStyle = y % MapEditor.UNIT_WIDTH === 0
         ? MapEditor.COLORS.unitLine
         : MapEditor.COLORS.gridLine
-      this.#buffer.beginPath()
-      this.#buffer.moveTo(0, y)
-      this.#buffer.lineTo(mapWidth, y)
-      this.#buffer.stroke()
+      buffer.beginPath()
+      buffer.moveTo(0, y)
+      buffer.lineTo(mapWidth, y)
+      buffer.stroke()
     }
   }
 
-  #drawTiles() {
+  #drawTiles(buffer) {
     this.mapData.tiles.forEach((tile) => {
       const img = this.tileDataOf(tile.path).image
-      this.#buffer.save()
-      this.#buffer.translate(tile.x, tile.y)
-      this.#buffer.rotate((tile.rotation * Math.PI) / 180)
+      buffer.save()
+      buffer.translate(tile.x, tile.y)
+      buffer.rotate((tile.rotation * Math.PI) / 180)
       switch (tile.rotation) {
         case 90:
-          this.#buffer.translate(0, -img.height)
+          buffer.translate(0, -img.height)
           break
         case 180:
-          this.#buffer.translate(-img.width, -img.height)
+          buffer.translate(-img.width, -img.height)
           break
         case 270:
-          this.#buffer.translate(-img.width, 0)
+          buffer.translate(-img.width, 0)
           break
       }
-      this.#buffer.drawImage(img, 0, 0, img.width, img.height)
-      this.#buffer.restore()
+      buffer.drawImage(img, 0, 0, img.width, img.height)
+      buffer.restore()
 
       if(this.#selectedTiles.includes(tile)) {
-        this.#buffer.save()
-        this.#buffer.fillStyle = 'rgba(255, 0, 0, 0.2)'
+        buffer.save()
+        buffer.fillStyle = 'rgba(255, 0, 0, 0.2)'
         switch (tile.rotation) {
           case 90:
           case 270:
-            this.#buffer.fillRect(tile.x, tile.y, img.height, img.width)
+            buffer.fillRect(tile.x, tile.y, img.height, img.width)
             break
           default:
-            this.#buffer.fillRect(tile.x, tile.y, img.width, img.height)
+            buffer.fillRect(tile.x, tile.y, img.width, img.height)
             break
         }
-        this.#buffer.restore()
+        buffer.restore()
       }
     })
   }
@@ -471,12 +503,12 @@ class MapEditor {
   }
 
   #redrawCanvas() {
-    this.#clearCanvas()
+    this.#clearCanvas(this.#buffer)
     this.#buffer.save()
     this.#buffer.scale(this.#canvasTransform.scale, this.#canvasTransform.scale)
     this.#buffer.translate(this.#canvasTransform.offsetX, this.#canvasTransform.offsetY)
-    this.#drawGrid()
-    this.#drawTiles()
+    this.#drawGrid(this.#buffer)
+    this.#drawTiles(this.#buffer)
     this.#drawCursor()
     this.#buffer.restore()
 
@@ -593,7 +625,7 @@ class App extends Component {
     this.state = {
       tags: editor.tileTags,
       filtered: editor.sortedFilteredTiles,
-      inventory: [],
+      usage: [],
 
       selectedTags: editor.selectedTags,
       selectedTile: null,
@@ -627,13 +659,13 @@ class App extends Component {
     }
 
     editor.onUpdateMapData = (mapData) => {
-      this.updateInventory()
+      this.updateUsage()
     }
   }
 
-  updateInventory() {
+  updateUsage() {
     this.setState({
-      inventory: this.editor.tilesLibrary.map((tile) => ({ 
+      usage: this.editor.tilesLibrary.map((tile) => ({ 
         path: tile.path,
         count: this.editor.countUse(tile.path) 
       })),
@@ -644,14 +676,15 @@ class App extends Component {
     this.editor.saveMap(filename)
   }
 
-  inventoryOf(path) {
-    const tile = this.state.inventory.find((tile) => tile.path === path)
+  usageOf(path) {
+    const tile = this.state.usage.find((tile) => tile.path === path)
     return tile ? tile.count : 0
   }
 
   render() {
     return html`
-      <div>
+      <h3>Map</h3>
+      <div class="map-info">
         <label for="filename">File Name:</label>
         <input type="text" id="filename" name="filename" value=${this.state.filename} onChange=${(event) => {
           this.setState({ filename: event.target.value })
@@ -665,7 +698,9 @@ class App extends Component {
             .some(map => map.label === this.state.filename)}
         >Create</button>
         <button onClick=${() => this.setState({ showFileList: true })}>Load</button>
+        <button onClick=${() => this.editor.exportMap(this.state.filename)}>Export</button>
       </div>
+      <h3>Tiles</h3>
       <${TagList}
         tags=${this.state.tags}
         selected=${this.state.selectedTags}
@@ -683,8 +718,8 @@ class App extends Component {
           <div class="tile ${this.state.selectedTile === tile.path ? 'selected' : ''}">
             <div class="label">
               ${tile.width}×${tile.height} ${tile.label}
-              <span class="${this.inventoryOf(tile.path) > tile.inventory ? 'full' : ''}">
-                <strong> (${this.inventoryOf(tile.path)}/${tile.inventory})</strong>
+              <span class="${this.usageOf(tile.path) > tile.inventory ? 'full' : ''}">
+                <strong> (${this.usageOf(tile.path)}/${tile.inventory})</strong>
               </span>
             </div>
             <div class="image-container">
@@ -699,6 +734,16 @@ class App extends Component {
           </div>
         `)}
       </div>
+      <h3>Print List</h3>
+      <ul class="print-list">
+        ${this.editor.tilesLibrary
+          .map((tile) => ({ path: tile.path, name: tile.name, count: this.usageOf(tile.path) - tile.inventory }))
+          .filter(tile => tile.count > 0)
+          .map(tile => html`
+            <li>${tile.name} (${tile.count})</li>
+          `)
+        }
+      </ul>
       ${this.state.showFileList && html`<${FileSelectorModal}
         files=${this.state.campaign.maps}
         onPin=${() => {}}
@@ -710,7 +755,7 @@ class App extends Component {
               this.setState({ 
                 filename: label,
                 showFileList: false 
-              }, () => this.updateInventory())
+              }, () => this.updateUsage())
             })
         }}
       />`}

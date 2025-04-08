@@ -100,8 +100,8 @@
     {
       "path": "EN-TRP-RoughStoneFloor.png",
       "name": "EN-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor", "l-shaped"],
-      "label": "Floor",
+      "tags": ["heavy stone", "floor", "L"],
+      "label": "L Floor",
       "width": 4,
       "height": 4
     },
@@ -132,7 +132,7 @@
     {
       "path": "I-TRP-HeavyWall.png",
       "name": "I-TRP-HeavyWall",
-      "tags": ["heavy stone", "wall", "column"],
+      "tags": ["heavy stone", "wall", "rectangle"],
       "label": "Column",
       "width": 2,
       "height": 2
@@ -164,7 +164,7 @@
     {
       "path": "IIS-QuarryWall-v.1.0.png",
       "name": "IIS-QuarryWall-v.1.0",
-      "tags": ["mine", "wall", "i-shaped"],
+      "tags": ["mine", "wall", "rectangle"],
       "label": "Wall",
       "width": 2,
       "height": 2
@@ -172,7 +172,7 @@
     {
       "path": "ILS-QuarryWall-v.1.0.png",
       "name": "ILS-QuarryWall-v.1.0",
-      "tags": ["mine", "wall", "l-shaped"],
+      "tags": ["mine", "wall", "rectangle"],
       "label": "L Wall",
       "width": 2,
       "height": 2
@@ -180,7 +180,7 @@
     {
       "path": "IOS-QuarryWall-v.1.0.png",
       "name": "IOS-QuarryWall-v.1.0",
-      "tags": ["mine", "wall", "o-shaped"],
+      "tags": ["mine", "wall", "rectangle"],
       "label": "O Wall",
       "width": 2,
       "height": 2
@@ -204,7 +204,7 @@
     {
       "path": "SS-Entrance-QuarryWall-v.1.1.png",
       "name": "SS-Entrance-QuarryWall-v.1.1",
-      "tags": ["mine", "wall", "entrance"],
+      "tags": ["mine", "wall", "door"],
       "label": "Entrance",
       "width": 4,
       "height": 2

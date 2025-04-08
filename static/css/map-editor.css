@@ -1,6 +1,10 @@
-#ui {
-  padding: 0 2em;
-  max-width: 1200px;
+h3 {
+  padding-bottom: 0;
+}
+
+.editor-container {
+  display: flex;
+  flex-direction: row;
 }
 
 .canvas-container {
@@ -11,9 +15,16 @@
   }
 }
 
-.tag-list {
-  margin-bottom: 1em;
+#ui {
+  padding: 2em;
+  max-width: calc(100vw - 1200px);
+}
 
+.map-info, .tag-list, .tile-list {
+  margin-bottom: 1em;
+}
+
+.tag-list {
   .tag.selected {
     border: 2px solid #000;
     border-radius: 4px;
