@@ -371,12 +371,21 @@ def get_rule(folder, query):
 @app.route("/tileset", methods=["GET"])
 def get_tilesets():
     tileset_path = os.path.join("editor-resources", "tiles.json")
+    tileinv_path = os.path.join("dm", "tile-inventory.json")
     try:
         if not os.path.exists(tileset_path):
             return jsonify({"error": "Tileset file does not exist"}), 404
+        if not os.path.exists(tileinv_path):
+            return jsonify({"error": "Tile inventory file does not exist"}), 404
 
         with open(tileset_path, "r") as f:
-            data = json.load(f)
+            with open(tileinv_path, "r") as f2:
+                data = json.load(f)
+                inv = json.load(f2)
+                for tile in data["tiles"]:
+                    for inv_tile in inv["tiles"]:
+                        if tile["path"] == inv_tile["path"]:
+                            tile["inventory"] = inv_tile["count"]
             return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

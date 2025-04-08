@@ -62,11 +62,18 @@ class MapEditor {
   #screen = null
   #buffer = null
 
+  onUpdateSelectedTiles = () => {}
+  onUpdateMapData = () => {}
+
   get #mapPixelWidth() {
     return this.mapData.width * MapEditor.UNIT_WIDTH
   }
   get #mapPixelHeight() {
     return this.mapData.height * MapEditor.UNIT_WIDTH
+  }
+
+  countUse(path) {
+    return this.mapData.tiles.filter((tile) => tile.path === path).length
   }
 
   #snapGrid(pos, floor = true) {
@@ -75,7 +82,7 @@ class MapEditor {
       : Math.ceil(pos / MapEditor.GRID_WIDTH) * MapEditor.GRID_WIDTH
   }
 
-  #tileDataOf(path) {
+  tileDataOf(path) {
     return this.tilesLibrary.find((tile) => tile.path === path)
   }
 
@@ -127,6 +134,7 @@ class MapEditor {
                 type: this.#DRAG_TILES,
               }
               this.#selectedTiles = [tile]
+              this.onUpdateSelectedTiles(this.#selectedTiles)
             } else {
               this.#drag = {
                 type: this.#DRAG_SELECT,
@@ -194,6 +202,7 @@ class MapEditor {
         case this.#DRAG_SELECT:
           ({ x1, y1, x2, y2 } = this.selectedRegion)
           this.#selectedTiles = this.mapData.tiles.filter((tile) => this.#tileInRegion(tile, x1, y1, x2, y2))
+          this.onUpdateSelectedTiles(this.#selectedTiles)
           this.#redrawCanvas()
           break
         case this.#DRAG_TILES:
@@ -216,23 +225,9 @@ class MapEditor {
       let { x, y } = this.#mouse.absolute
       const tile = this.#getCursorTile(x, y)
       switch (event.key) {
-        case 'a':
-          if(this.drawTilePath) {
-            this.addTile(
-              this.#drawTilePath,
-              this.#snapGrid(x),
-              this.#snapGrid(y),
-            )
-            this.saveMap()
-          }
-          break
         case 'd':
-          if(tile) {
-            this.mapData.tiles = this.mapData.tiles.filter((tile) => !this.#tileOnCursor(tile, x, y))
-            this.#redrawCanvas()
-          } else {
-            this.deleteSelectedTiles()
-          }
+          this.deleteSelectedTiles()
+          this.onUpdateSelectedTiles(this.#selectedTiles)
           this.saveMap()
           break
         case 'r':
@@ -272,11 +267,12 @@ class MapEditor {
 
   loadMap(path) {
     this.#mapPath = path
-    fetch(`./resource/${path}`)
+    return fetch(`./resource/${path}`)
       .then((response) => response.json())
       .then((mapData) => {
         this.mapData = mapData
         this.#redrawCanvas()
+        return this.mapData
       })
   }
 
@@ -304,6 +300,8 @@ class MapEditor {
         .then((campaign) => { this.setState({ campaign }) })
       }
     })
+
+    this.onUpdateMapData(this.mapData)
   }
 
   loadTiles(url) {
@@ -341,17 +339,14 @@ class MapEditor {
 
   setSelectedTags(tags) {
     this.#selectedTags = tags
-    if(this.#drawTilePath) {
-      const selectedTileTags = this.#tileDataOf(this.#drawTilePath).tags
-      if(tags.some(tag => !selectedTileTags.includes(tag))) {
-        this.#drawTilePath = null
-        return
-      }
-    }
   }
 
   get drawTilePath() {
     return this.#drawTilePath
+  }
+
+  setDrawTile(path) {
+    this.#drawTilePath = path
   }
 
   toggleDrawTile(path) {
@@ -405,7 +400,7 @@ class MapEditor {
 
   #drawTiles() {
     this.mapData.tiles.forEach((tile) => {
-      const img = this.#tileDataOf(tile.path).image
+      const img = this.tileDataOf(tile.path).image
       this.#buffer.save()
       this.#buffer.translate(tile.x, tile.y)
       this.#buffer.rotate((tile.rotation * Math.PI) / 180)
@@ -526,7 +521,7 @@ class MapEditor {
     }
 
     if(this.#drawTilePath) {
-      const tile = this.#tileDataOf(this.#drawTilePath)
+      const tile = this.tileDataOf(this.#drawTilePath)
       if(!fillGapWith(tile) && initial) {
         this.addTile(this.#drawTilePath, x1, y1)
       }
@@ -551,19 +546,18 @@ class MapEditor {
   }
 
   deleteSelectedTiles() {
-    console.log('del')
     this.mapData.tiles = this.mapData.tiles.filter((tile) => !this.#selectedTiles.includes(tile))
     this.#selectedTiles = []
     this.#redrawCanvas()
   }
 
   #tileInRegion(tile, x1, y1, x2, y2) {
-    x1++
-    x2--
-    y1++
-    y2--
+    x1+=12
+    x2-=12
+    y1+=12
+    y2-=12
 
-    const img = this.#tileDataOf(tile.path).image
+    const img = this.tileDataOf(tile.path).image
     let x3 = tile.x
     let y3 = tile.y
     let x4 = tile.x + img.width
@@ -599,6 +593,7 @@ class App extends Component {
     this.state = {
       tags: editor.tileTags,
       filtered: editor.sortedFilteredTiles,
+      inventory: [],
 
       selectedTags: editor.selectedTags,
       selectedTile: null,
@@ -612,10 +607,46 @@ class App extends Component {
     fetch(`/campaign`)
       .then((response) => response.json())
       .then((campaign) => { this.setState({ campaign }) })
+
+    editor.onUpdateSelectedTiles = (selectedTiles) => {
+      if(selectedTiles.length === 1) {
+        const tags = this.editor.tileDataOf(selectedTiles[0].path).tags
+        this.editor.setSelectedTags(tags)
+        this.editor.setDrawTile(selectedTiles[0].path)
+        this.setState({ 
+          selectedTags: tags,
+          selectedTile: selectedTiles[0].path,
+          filtered: this.editor.sortedFilteredTiles,
+        })
+      } else if(selectedTiles.length === 0) {
+        this.editor.setDrawTile(null)
+        this.setState({ 
+          selectedTile: null,
+        })
+      }
+    }
+
+    editor.onUpdateMapData = (mapData) => {
+      this.updateInventory()
+    }
+  }
+
+  updateInventory() {
+    this.setState({
+      inventory: this.editor.tilesLibrary.map((tile) => ({ 
+        path: tile.path,
+        count: this.editor.countUse(tile.path) 
+      })),
+    })
   }
 
   createMapFile(filename) {
     this.editor.saveMap(filename)
+  }
+
+  inventoryOf(path) {
+    const tile = this.state.inventory.find((tile) => tile.path === path)
+    return tile ? tile.count : 0
   }
 
   render() {
@@ -650,7 +681,12 @@ class App extends Component {
       <div class="tile-list">
         ${this.state.filtered.map((tile) => html`
           <div class="tile ${this.state.selectedTile === tile.path ? 'selected' : ''}">
-            <div class="label">${tile.label}</div>
+            <div class="label">
+              ${tile.width}×${tile.height} ${tile.label}
+              <span class="${this.inventoryOf(tile.path) > tile.inventory ? 'full' : ''}">
+                <strong> (${this.inventoryOf(tile.path)}/${tile.inventory})</strong>
+              </span>
+            </div>
             <div class="image-container">
               <img 
                 src=${`tile/${tile.path}`} alt=${tile.label}
@@ -670,10 +706,12 @@ class App extends Component {
         onClose=${() => this.setState({ showFileList: false })}
         onSelect=${(label, path) => {
           this.editor.loadMap(path)
-          this.setState({ 
-            filename: label,
-            showFileList: false 
-          })
+            .then(() => {
+              this.setState({ 
+                filename: label,
+                showFileList: false 
+              }, () => this.updateInventory())
+            })
         }}
       />`}
     `

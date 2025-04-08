@@ -1,0 +1,128 @@
+{
+  "tiles": [
+    {
+      "path": "A-TRP-Heavy-Arch.png",
+      "count": 8
+    },
+    {
+      "path": "A-TRP-HeavyWall.png",
+      "count": 50
+    },
+    {
+      "path": "BA-TRP-HeavyWall.png",
+      "count": 15
+    },
+    {
+      "path": "Col-L-TRP-Heavy.png",
+      "count": 31
+    },
+    {
+      "path": "E-B-TRP-RuinedRoughStoneFloor (1).png",
+      "count": 1
+    },
+    {
+      "path": "E-B-TRP-RuinedRoughStoneFloor (2).png",
+      "count": 2
+    },
+    {
+      "path": "E-C-TRP-RuinRoughStoneFloor.png",
+      "count": 8
+    },
+    {
+      "path": "E-TRP-Mine-Floor.png",
+      "count": 4
+    },
+    {
+      "path": "E-TRP-RoughStone-Mine-Transition-Floor.png",
+      "count": 4
+    },
+    {
+      "path": "E-TRP-RoughStoneFloor.png",
+      "count": 31
+    },
+    {
+      "path": "EC-TRP-RoughStoneFloor.png",
+      "count": 8
+    },
+    {
+      "path": "ED-TRP-RoughStoneFloor.png",
+      "count": 8
+    },
+    {
+      "path": "EN-TRP-RoughStoneFloor.png",
+      "count": 4
+    },
+    {
+      "path": "F-TRP-RoughStoneFloor.png",
+      "count": 4
+    },
+    {
+      "path": "FB-TRP-RoughStoneFloor.png",
+      "count": 2
+    },
+    {
+      "path": "G-TRP-HeavyWall.png",
+      "count": 4
+    },
+    {
+      "path": "I-TRP-HeavyWall.png",
+      "count": 18
+    },
+    {
+      "path": "I-TRP-RoughStoneFloor.png",
+      "count": 4
+    },
+    {
+      "path": "IA-TRP-HeavyWall.png",
+      "count": 13
+    },
+    {
+      "path": "IA-TRP-RoughStoneFloor.png",
+      "count": 0
+    },
+    {
+      "path": "IIS-QuarryWall-v.1.0.png",
+      "count": 5
+    },
+    {
+      "path": "ILS-QuarryWall-v.1.0.png",
+      "count": 4
+    },
+    {
+      "path": "IOS-QuarryWall-v.1.0.png",
+      "count": 8
+    },
+    {
+      "path": "Q-TRP-HeavyWall.png",
+      "count": 6
+    },
+    {
+      "path": "S-TRP-RoughStoneFloor.png",
+      "count": 18
+    },
+    {
+      "path": "SS-Entrance-QuarryWall-v.1.1.png",
+      "count": 2
+    },
+    {
+      "path": "SS-QuarryWall-v.1.2.png",
+      "count": 8
+    },
+    {
+      "path": "U-TRP-RoughStoneFloor.png",
+      "count": 6
+    },
+    {
+      "path": "A-TRP-Iron-Door-Wall.png",
+      "count": 2
+    },
+    {
+      "path": "A-TRP-Wooden-Door-Wall.png",
+      "count": 4
+    },
+    {
+      "path": "AS-TRP-Secret-Door-Wall.png",
+      "count": 2
+    }
+  ]
+}
