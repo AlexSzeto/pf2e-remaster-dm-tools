@@ -3,7 +3,7 @@ import { html } from 'htm/preact'
 
 import { ContentSection } from './content-section.js'
 import { treasureByLevel } from '../common/dm-data.js'
-import { Icon } from './Icon.js'
+import { Icon } from './icon.js'
 
 export const rawLine = (line) => {
   const { level, gp, sp, cp, items, notes } = line

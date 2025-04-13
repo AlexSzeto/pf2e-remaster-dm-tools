@@ -1,5 +1,5 @@
 import { html } from "htm/preact"
-import { Icon } from "./Icon.js"
+import { Icon } from "./icon.js"
 
 export const ContentSection = ({label, actions, children}) => html`
   <div class="content-section-with-actions">

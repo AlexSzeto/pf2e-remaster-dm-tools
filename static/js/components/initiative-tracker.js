@@ -2,7 +2,7 @@ import { Component } from 'preact'
 import { html } from 'htm/preact'
 
 import { setCookie } from '../common/util.js'
-import { Icon } from './Icon.js'
+import { Icon } from './icon.js'
 
 export class InitiativeListItem {
   constructor(

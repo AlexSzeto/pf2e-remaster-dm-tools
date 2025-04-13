@@ -2,7 +2,7 @@ import { html } from 'htm/preact'
 import { campaignResource } from '../common/util.js'
 import { Modal } from './../components/modal.js'
 import { PinButton } from '../components/pinned-items-list.js'
-import { Icon } from './../components/Icon.js'
+import { Icon } from './../components/icon.js'
 
 const ImageSelectorList = ({
   images,

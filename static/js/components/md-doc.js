@@ -2,7 +2,7 @@ import { Component, render } from 'preact'
 import { html } from 'htm/preact'
 import { ContentSection } from './content-section.js'
 import { debounce, getCookie } from '../common/util.js'
-import { Icon } from './Icon.js'
+import { Icon } from './icon.js'
 import { openFloatingMenu } from '../common/floating-menu.js'
 
 export class MarkdownDocument extends Component {
