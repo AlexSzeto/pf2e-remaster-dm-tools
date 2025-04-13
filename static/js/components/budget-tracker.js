@@ -188,9 +188,9 @@ export class BudgetTracker extends Component {
             <div class="title">Party Level</div>
             <div class="value">${this.props.level}</div>
             <button class="square" onClick=${() =>
-              this.setLevel(this.props.level - 1)}>-</button>
+              this.setLevel(this.props.level - 1)}><${Icon} icon="minus" /></button>
             <button class="square" onClick=${() =>
-              this.setLevel(this.props.level + 1)}>+</button>
+              this.setLevel(this.props.level + 1)}><${Icon} icon="plus" /></button>
           </div>
           <div class="tracker-content">
           ${
@@ -215,14 +215,14 @@ export class BudgetTracker extends Component {
                         <li class="${line.used ? 'used' : ''}">
                           ${this.props.onDeleteLine &&
                             html`<button class="square" onClick=${() => this.props.onDeleteLine(rawLine(line))}>
-                              <${Icon} icon="trash"/>
+                              <${Icon} icon="trash" size="sm"/>
                             </button>`
                           }
                           ${this.props.onSendLine &&
                           html`<button class="square" disabled=${line.used} onClick=${() => {
                             this.props.onSendLine(rawLine(line), budgetLineDate())
                           }}>
-                            <${Icon} icon="log-in"/>
+                            <${Icon} icon="log-in" size="sm"/>
                           </button>`
                           }
                           <strong>

@@ -160,7 +160,6 @@ class App extends Component {
           },
         },
       },
-      () => feather.replace()
     )
   }
 
@@ -531,10 +530,6 @@ class App extends Component {
     }, 200)
   }
 
-  componentDidUpdate() {
-    feather.replace()
-  }
-
   addCharacterToInitiative(card) {
     if (!card.stats.find((stat) => stat.name === 'HP')) {
       return
@@ -623,7 +618,7 @@ class App extends Component {
         label="Image"
         actions=${[
           {
-            icon: this.state.screen.images.cover ? 'minimize' : 'maximize',
+            icon: this.state.screen.images.cover ? 'exit-fullscreen' : 'fullscreen',
             onClick: () => this.toggleBackgroundCover(),
           },
         ]}
@@ -655,7 +650,7 @@ class App extends Component {
         label="Audio"
         actions=${[
           {
-            icon: this.state.screen.duckAudio ? 'volume-2' : 'volume-x',
+            icon: this.state.screen.duckAudio ? 'volume-full' : 'volume-low',
             onClick: () => this.toggleAudioDuck(),
           },
           {
