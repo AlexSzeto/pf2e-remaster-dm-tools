@@ -3,7 +3,7 @@ import { html } from 'htm/preact'
 
 import { ContentSection } from './content-section.js'
 import { treasureByLevel } from '../common/dm-data.js'
-import { FeatherIcon } from './feather-icon.js'
+import { Icon } from './Icon.js'
 
 export const rawLine = (line) => {
   const { level, gp, sp, cp, items, notes } = line
@@ -215,14 +215,14 @@ export class BudgetTracker extends Component {
                         <li class="${line.used ? 'used' : ''}">
                           ${this.props.onDeleteLine &&
                             html`<button class="square" onClick=${() => this.props.onDeleteLine(rawLine(line))}>
-                              <${FeatherIcon} icon="trash"/>
+                              <${Icon} icon="trash"/>
                             </button>`
                           }
                           ${this.props.onSendLine &&
                           html`<button class="square" disabled=${line.used} onClick=${() => {
                             this.props.onSendLine(rawLine(line), budgetLineDate())
                           }}>
-                            <${FeatherIcon} icon="log-in"/>
+                            <${Icon} icon="log-in"/>
                           </button>`
                           }
                           <strong>

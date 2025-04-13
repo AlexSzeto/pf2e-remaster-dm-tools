@@ -27,10 +27,9 @@ export const openFloatingMenu = (clickEvent, items) => {
 
   // Create menu wrapper
   const menuTemplate = html`
-    <div id="floating-menu">
+    <div id="floating-menu" class="action-list">
       ${items.map(({ label, action }) => html`
-        <a
-          href="#"
+        <button
           onClick=${(e) => {
             e.preventDefault()
             action()
@@ -38,7 +37,7 @@ export const openFloatingMenu = (clickEvent, items) => {
           }}
         >
           ${label}
-        </a>
+        </button>
       `)}
     </div>
   `
@@ -49,8 +48,7 @@ export const openFloatingMenu = (clickEvent, items) => {
   document.addEventListener('click', checkAndCloseMenu)
 
   const mousePosition = getAbsoluteCursorPosition(clickEvent)
-  console.log(mousePosition)
-
+  
   activeMenu.style.position = 'absolute'
   activeMenu.style.top = `${mousePosition.y}px`
   activeMenu.style.left = `${mousePosition.x}px`

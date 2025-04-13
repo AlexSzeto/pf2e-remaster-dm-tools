@@ -991,4 +991,4 @@ class App extends Component {
   }
 }
 
-render(html`<${App} />`, document.body)
+render(html`<${App} />`, document.querySelector('.page-content'))

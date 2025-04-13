@@ -25,17 +25,32 @@ def players_root():
 def players_file():
     return os.path.join(players_root(), settings["players"]["current"] + ".json")
 
+titleOf = {
+    "index": "Home",
+    "card-printer": "Card Printer",
+    "creature-creator": "Creature Creator",
+    "dm-screen": "DM Screen",
+    "pc-screen": "PC Screen",
+    "insert-media": "Insert Media",
+    "map-editor": "Map Editor",
+    "name-generator": "Name Generator",    
+}
+
 # Home page
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("layout.html", title=titleOf["index"], id="index")
+
+# @app.route("/lib/ace/<path:filename>")
+# def ace_static(filename):
+#     return send_from_directory(os.path.join("external-resources", "ace-builds"), filename)
 
 @app.route("/<page_name>")
 def render_page(page_name):
     try:
         if page_name == "":
             page_name = "index"
-        return render_template(f"{page_name}.html")
+        return render_template(f"layout.html", title=titleOf[page_name], id=page_name)
     except Exception as e:
         return f"Error loading page {page_name}: {e}", 404
 
@@ -50,6 +65,8 @@ def get_resource(resource_name):
             resource_folder = "audio"
         elif file_extension in [".md", ".txt"]:
             resource_folder = "docs"
+        elif file_extension in [".json"]:
+            resource_folder = "maps"
         
         return send_from_directory(os.path.join(campaign_folder(), resource_folder), resource_name)
     except Exception as e:
@@ -73,6 +90,10 @@ def insert_update_resource():
                 resource_folder = "audio"
             elif file_extension in [".md", ".txt"]:
                 resource_folder = "docs"
+            elif file_extension in [".json"]:
+                resource_folder = "maps"
+                
+        print(f"resource folder: {resource_folder}")
 
         tags = request.form.get("tags")
         if tags:
@@ -81,32 +102,39 @@ def insert_update_resource():
             tags = []
         
         if request.form.get("type"):
-            type = request.form.get("type")
-            tags.append(type)
             resource_type = request.form.get("type")
-            if not resource_type in ["ambience", "bgm"]:
+            file_prefix = resource_type
+            tags.append(resource_type)
+            if resource_folder == "images":
+                file_prefix = resource_type
+                resource_type = "images"
+            elif not resource_type in ["ambience", "bgm"]:
                 resource_type = resource_folder
             else:
                 resource_type = resource_type + "s"
         else:
             resource_type = resource_folder
+            file_prefix = resource_folder
             if resource_type == "audio":
                 resource_type = "ambiences" if "-ambience" in file.filename else "bgms"
                 
+        print(f"resource type: {resource_type}")
+                
         label = request.form.get("name")
         if label:
-            export_filename = type + "-" + label.replace(" ", "-").lower() + file_extension
+            export_filename = file_prefix + "-" + label.replace(" ", "-").lower() + file_extension
         else:
             export_filename = file.filename
             label = file.filename
         
+        print(f"export filename: {export_filename}")
         # Create the campaign data point if it doesn't exist
         if os.path.exists(campaign_file()):
             # Read and return contents of project.json
             with open(campaign_file(), "r") as f:
                 campaign_data = json.load(f)
 
-                resource_data = next((item for item in campaign_data[resource_type] if item["path"] == file.filename), None)
+                resource_data = next((item for item in campaign_data[resource_type] if item["path"] == export_filename), None)
                 if resource_data == None:
                     campaign_data[resource_type].append({
                         "path": export_filename,
@@ -359,7 +387,34 @@ def get_rule(folder, query):
         return jsonify({"error": "No matching rule found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-  
+
+@app.route("/tileset", methods=["GET"])
+def get_tilesets():
+    tileset_path = os.path.join("editor-resources", "tiles.json")
+    tileinv_path = os.path.join("dm", "tile-inventory.json")
+    try:
+        if not os.path.exists(tileset_path):
+            return jsonify({"error": "Tileset file does not exist"}), 404
+        if not os.path.exists(tileinv_path):
+            return jsonify({"error": "Tile inventory file does not exist"}), 404
+
+        with open(tileset_path, "r") as f:
+            with open(tileinv_path, "r") as f2:
+                data = json.load(f)
+                inv = json.load(f2)
+                for tile in data["tiles"]:
+                    for inv_tile in inv["tiles"]:
+                        if tile["path"] == inv_tile["path"]:
+                            tile["inventory"] = inv_tile["count"]
+            return jsonify(data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/tile/<filename>", methods=["GET"])
+def get_tile(filename):
+    tileset_folder = os.path.join("editor-resources", "tiles")
+    return send_from_directory(tileset_folder, filename)
+    
 def open_browser():
     """Opens the default web browser to the Flask server."""
     webbrowser.open_new("http://127.0.0.1:5000/")

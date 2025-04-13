@@ -11,6 +11,11 @@ body {
   font-size: 18px;
 }
 
+/* hide the default header */
+.header {
+  display: none;
+}
+
 .images-container {
   transition: opacity 1s;
 }

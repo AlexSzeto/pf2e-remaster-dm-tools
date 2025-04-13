@@ -276,33 +276,35 @@ input,
   padding: 0.25em;
 }
 
-a {
-  display: inline;
-  color: black;
-  text-decoration: none;
-  padding: 0.125em 0.25em;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
+.page-content {
+  a {
+    display: inline;
+    color: black;
+    text-decoration: none;
+    padding: 0.125em 0.25em;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
 
-  &:disabled {
-    color: rgb(118, 118, 118);
+    &:disabled {
+      color: rgb(118, 118, 118);
+    }
+
+    &:not(:disabled):hover {
+      color: white;
+      background-color: #664e47;
+    }  
+
+    &:not(:disabled):active {
+      color: white;
+      background-color: #351a1a;
+    }  
   }
 
-  &:not(:disabled):hover {
-    color: white;
-    background-color: #664e47;
-  }  
-
-  &:not(:disabled):active {
-    color: white;
-    background-color: #351a1a;
-  }  
-}
-
-a.selected {
-  border: none;
-  outline: 3px solid black;
+  a.selected {
+    border: none;
+    outline: 3px solid black;
+  }
 }
 
 input {

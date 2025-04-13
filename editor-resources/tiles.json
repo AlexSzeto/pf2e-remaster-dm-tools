@@ -1,221 +1,253 @@
 {
   "tiles": [
     {
-      "path": "./tiles/A-TRP-Heavy-Arch.png",
+      "path": "A-TRP-Heavy-Arch.png",
       "name": "A-TRP-Heavy-Arch",
-      "tags": ["heavy stone", "wall", "arch"],
+      "tags": ["heavy stone", "wall", "door"],
       "label": "Arch",
       "width": 4,
       "height": 1
     },
     {
-      "path": "./tiles/A-TRP-HeavyWall.png",
+      "path": "A-TRP-HeavyWall.png",
       "name": "A-TRP-HeavyWall",
-      "tags": ["heavy stone", "wall"],
-      "label": "Wall 4x1",
+      "tags": ["heavy stone", "wall", "rectangle"],
+      "label": "Wall",
       "width": 4,
       "height": 1
     },
     {
-      "path": "./tiles/BA-TRP-HeavyWall.png",
+      "path": "BA-TRP-HeavyWall.png",
       "name": "BA-TRP-HeavyWall",
-      "tags": ["heavy stone", "wall"],      
-      "label": "Wall 3x1",
+      "tags": ["heavy stone", "wall", "rectangle"],      
+      "label": "Wall",
       "width": 3,
       "height": 1
     },
     {
-      "path": "./tiles/Col-L-TRP-Heavy.png",
+      "path": "Col-L-TRP-Heavy.png",
       "name": "Col-L-TRP-Heavy",
-      "tags": ["heavy stone", "wall"],
-      "label": "Wall 1x1",
+      "tags": ["heavy stone", "wall", "rectangle"],
+      "label": "Wall",
       "width": 1,
       "height": 1
     },
     {
-      "path": "./tiles/E-B-TRP-RuinedRoughStoneFloor (1).png",
+      "path": "E-B-TRP-RuinedRoughStoneFloor (1).png",
       "name": "E-B-TRP-RuinedRoughStoneFloor (1)",
       "tags": ["heavy stone", "floor", "ruined"],
-      "label": "Ruined Floor A",
+      "label": "Ruin",
       "width": 4,
       "height": 4
     },
     {
-      "path": "./tiles/E-B-TRP-RuinedRoughStoneFloor (2).png",
+      "path": "E-B-TRP-RuinedRoughStoneFloor (2).png",
       "name": "E-B-TRP-RuinedRoughStoneFloor (2)",
       "tags": ["heavy stone", "floor", "ruined"],
-      "label": "Ruined Floor B",
+      "label": "Ruin",
       "width": 4,
       "height": 4
     },
     {
-      "path": "./tiles/E-C-TRP-RuinRoughStoneFloor.png",
+      "path": "E-C-TRP-RuinRoughStoneFloor.png",
       "name": "E-C-TRP-RuinRoughStoneFloor",
       "tags": ["heavy stone", "floor", "ruined"],
-      "label": "Ruined Floor 4x1",
+      "label": "Ruin",
       "width": 4,
       "height": 1
 
     },
     {
-      "path": "./tiles/E-TRP-Mine-Floor.png",
+      "path": "E-TRP-Mine-Floor.png",
       "name": "E-TRP-Mine-Floor",
-      "tags": ["mine", "floor"],
-      "label": "Mine Floor",
+      "tags": ["mine", "floor", "rectangle"],
+      "label": "Mine",
       "width": 4,
       "height": 4
     },
     {
-      "path": "./tiles/E-TRP-RoughStone-Mine-Transition-Floor.png",
+      "path": "E-TRP-RoughStone-Mine-Transition-Floor.png",
       "name": "E-TRP-RoughStone-Mine-Transition-Floor",
-      "tags": ["mine", "heavy stone", "floor"],
-      "label": "Mine-Stone Transition Floor",
+      "tags": ["mine", "heavy stone", "floor", "rectangle"],
+      "label": "Mine-Stone",
       "width": 4,
       "height": 4
     },
     {
-      "path": "./tiles/E-TRP-RoughStoneFloor.png",
+      "path": "E-TRP-RoughStoneFloor.png",
       "name": "E-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor"],
-      "label": "Floor 4x4",
+      "tags": ["heavy stone", "floor", "rectangle"],
+      "label": "Floor",
       "width": 4,
       "height": 4
     },
     {
-      "path": "./tiles/EC-TRP-RoughStoneFloor.png",
+      "path": "EC-TRP-RoughStoneFloor.png",
       "name": "EC-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor"],
-      "label": "Floor 4x3",
+      "tags": ["heavy stone", "floor", "rectangle"],
+      "label": "Floor",
       "width": 4,
       "height": 3      
     },
     {
-      "path": "./tiles/ED-TRP-RoughStoneFloor.png",
+      "path": "ED-TRP-RoughStoneFloor.png",
       "name": "ED-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor"],
-      "label": "Floor 3x3",
+      "tags": ["heavy stone", "floor", "rectangle"],
+      "label": "Floor",
       "width": 3,
       "height": 3
     },
     {
-      "path": "./tiles/EN-TRP-RoughStoneFloor.png",
+      "path": "EN-TRP-RoughStoneFloor.png",
       "name": "EN-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor", "L shape"],
-      "label": "L Shaped Floor",
+      "tags": ["heavy stone", "floor", "L"],
+      "label": "L Floor",
       "width": 4,
       "height": 4
     },
     {
-      "path": "./tiles/F-TRP-RoughStoneFloor.png",
+      "path": "F-TRP-RoughStoneFloor.png",
       "name": "F-TRP-RoughStoneFloor",
       "tags": ["heavy stone", "floor", "rounded"],
-      "label": "Pie Shaped Floor 4x4",
+      "label": "Round Floor",
       "width": 4,
       "height": 4
     },
     {
-      "path": "./tiles/FB-TRP-RoughStoneFloor.png",
+      "path": "FB-TRP-RoughStoneFloor.png",
       "name": "FB-TRP-RoughStoneFloor",
       "tags": ["heavy stone", "floor", "rounded"],
-      "label": "Pie Shaped Floor 5x5",
+      "label": "Round Floor",
       "width": 5,
       "height": 5
     },
     {
-      "path": "./tiles/G-TRP-HeavyWall.png",
+      "path": "G-TRP-HeavyWall.png",
       "name": "G-TRP-HeavyWall",
       "tags": ["heavy stone", "wall", "rounded"],
-      "label": "Arc Shaped Wall",
+      "label": "Wall Arc",
       "width": 5,
       "height": 5
     },
     {
-      "path": "./tiles/I-TRP-HeavyWall.png",
+      "path": "I-TRP-HeavyWall.png",
       "name": "I-TRP-HeavyWall",
-      "tags": ["heavy stone", "wall", "column"],
-      "label": "Wall Column",
+      "tags": ["heavy stone", "wall", "rectangle"],
+      "label": "Column",
       "width": 2,
       "height": 2
     },
     {
-      "path": "./tiles/I-TRP-RoughStoneFloor.png",
+      "path": "I-TRP-RoughStoneFloor.png",
       "name": "I-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor"],
-      "label": "Floor 2x2",
+      "tags": ["heavy stone", "floor", "rectangle"],
+      "label": "Floor",
       "width": 2,
       "height": 2
     },
     {
-      "path": "./tiles/IA-TRP-HeavyWall.png",
+      "path": "IA-TRP-HeavyWall.png",
       "name": "IA-TRP-HeavyWall",
-      "tags": ["heavy stone", "wall"],
-      "label": "Wall 2x1",
+      "tags": ["heavy stone", "wall", "rectangle"],
+      "label": "Wall",
       "width": 2,
       "height": 1
     },
     {
-      "path": "./tiles/IA-TRP-RoughStoneFloor.png",
+      "path": "IA-TRP-RoughStoneFloor.png",
       "name": "IA-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor"],
-      "label": "Floor 2x1",
+      "tags": ["heavy stone", "floor", "rectangle"],
+      "label": "Floor",
       "width": 2,
       "height": 1
     },
     {
-      "path": "./tiles/IIS-QuarryWall-v.1.0.png",
+      "path": "IIS-QuarryWall-v.1.0.png",
       "name": "IIS-QuarryWall-v.1.0",
-      "tags": ["mine", "wall", "i-shaped"],
-      "label": "I Shaped Wall 2x2",
+      "tags": ["mine", "wall", "rectangle"],
+      "label": "Wall",
       "width": 2,
       "height": 2
     },
     {
-      "path": "./tiles/ILS-QuarryWall-v.1.0.png",
+      "path": "ILS-QuarryWall-v.1.0.png",
       "name": "ILS-QuarryWall-v.1.0",
-      "tags": ["mine", "wall", "l-shaped"],
-      "label": "L Shaped Wall 2x2",
+      "tags": ["mine", "wall", "rectangle"],
+      "label": "L Wall",
       "width": 2,
       "height": 2
     },
     {
-      "path": "./tiles/IOS-QuarryWall-v.1.0.png",
+      "path": "IOS-QuarryWall-v.1.0.png",
       "name": "IOS-QuarryWall-v.1.0",
-      "tags": ["mine", "wall", "o-shaped"],
-      "label": "O Shaped Wall 2x2",
+      "tags": ["mine", "wall", "rectangle"],
+      "label": "O Wall",
       "width": 2,
       "height": 2
     },
     {
-      "path": "./tiles/S-TRP-RoughStoneFloor.png",
+      "path": "Q-TRP-HeavyWall.png",
+      "name": "Q-TRP-HeavyWall",
+      "tags": ["heavy stone", "wall", "rectangle"],
+      "label": "Wall",
+      "width": 8,
+      "height": 1
+    },
+    {
+      "path": "S-TRP-RoughStoneFloor.png",
       "name": "S-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor"],
-      "label": "Floor 4x2",
+      "tags": ["heavy stone", "floor", "rectangle"],
+      "label": "Floor",
       "width": 4,
       "height": 2
     },
     {
-      "path": "./tiles/SS-Entrance-QuarryWall-v.1.1.png",
+      "path": "SS-Entrance-QuarryWall-v.1.1.png",
       "name": "SS-Entrance-QuarryWall-v.1.1",
-      "tags": ["mine", "wall", "entrance"],
-      "label": "Entrance Wall",
+      "tags": ["mine", "wall", "door"],
+      "label": "Entrance",
       "width": 4,
       "height": 2
     },
     {
-      "path": "./tiles/SS-QuarryWall-v.1.2.png",
+      "path": "SS-QuarryWall-v.1.2.png",
       "name": "SS-QuarryWall-v.1.2",
-      "tags": ["mine", "wall"],
-      "label": "Wall 4x2",
+      "tags": ["mine", "wall", "rectangle"],
+      "label": "Wall",
       "width": 4,
       "height": 2
     },
     {
-      "path": "./tiles/U-TRP-RoughStoneFloor.png",
+      "path": "U-TRP-RoughStoneFloor.png",
       "name": "U-TRP-RoughStoneFloor",
-      "tags": ["heavy stone", "floor"],
-      "label": "Floor 8x8",
+      "tags": ["heavy stone", "floor", "rectangle"],
+      "label": "Floor",
       "width": 8,
       "height": 8
-    }
+    },
+    {
+      "path": "A-TRP-Iron-Door-Wall.png",
+      "name": "A-TRP-Iron-Door-Wall",
+      "tags": ["heavy stone", "wall", "door"],
+      "label": "Iron Door",
+      "width": 4,
+      "height": 1
+    },
+    {
+      "path": "A-TRP-Wooden-Door-Wall.png",
+      "name": "A-TRP-Wooden-Door-Wall",
+      "tags": ["heavy stone", "wall", "door"],
+      "label": "Wooden Door",
+      "width": 4,
+      "height": 1
+    },
+    {
+      "path": "AS-TRP-Secret-Door-Wall.png",
+      "name": "AS-TRP-Secret-Door-Wall",
+      "tags": ["heavy stone", "wall", "door"],
+      "label": "Secret Door",
+      "width": 4,
+      "height": 1
+    }    
   ]
 }

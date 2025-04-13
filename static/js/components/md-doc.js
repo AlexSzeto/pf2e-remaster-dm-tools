@@ -1,13 +1,15 @@
 import { Component, render } from 'preact'
 import { html } from 'htm/preact'
 import { ContentSection } from './content-section.js'
-import { getCookie } from '../common/util.js'
-import { FeatherIcon } from './feather-icon.js'
+import { debounce, getCookie } from '../common/util.js'
+import { Icon } from './Icon.js'
+import { openFloatingMenu } from '../common/floating-menu.js'
 
 export class MarkdownDocument extends Component {
   editor = null
+  autosave = debounce(() => this.saveDocument(), 2000)
 
-  constructor({ label, path, text, loaded, onEdit, onClose, onPreviewImage }) {
+  constructor({ label, path, text, loaded, onEdit, onClose, onPreviewImage, onContextAction }) {
     super()
     this.state = { readonly: true }
   }
@@ -36,7 +38,7 @@ export class MarkdownDocument extends Component {
               class="outlined square top-left"
               onClick=${() => this.props.onPreviewImage(url)}
             >
-              <${FeatherIcon} icon="zoom-in" />
+              <${Icon} icon="zoom-in" />
             </button>
             <img src=${url} />
           </div>
@@ -70,12 +72,14 @@ export class MarkdownDocument extends Component {
     editor.setTheme('ace/theme/solarized_light')
     editor.session.setMode('ace/mode/markdown')
     editor.setOption("showInvisibles", true)
+
     editor.commands.addCommand({
       name: 'exit',
       exec: () => this.setState({ readonly: true }),
       bindKey: { win: 'Esc', mac: 'Esc' },
     })
     const onEditorUpdate = () => {
+      this.autosave()
       this.updateText()
     }
     editor.session.on('change', onEditorUpdate)
@@ -100,9 +104,16 @@ export class MarkdownDocument extends Component {
     }
   }
 
+  saveDocument() {
+    this.props.onEdit(this.props.path, this.editor.getValue())
+  }
+
   editOrSaveDocument() {
     if (this.state.readonly) {
-      this.setState({ readonly: false }, () => this.updateEditor())
+      this.setState({ readonly: false }, () => {
+        this.updateEditor()
+        this.editor.focus()
+      })
     } else {
       this.props.onEdit(this.props.path, this.editor.getValue())
       this.setState({ readonly: true })
@@ -132,9 +143,26 @@ export class MarkdownDocument extends Component {
           ]}>
           <div class="text-container">
             <div class="preview ${this.state.readonly ? '' : 'hidden'}"></div>
-            <pre class="editor ${this.state.readonly ? 'hidden' : ''}">${
-              this.props.text
-            }</pre>
+            <div onContextMenu=${(e) => {
+              if(!this.props.onContextAction) {
+                return
+              }
+              e.preventDefault()
+              openFloatingMenu(e, [
+                {
+                  label: 'Insert Image',
+                  action: () => this.props.onContextAction('insertImage', this.editor),
+                },
+                {
+                  label: 'Insert Name',
+                  action: () => this.props.onContextAction('insertName', this.editor),
+                },
+              ])
+            }}>
+              <pre class="editor ${this.state.readonly ? 'hidden' : ''}">${
+                this.props.text
+              }</pre>
+            </div>
           </div>
         </${ContentSection}>
       </div>

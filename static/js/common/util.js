@@ -39,7 +39,6 @@ export function getAbsoluteCursorPosition(event) {
   const scrollX = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
   const scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 
-  console.log(scrollX, scrollY)
   // Calculate the cursor position relative to the top-left of the document.
   const pageX = clientX + scrollX
   const pageY = clientY + scrollY

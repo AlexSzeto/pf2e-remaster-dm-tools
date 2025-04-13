@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DM Ware</title>
+    <title>{{ title }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -18,14 +18,16 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/dm-screen.css') }}"
+      href="{{ url_for('static', filename='css/' ~ id ~ '.css') }}"
     />
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script 
+      src="https://unpkg.com/feather-icons"
+    ></script>
     <script
-      src="lib/ace/src/ace.js"
-      type="text/javascript"
-      charset="utf-8"
+      src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/ace-builds@1.39.1/src-min/ace.js"
     ></script>
     <script type="importmap">
       {
@@ -38,8 +40,15 @@
     </script>
     <script
       type="module"
-      src="{{ url_for('static', filename='js/dm-screen.js') }}"
+      src="{{ url_for('static', filename='js/layout.js') }}"
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/' ~ id ~ '.js') }}"
     ></script>
   </head>
-  <body></body>
+  <body>
+    <div class="header"></div>
+    <div class="page-content"></div>
+  </body>
 </html>

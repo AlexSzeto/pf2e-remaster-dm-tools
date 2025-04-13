@@ -2,7 +2,7 @@ import { Component } from 'preact'
 import { html } from 'htm/preact'
 
 import { setCookie } from '../common/util.js'
-import { FeatherIcon } from './feather-icon.js'
+import { Icon } from './Icon.js'
 
 export class InitiativeListItem {
   constructor(
@@ -227,7 +227,7 @@ export class InitiativeTracker extends Component {
           ></input>
           <button class="square"
             onClick=${() => this.dealDamage(index)}>
-            <${FeatherIcon} icon="zap" />
+            <${Icon} icon="zap" />
           </button>
           <input
             name="initiative"

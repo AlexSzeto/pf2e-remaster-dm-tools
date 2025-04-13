@@ -1,0 +1,12 @@
+.page-content {
+
+  a {
+    display: inline-block;
+    margin-left: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  .subsection {
+    margin-bottom: 1em;
+  }
+}

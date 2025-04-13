@@ -1,7 +1,7 @@
 import { Component } from "preact";
 import { html } from "htm/preact";
 
-export class FeatherIcon extends Component {
+export class Icon extends Component {
 
   render() {
     return html`<div

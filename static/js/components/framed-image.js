@@ -1,5 +1,5 @@
 import { html } from "htm/preact";
-import { FeatherIcon } from "./feather-icon.js";
+import { Icon } from "./Icon.js";
 
 export const FramedImage = ({url, type, cover, onClick, onModal}) => html`
   <div    
@@ -7,7 +7,7 @@ export const FramedImage = ({url, type, cover, onClick, onModal}) => html`
   >
     ${url === '' ? html`
       <button class="square centered" onClick=${onClick}>
-        <${FeatherIcon} icon="plus" />
+        <${Icon} icon="plus" />
       </button>
     ` : html`
       ${cover ? html`
@@ -16,7 +16,7 @@ export const FramedImage = ({url, type, cover, onClick, onModal}) => html`
         <img src=${url} onClick=${onClick}/>
       `}
       <button class="outlined square top-left" onClick=${onModal(url)}>
-        <${FeatherIcon} icon="zoom-in" />
+        <${Icon} icon="zoom-in" />
       </button>
     `}
   </div>

@@ -1,6 +1,6 @@
 import { render, Component } from 'preact'
 import { html } from 'htm/preact'
-import { FeatherIcon } from './components/feather-icon.js'
+import { Icon } from './components/Icon.js'
 
 class InsertMediaForm extends Component {
   constructor() {
@@ -104,60 +104,50 @@ class InsertMediaForm extends Component {
 
   render() {
     return html`
-    <div class="header">
-      <h1 class="name">${this.state.campaign.name}</h1>
-      <h2 class="description">${this.state.campaign.description}</h2>
-      <h1 class="logo">PF2E Tools - Insert Campaign Media</h1>
-    </div>
-    <div class="page-content">
-      <div class="flat-page">
-        <h1>Insert Campaign Media</h1>
-        <form id="media-form" onSubmit=${e => this.submitMedia(e)}>
-          <div>
-            <label for="name">Name</label>
-            <input 
-              disabled=${this.state.saving}
-              type="text"
-              name="name"
-              placeholder="Name" 
-              value=${this.state.name}
-              onInput=${e => this.setState({ name: e.target.value })}
-            />
-          </div>
-          <div>
-            <label for="file">File</label>
-            <input disabled=${this.state.saving} type="file" name="file" onChange=${e => this.updateTypeOptions(e)}/>
-          </div>
-          <input type="hidden" name="folder" value=${this.state.folder} />          
-
-          <div>
-            <label for="folder">Type</label>
-            <select disabled=${this.state.saving} name="type">
-              ${this.state.options.map(option => html`
-                <option value=${option.value}>${option.text}</option>
-              `)}
-            </select>
-          </div>
-
-          <div>
-            <label for="tags">Additional Tags</label>
-            <input disabled=${this.state.saving} type="text" name="tags" placeholder="Tags" />
-          </div>
-          <button disabled=${this.state.saving} type="submit" disabled=${this.state.saving}>Save</button>
-        </form>
-
-        <div class="media-preview">
-          ${this.state.folder==="images" && html`
-            <img id="image-preview" src=${this.state.preview}/>
-          `}
+    <div class="flat-page">
+      <h1>Insert Campaign Media</h1>
+      <form id="media-form" onSubmit=${e => this.submitMedia(e)}>
+        <div>
+          <label for="name">Name</label>
+          <input 
+            disabled=${this.state.saving}
+            type="text"
+            name="name"
+            placeholder="Name" 
+            value=${this.state.name}
+            onInput=${e => this.setState({ name: e.target.value })}
+          />
         </div>
+        <div>
+          <label for="file">File</label>
+          <input disabled=${this.state.saving} type="file" name="file" onChange=${e => this.updateTypeOptions(e)}/>
+        </div>
+        <input type="hidden" name="folder" value=${this.state.folder} />          
+
+        <div>
+          <label for="folder">Type</label>
+          <select disabled=${this.state.saving} name="type">
+            ${this.state.options.map(option => html`
+              <option value=${option.value}>${option.text}</option>
+            `)}
+          </select>
+        </div>
+
+        <div>
+          <label for="tags">Additional Tags</label>
+          <input disabled=${this.state.saving} type="text" name="tags" placeholder="Tags" />
+        </div>
+        <button disabled=${this.state.saving} type="submit" disabled=${this.state.saving}>Save</button>
+      </form>
+
+      <div class="media-preview">
+        ${this.state.folder==="images" && html`
+          <img id="image-preview" src=${this.state.preview}/>
+        `}
       </div>
     </div>
     `
   }
 }
 
-render(
-  html`<${InsertMediaForm} />`,
-  document.body
-)
+render(html`<${InsertMediaForm} />`, document.querySelector('.page-content'))

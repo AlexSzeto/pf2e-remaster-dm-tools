@@ -1,6 +1,6 @@
 import { render, Component } from 'preact'
 import { html } from 'htm/preact'
-import { FeatherIcon } from './components/feather-icon.js'
+import { Icon } from './components/Icon.js'
 
 const getNameGenerationPrompt = criteria => 
 `Generate a list of 10 random names fulfilling the criteria "${criteria}" and output it as a JSON array.
@@ -92,12 +92,6 @@ class NameGenerator extends Component {
 
   render() {
     return html`
-    <div class="header">
-    <h1 class="name">${this.state.campaign.name}</h1>
-    <h2 class="description">${this.state.campaign.description}</h2>
-    <h1 class="logo">PF2E Tools - Name Generator</h1>
-  </div>
-  <div class="page-content">
     <div class="flat-page">
       <h1>Name Generator</h1>
       <input 
@@ -116,7 +110,7 @@ class NameGenerator extends Component {
           ${this.state.generatedNames.map((name) => html`
             <div class="generated-result">
               <div class="name">
-                <button class="square" onClick=${() => this.copyToClipboard(name.name)}><${FeatherIcon} icon="copy" /></button>
+                <button class="square" onClick=${() => this.copyToClipboard(name.name)}><${Icon} icon="copy" /></button>
                 <span class="text">${name.name}</span>
               </div>
               <div class="meaning">${name.meaning}</div>
@@ -126,12 +120,11 @@ class NameGenerator extends Component {
         </div>
       `}
     </div>
-  </div>
 `
   }
 }
 
 render(
   html`<${NameGenerator} />`,
-  document.body
+  document.querySelector('.page-content')
 )
