@@ -1,5 +1,5 @@
 import { html } from "htm/preact"
-import { FeatherIcon } from "./feather-icon.js"
+import { Icon } from "./Icon.js"
 
 export const ContentSection = ({label, actions, children}) => html`
   <div class="content-section-with-actions">
@@ -7,7 +7,7 @@ export const ContentSection = ({label, actions, children}) => html`
     <div class="actions">
       ${actions && actions.map(action => html`
         <button class="square" onClick=${action.onClick}>
-          <${FeatherIcon} icon=${action.icon} />
+          <${Icon} icon=${action.icon} />
         </button>
         `)}
     </div>

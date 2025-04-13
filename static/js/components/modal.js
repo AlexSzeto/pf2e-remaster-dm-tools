@@ -1,5 +1,5 @@
 import { html } from "htm/preact";
-import { FeatherIcon } from "./feather-icon.js";
+import { Icon } from "./Icon.js";
 
 export const Modal = ({onClose, minimal, children}) => html`
   <div class="screen-overlay">
@@ -8,7 +8,7 @@ export const Modal = ({onClose, minimal, children}) => html`
     <div class="modal ${minimal ? 'minimal' : ''}">
       ${children}
       <button class="top-right square outlined inverted" onClick=${() => onClose()}>
-        <${FeatherIcon} icon="x" />
+        <${Icon} icon="x" />
       </button>
     </div>
   </div>

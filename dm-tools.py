@@ -25,21 +25,32 @@ def players_root():
 def players_file():
     return os.path.join(players_root(), settings["players"]["current"] + ".json")
 
+titleOf = {
+    "index": "Home",
+    "card-printer": "Card Printer",
+    "creature-creator": "Creature Creator",
+    "dm-screen": "DM Screen",
+    "pc-screen": "PC Screen",
+    "insert-media": "Insert Media",
+    "map-editor": "Map Editor",
+    "name-generator": "Name Generator",    
+}
+
 # Home page
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("layout.html", title=titleOf["index"], id="index")
 
-@app.route("/lib/ace/<path:filename>")
-def ace_static(filename):
-    return send_from_directory(os.path.join("external-resources", "ace-builds"), filename)
+# @app.route("/lib/ace/<path:filename>")
+# def ace_static(filename):
+#     return send_from_directory(os.path.join("external-resources", "ace-builds"), filename)
 
 @app.route("/<page_name>")
 def render_page(page_name):
     try:
         if page_name == "":
             page_name = "index"
-        return render_template(f"{page_name}.html")
+        return render_template(f"layout.html", title=titleOf[page_name], id=page_name)
     except Exception as e:
         return f"Error loading page {page_name}: {e}", 404
 

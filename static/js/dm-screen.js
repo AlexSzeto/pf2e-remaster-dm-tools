@@ -931,17 +931,7 @@ class App extends Component {
     </div>
     `
     return html`
-      <div class="header">
-        <h1
-          class="name"
-          onClick=${() => location.href = '/'}
-        >${this.state.campaign.name}</h1>
-        <h2 class="description">${this.state.campaign.description}</h2>
-        <h1 class="logo">PF2E Tools - DM Screen</h1>
-      </div>
-      <div class="page-content">
-        <div class="tabs">${explorationTab} ${notesTab} ${combatTab} ${upkeepTab}</div>
-      </div>
+      <div class="tabs">${explorationTab} ${notesTab} ${combatTab} ${upkeepTab}</div>
 
       ${imageLocations.map(
         (location) => html`
@@ -1025,4 +1015,4 @@ class App extends Component {
   }
 }
 
-render(html`<${App} />`, document.body)
+render(html`<${App} />`, document.querySelector('.page-content'))

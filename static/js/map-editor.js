@@ -763,6 +763,15 @@ class App extends Component {
   }
 }
 
+render(html`
+  <div class="editor-container">
+  <div class="canvas-container">
+    <canvas id="canvas" width="1200" height="600" tabindex="0"></canvas>
+  </div>
+  <div id="ui"></div>
+</div>
+`, document.querySelector('.page-content'))
+
 const editor = new MapEditor(document.getElementById('canvas'))
 editor.loadTiles('/tileset').then(() => {
   render(html`<${App} editor=${editor} />`, document.getElementById('ui'))
