@@ -110,7 +110,10 @@ export class MarkdownDocument extends Component {
 
   editOrSaveDocument() {
     if (this.state.readonly) {
-      this.setState({ readonly: false }, () => this.updateEditor())
+      this.setState({ readonly: false }, () => {
+        this.updateEditor()
+        this.editor.focus()
+      })
     } else {
       this.props.onEdit(this.props.path, this.editor.getValue())
       this.setState({ readonly: true })
@@ -141,18 +144,18 @@ export class MarkdownDocument extends Component {
           <div class="text-container">
             <div class="preview ${this.state.readonly ? '' : 'hidden'}"></div>
             <div onContextMenu=${(e) => {
-              if(!this.onContextAction) {
+              if(!this.props.onContextAction) {
                 return
               }
               e.preventDefault()
               openFloatingMenu(e, [
                 {
                   label: 'Insert Image',
-                  action: () => this.onContextAction('insert-image'),
+                  action: () => this.props.onContextAction('insertImage', this.editor),
                 },
                 {
                   label: 'Insert Name',
-                  action: () => this.onContextAction('insert-name'),
+                  action: () => this.props.onContextAction('insertName', this.editor),
                 },
               ])
             }}>

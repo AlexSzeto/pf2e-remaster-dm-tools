@@ -457,6 +457,8 @@ class App extends Component {
         search: false,
         docs: false,
         viewer: '',
+        insertImage: false,
+        insertName: false,
       },
       pinned: {
         images: [],
@@ -741,6 +743,10 @@ class App extends Component {
                     label=${doc.label}
                     path=${doc.path}
                     text=${doc.text}
+                    onContextAction=${(id, editor) => { 
+                      this.editor = editor 
+                      this.showModal(id)
+                    }}
                     onPreviewImage=${(url) => this.showImageViewerModal(url)}
                     onEdit=${(path, text) => this.saveDocument(path, text)}
                     onClose=${(path) => this.closeDocument(path)}
@@ -933,6 +939,21 @@ class App extends Component {
     return html`
       <div class="tabs">${explorationTab} ${notesTab} ${combatTab} ${upkeepTab}</div>
 
+      ${this.state.modals.insertImage &&
+      html`
+        <${ImageSelectorModal}
+          images=${this.state.campaign.images
+            .map(image => ({...image, pinned: this.isPinned('images', image.path)}))
+          }
+          onSelect=${(url) => {
+            this.editor.session.insert(this.editor.getCursorPosition(), `![${url}](${url})`)
+            this.hideModal('insertImage')
+            this.editor.focus()
+          }}
+          onPin=${(image) => this.togglePin('images', image.label, image.path)}
+          onClose=${() => this.hideModal('insertImage')}
+        />
+      `}
       ${imageLocations.map(
         (location) => html`
           ${this.state.modals[location] &&

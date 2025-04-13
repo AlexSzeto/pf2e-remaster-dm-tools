@@ -49,8 +49,7 @@ export const openFloatingMenu = (clickEvent, items) => {
   document.addEventListener('click', checkAndCloseMenu)
 
   const mousePosition = getAbsoluteCursorPosition(clickEvent)
-  console.log(mousePosition)
-
+  
   activeMenu.style.position = 'absolute'
   activeMenu.style.top = `${mousePosition.y}px`
   activeMenu.style.left = `${mousePosition.x}px`
