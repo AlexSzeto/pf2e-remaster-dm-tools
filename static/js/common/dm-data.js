@@ -736,6 +736,7 @@ export const creatureRoadMaps = [
 
 export const createCreatureTemplate = () => ({
   name: '',
+  type: 'Creature',
   level: -1,
 
   // tiny, small, medium, large, huge, gargantuan, colossal

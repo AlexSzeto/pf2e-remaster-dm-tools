@@ -1,5 +1,5 @@
 import { html } from "htm/preact";
-import { openFloatingMenu } from "../common/floating-menu.js";
+import { openFloatingSelect } from "../common/floating-menu.js";
 import { getSelectedText } from "../common/util.js";
 
 const addMarkdownAndIconTo = (text) => text != null ? text
@@ -20,7 +20,7 @@ export const Card = ({data, darkMode, onSearch}) => html`
         }
         const selectedText = getSelectedText()
         if(selectedText) {
-          openFloatingMenu(clickEvent, [
+          openFloatingSelect(clickEvent, [
             {
               label: 'Search',
               action: () => onSearch(selectedText)
