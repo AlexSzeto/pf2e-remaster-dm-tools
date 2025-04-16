@@ -2,6 +2,7 @@ import { Component, render } from "preact"
 import { html } from "htm/preact"
 import { getTaggedData, getTagsList, TagList, toggleTag } from "./components/tag-list.js"
 import { FileSelectorModal } from "./modals/file-modal.js"
+import { openFloatingPrompt } from "./common/floating-menu.js"
 
 class MapEditor {
   static GRID_WIDTH = 60
@@ -10,8 +11,14 @@ class MapEditor {
     background: '#000000',
     tile: '#f0f0f0',
     gridLine: '#aaaaaa',
-    unitLine: '#000000',    
+    unitLine: '#000000',
+
+    tileCursor: 'rgba(255, 0, 0, 0.2)',
+    propCursor: 'rgba(0, 0, 255, 0.2)',
+    prop: '#ffffff',
   }
+  static PROP_ALPHA = 0.4
+  static PROP_OFFSET = 12
 
   // {
   //   background: '#000000',
@@ -25,6 +32,7 @@ class MapEditor {
     width: 40,
     height: 40,
     tiles: [],
+    props: [],
   }
 
   tilesLibrary = []
@@ -33,7 +41,13 @@ class MapEditor {
 
   #selectedTags = []
   #drawTilePath = null
+
+  #DRAW_TILE = 0
+  #DRAW_PROP = 1
+  #drawMode = this.#DRAW_TILE
+
   #selectedTiles = []
+  #selectedProps = []
 
   #canvasTransform = {
     scale: 1,
@@ -46,6 +60,7 @@ class MapEditor {
   #DRAG_TILES = 2
   #DRAG_DRAW = 3
   #DRAG_SELECT = 4
+  #DRAG_PROPS = 5
 
   #drag = {
     type: null,
@@ -57,6 +72,7 @@ class MapEditor {
   #mouse = {
     relative: { x: 0, y: 0 },
     absolute: { x: 0, y: 0 },
+    down: { x: 0, y: 0 },
   }
 
   #screen = null
@@ -116,40 +132,62 @@ class MapEditor {
 
     screenCanvas.addEventListener('mousedown', (event) => {
       const { x, y } = this.#absoluteCursorPositionOf(event)
+      this.#mouse.down = { x, y }
 
       switch (event.button) {
         case 0: // left button
-          if(
-            this.#selectedTiles
-            && this.#selectedTiles.length > 0
-            && this.#selectedTiles.some(tile => this.#tileOnCursor(tile, x, y))
-          ) {
-            this.#drag = {
-              type: this.#DRAG_TILES,
-            }
-          } else {
-            const tile = this.#getCursorTile(x, y)
-            if (tile) {
-              this.#drag = {
-                type: this.#DRAG_TILES,
+          switch (this.#drawMode) {
+            case this.#DRAW_TILE:
+              if(
+                this.#selectedTiles
+                && this.#selectedTiles.length > 0
+                && this.#selectedTiles.some(tile => this.#tileOnCursor(tile, x, y))
+              ) {
+                this.#drag = {
+                  type: this.#DRAG_TILES,
+                }
+              } else {
+                const tile = this.#getCursorTile(x, y)
+                if (tile) {
+                  this.#drag = {
+                    type: this.#DRAG_TILES,
+                  }
+                  this.#selectedTiles = [tile]
+                  this.onUpdateSelectedTiles(this.#selectedTiles)
+                } else {
+                  this.#drag = {
+                    type: this.#DRAG_SELECT,
+                    offsetX: x,
+                    offsetY: y,
+                  }
+                  this.#selectedTiles = []
+                }
               }
-              this.#selectedTiles = [tile]
-              this.onUpdateSelectedTiles(this.#selectedTiles)
-            } else {
-              this.#drag = {
-                type: this.#DRAG_SELECT,
-                offsetX: x,
-                offsetY: y,
-              }
-              this.#selectedTiles = []
-            }
-          }
 
-          if(this.#drag.type === this.#DRAG_TILES) {
-            this.#drag.offsets = this.#selectedTiles.map((tile) => ({
-              x: tile.x - x,
-              y: tile.y - y,
-            }))
+              if(this.#drag.type === this.#DRAG_TILES) {
+                this.#drag.offsets = this.#selectedTiles.map((tile) => ({
+                  x: tile.x - x,
+                  y: tile.y - y,
+                }))
+              }
+            break
+
+            case this.#DRAW_PROP:
+              const prop = this.#getCursorProp(x, y)
+              if (prop) {
+                this.#drag = {
+                  type: this.#DRAG_PROPS,
+                }
+                this.#selectedProps = [prop]
+              }
+
+              if(this.#drag.type === this.#DRAG_PROPS) {
+                this.#drag.offsets = this.#selectedProps.map((prop) => ({
+                  x: prop.x - x,
+                  y: prop.y - y,
+                }))
+              }
+            break
           }
           break
         case 1: // middle button
@@ -176,11 +214,16 @@ class MapEditor {
     
       let x, y
       switch (this.#drag.type) {
+        case this.#DRAG_PROPS:
         case this.#DRAG_TILES:
           ({ x, y } = this.#mouse.absolute)
           this.#selectedTiles.forEach((tile, index) => {
             tile.x = this.#snapGrid(x + this.#drag.offsets[index].x)
             tile.y = this.#snapGrid(y + this.#drag.offsets[index].y)
+          })
+          this.#selectedProps.forEach((prop, index) => {
+            prop.x = this.#snapGrid(x + this.#drag.offsets[index + this.#selectedTiles.length].x)
+            prop.y = this.#snapGrid(y + this.#drag.offsets[index + this.#selectedTiles.length].y)
           })
           break
         case this.#DRAG_CANVAS:
@@ -196,7 +239,7 @@ class MapEditor {
 
     })
     
-    const mouseExitEvent = () => {      
+    const mouseExitEvent = (e) => {      
       let x1, y1, x2, y2
       switch (this.#drag.type) {
         case this.#DRAG_SELECT:
@@ -205,13 +248,42 @@ class MapEditor {
           this.onUpdateSelectedTiles(this.#selectedTiles)
           this.#redrawCanvas()
           break
+        case this.#DRAG_PROPS:
+          if(
+            this.#selectedProps.length == 1
+            && this.#snapGrid(this.#mouse.absolute.x) === this.#snapGrid(this.#mouse.down.x)
+            && this.#snapGrid(this.#mouse.absolute.y) === this.#snapGrid(this.#mouse.down.y)
+          ) {
+            this.#selectedProps[0].x = this.#snapGrid(this.#mouse.down.x + this.#drag.offsets[0].x)
+            this.#selectedProps[0].y = this.#snapGrid(this.#mouse.down.y + this.#drag.offsets[0].y)
+            this.#redrawCanvas()
+            this.saveMap()      
+            openFloatingPrompt(e, this.#selectedProps[0].label, (label) => {
+              this.#selectedProps[0].label = label
+              this.#redrawCanvas()
+              this.saveMap()
+            })
+            break
+          }
+          this.#redrawCanvas()
+          this.saveMap()
+          break
         case this.#DRAG_TILES:
           this.#redrawCanvas()
           this.saveMap()
           break
         case this.#DRAG_DRAW:
-          ({ x1, y1, x2, y2 } = this.selectedRegion)
-          this.fillTiles(x1, y1, x2, y2)
+          switch (this.#drawMode) {
+            case this.#DRAW_TILE:                  
+              ({ x1, y1, x2, y2 } = this.selectedRegion)
+              this.fillTiles(x1, y1, x2, y2)
+              break
+            case this.#DRAW_PROP:
+              ({ x1, y1, x2, y2 } = this.selectedRegion)
+              this.#drag.type = this.#DRAG_NONE
+              this.addProp(x1, y1, x2, y2)
+              break
+          }
           this.saveMap()
           break
       }
@@ -225,10 +297,32 @@ class MapEditor {
       let { x, y } = this.#mouse.absolute
       const tile = this.#getCursorTile(x, y)
       switch (event.key) {
+        case 'a':
+          if(this.#drawMode === this.#DRAW_TILE) {
+            this.#drawTilePath = null
+            this.#selectedTiles = []
+            this.#drawMode = this.#DRAW_PROP
+            this.onUpdateSelectedTiles(this.#selectedTiles)
+          } else {
+            this.#drawMode = this.#DRAW_TILE            
+          }
+          this.#redrawCanvas()
+          break
         case 'd':
-          this.deleteSelectedTiles()
-          this.onUpdateSelectedTiles(this.#selectedTiles)
-          this.saveMap()
+          switch (this.#drawMode) {
+            case this.#DRAW_PROP:
+              const prop = this.#getCursorProp(x, y)
+              if (prop) {
+                this.#selectedProps = [prop]
+                this.deleteSelectedProps()
+                this.saveMap()
+              }
+              break
+            case this.#DRAW_TILE:
+              this.deleteSelectedTiles()
+              this.onUpdateSelectedTiles(this.#selectedTiles)
+              this.saveMap()
+          }
           break
         case 'r':
           if (tile) {
@@ -281,6 +375,11 @@ class MapEditor {
     if(name) { 
       filename = `${name.toLowerCase().replace(/\s+/g, '-')}.json`
     }
+
+    if(!filename) {
+      return
+    }
+
     const mapFileData = JSON.stringify(this.mapData)
     const mapDataBlob = new Blob([mapFileData], { type: 'application/json' })
 
@@ -317,6 +416,7 @@ class MapEditor {
     exportContext.scale(exportScale, exportScale)
     this.#drawGrid(exportContext)
     this.#drawTiles(exportContext)
+    this.#drawProps(exportContext)
 
     // create a blob to prepare for upload
     exportCanvas.toBlob((blob) => {
@@ -452,7 +552,7 @@ class MapEditor {
 
       if(this.#selectedTiles.includes(tile)) {
         buffer.save()
-        buffer.fillStyle = 'rgba(255, 0, 0, 0.2)'
+        buffer.fillStyle = MapEditor.COLORS.tileCursor
         switch (tile.rotation) {
           case 90:
           case 270:
@@ -464,6 +564,30 @@ class MapEditor {
         }
         buffer.restore()
       }
+    })
+  }
+
+  #drawProps(buffer) {
+    this.mapData.props.forEach((prop) => {
+      buffer.save()
+      buffer.globalAlpha = MapEditor.PROP_ALPHA
+      buffer.fillStyle = MapEditor.COLORS.prop
+      buffer.fillRect(
+        prop.x + MapEditor.PROP_OFFSET,
+        prop.y + MapEditor.PROP_OFFSET,
+        prop.width - MapEditor.PROP_OFFSET * 2,
+        prop.height - MapEditor.PROP_OFFSET * 2
+      )
+      buffer.globalAlpha = 1.0
+      buffer.font = "bold 30px Arial"
+      buffer.fillStyle = '#000000'
+      buffer.strokeStyle = '#ffffff'
+      buffer.lineWidth = 4
+      buffer.textAlign = 'center'
+      buffer.textBaseline = 'middle'
+      buffer.strokeText(prop.label, prop.x + prop.width / 2, prop.y + prop.height / 2)
+      buffer.fillText(prop.label, prop.x + prop.width / 2, prop.y + prop.height / 2)
+      buffer.restore()
     })
   }
 
@@ -495,7 +619,14 @@ class MapEditor {
 
   #drawCursor() {
     this.#buffer.save()
-    this.#buffer.fillStyle = 'rgba(255, 0, 0, 0.5)'
+    switch(this.#drawMode) {
+      case this.#DRAW_TILE:
+        this.#buffer.fillStyle = MapEditor.COLORS.tileCursor
+        break
+      case this.#DRAW_PROP:
+        this.#buffer.fillStyle = MapEditor.COLORS.propCursor
+        break
+    }
 
     const { x1, y1, x2, y2 } = this.selectedRegion
     this.#buffer.fillRect(x1, y1, x2 - x1, y2 - y1)
@@ -509,6 +640,7 @@ class MapEditor {
     this.#buffer.translate(this.#canvasTransform.offsetX, this.#canvasTransform.offsetY)
     this.#drawGrid(this.#buffer)
     this.#drawTiles(this.#buffer)
+    this.#drawProps(this.#buffer)
     this.#drawCursor()
     this.#buffer.restore()
 
@@ -577,10 +709,34 @@ class MapEditor {
     this.#redrawCanvas()
   }
 
+  addProp(x1, y1, x2, y2) {
+    const newProp = {
+      x: x1,
+      y: y1,
+      width: x2 - x1,
+      height: y2 - y1,
+      label: ''
+    }
+    this.mapData.props.push(newProp)
+  }
+
   deleteSelectedTiles() {
     this.mapData.tiles = this.mapData.tiles.filter((tile) => !this.#selectedTiles.includes(tile))
     this.#selectedTiles = []
     this.#redrawCanvas()
+  }
+
+  deleteSelectedProps() {
+    this.mapData.props = this.mapData.props.filter((prop) => !this.#selectedProps.includes(prop))
+    this.#selectedProps = []
+    this.#redrawCanvas()
+  }
+
+  #objectInRegion(x1, y1, x2, y2, x3, y3, x4, y4) {
+    return (
+      ((x1 >= x3 && x1 <= x4) || (x2 >= x3 && x2 <= x4) || (x3 >= x1 && x3 <= x2) || (x4 >= x1 && x4 <= x2))
+      && ((y1 >= y3 && y1 <= y4) || (y2 >= y3 && y2 <= y4) || (y3 >= y1 && y3 <= y2) || (y4 >= y1 && y4 <= y2))
+    )        
   }
 
   #tileInRegion(tile, x1, y1, x2, y2) {
@@ -602,11 +758,20 @@ class MapEditor {
         y4 = tile.y + img.width
         break
     }
+    return this.#objectInRegion(x1, y1, x2, y2, x3, y3, x4, y4)
+  }
 
-    return (
-      ((x1 >= x3 && x1 <= x4) || (x2 >= x3 && x2 <= x4) || (x3 >= x1 && x3 <= x2) || (x4 >= x1 && x4 <= x2))
-      && ((y1 >= y3 && y1 <= y4) || (y2 >= y3 && y2 <= y4) || (y3 >= y1 && y3 <= y2) || (y4 >= y1 && y4 <= y2))
-    )        
+  #propInRegion(prop, x1, y1, x2, y2) {
+    x1+=12
+    x2-=12
+    y1+=12
+    y2-=12
+
+    const x3 = prop.x
+    const y3 = prop.y
+    const x4 = prop.x + prop.width
+    const y4 = prop.y + prop.height
+    return this.#objectInRegion(x1, y1, x2, y2, x3, y3, x4, y4)
   }
 
   #tileOnCursor(tile, x, y) {
@@ -616,6 +781,14 @@ class MapEditor {
   #getCursorTile(x, y) {
     return this.mapData.tiles.find((tile) => this.#tileOnCursor(tile, x, y))
   }  
+
+  #tileOnProp(prop, x, y) {
+    return this.#propInRegion(prop, x, y)
+  }
+
+  #getCursorProp(x, y) {
+    return this.mapData.props.find((prop) => this.#tileOnProp(prop, x, y))
+  }
 }
 
 class App extends Component {
@@ -764,7 +937,7 @@ class App extends Component {
 }
 
 render(html`
-  <div class="editor-container">
+<div class="editor-container flat-page">
   <div class="canvas-container">
     <canvas id="canvas" width="1200" height="600" tabindex="0"></canvas>
   </div>

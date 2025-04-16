@@ -7,7 +7,7 @@ export class Icon extends Component {
     return html`<box-icon 
     name=${this.props.icon}
     type=${this.props.type ?? "regular"} 
-    color=${this.props.color ?? "white"}
+    color="${this.props.color ?? "inherit"}"
     size=${this.props.size ?? "md"}
     />`
   }
