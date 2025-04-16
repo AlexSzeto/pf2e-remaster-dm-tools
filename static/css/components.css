@@ -542,6 +542,7 @@
 
       button.square {
         font-size: 0.75em;
+        padding: 0.25em;
       }
 
       &.used {

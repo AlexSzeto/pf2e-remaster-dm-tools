@@ -50,7 +50,7 @@ def render_page(page_name):
     try:
         if page_name == "":
             page_name = "index"
-        return render_template(f"layout.html", title=titleOf[page_name], id=page_name)
+        return render_template(f"layout.html", title=titleOf.get(page_name, 'WIP'), id=page_name)
     except Exception as e:
         return f"Error loading page {page_name}: {e}", 404
 

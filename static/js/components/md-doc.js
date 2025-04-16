@@ -2,8 +2,8 @@ import { Component, render } from 'preact'
 import { html } from 'htm/preact'
 import { ContentSection } from './content-section.js'
 import { debounce, getCookie } from '../common/util.js'
-import { Icon } from './Icon.js'
-import { openFloatingMenu } from '../common/floating-menu.js'
+import { Icon } from './icon.js'
+import { openFloatingSelect } from '../common/floating-menu.js'
 
 export class MarkdownDocument extends Component {
   editor = null
@@ -148,7 +148,7 @@ export class MarkdownDocument extends Component {
                 return
               }
               e.preventDefault()
-              openFloatingMenu(e, [
+              openFloatingSelect(e, [
                 {
                   label: 'Insert Image',
                   action: () => this.props.onContextAction('insertImage', this.editor),

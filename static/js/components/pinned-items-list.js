@@ -1,5 +1,5 @@
 import { html } from "htm/preact"
-import { Icon } from "./Icon.js"
+import { Icon } from "./icon.js"
 
 export const PinButton = ({outlined, isPinned, onClick}) => html`
   <button class="${outlined ? 'outlined' : ''} square" onClick=${() => {

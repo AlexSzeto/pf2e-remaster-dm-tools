@@ -9,25 +9,10 @@ render(
     <div class="flat-page">
       <${CampaignManager} />
       <${PlayersManager} />
-      <h1>In Game</h1>
+      <h1>Other Pages</h1>
       <div class="subsection vertical-list">
         <div>
-          <a href="creature-creator">Creature Creator</a>
-        </div>
-        <div>
-          <a href="map-editor">Map Editor</a>
-        </div>
-        <div>
-          <a href="insert-media">Insert Media</a>
-        </div>
-        <div>
-          <a href="name-generator">Name Generator</a>
-        </div>
-        <div>
-          <a href="dm-screen">DM Screen</a>
-        </div>
-        <div>
-          <a href="pc-screen">PC Screen</a>
+          <a href="card-printer">Card Printer</a>
         </div>
       </div>
     </div>

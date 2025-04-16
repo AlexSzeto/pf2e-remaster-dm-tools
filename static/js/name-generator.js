@@ -1,6 +1,6 @@
 import { render, Component } from 'preact'
 import { html } from 'htm/preact'
-import { Icon } from './components/Icon.js'
+import { Icon } from './components/icon.js'
 
 const getNameGenerationPrompt = criteria => 
 `Generate a list of 10 random names fulfilling the criteria "${criteria}" and output it as a JSON array.

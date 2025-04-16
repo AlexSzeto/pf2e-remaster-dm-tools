@@ -2,7 +2,7 @@ import { Component } from 'preact'
 import { html } from 'htm/preact'
 
 import { setCookie } from '../common/util.js'
-import { Icon } from './Icon.js'
+import { Icon } from './icon.js'
 
 export class InitiativeListItem {
   constructor(
@@ -188,23 +188,23 @@ export class InitiativeTracker extends Component {
           <button
             class="square"
             onClick=${() => this.removeListItem(index)}
-          ><div>\u2716</div></button>
+          ><${Icon} icon="x" /></button>
           <button
             class="square"
             disabled=${index === 0}
             onClick=${() => this.moveListItemUp(index)}
-          ><div>\u25B2</div></button>
+          ><${Icon} icon="chevron-up" /></button>
           <button
             class="square"
             disabled=${index === this.state.list.length - 1}
             onClick=${() => this.moveListItemDown(index)}
-          ><div>\u25BC</div></button>
+          ><${Icon} icon="chevron-down" /></button>
           <button class="square"
             onClick=${() => this.setActive(index)}
-          ><div>\u279C</div></button>
+          ><${Icon} icon="transfer-alt" /></button>
           <div class="active-item">
             ${
-              this.state.active === index ? html`<div class="icon">➜</div>` : ''
+              this.state.active === index ? html`<div class="icon"><${Icon} icon="right-arrow-alt" /></div>` : ''
             }
           </div>
           <input
@@ -227,7 +227,7 @@ export class InitiativeTracker extends Component {
           ></input>
           <button class="square"
             onClick=${() => this.dealDamage(index)}>
-            <${Icon} icon="zap" />
+            <${Icon} icon="bolt" type="solid"/>
           </button>
           <input
             name="initiative"
@@ -248,7 +248,7 @@ export class InitiativeTracker extends Component {
                   class="square small"
                   onClick=${() => this.removeConsumable(index, i)}
                 >
-                  <div>✖</div>
+                  <${Icon} icon="x" />
                 </button>
                 <div>${consumable}</div>
                 <div class="consumable-spacer"></div>
@@ -287,7 +287,7 @@ export const InitiativeDisplay = ({ data }) => {
       ${displayList().map(
         (item, index) => html`
           <div class="active-item">
-            ${item.active ? html`<div class="icon">➜</div>` : html`<div></div>`}
+            ${item.active ? html`<div class="icon"><${Icon} icon="right-arrow-alt" size="lg"/></div>` : html`<div></div>`}
           </div>
           <div
             class=${item.active ? item.nameClass + ' active' : item.nameClass}

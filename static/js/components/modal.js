@@ -1,5 +1,5 @@
 import { html } from "htm/preact";
-import { Icon } from "./Icon.js";
+import { Icon } from "./icon.js";
 
 export const Modal = ({onClose, minimal, children}) => html`
   <div class="screen-overlay">

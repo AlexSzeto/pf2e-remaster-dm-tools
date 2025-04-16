@@ -17,7 +17,12 @@ h3 {
 
 #ui {
   padding: 2em;
-  max-width: calc(100vw - 1200px);
+  width: calc(100vw - 1400px);
+  max-width: calc(100vw - 1400px);
+  min-height: 600px;
+  max-height: calc(100vh - 400px);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .map-info, .tag-list, .tile-list {

@@ -1,6 +1,6 @@
 import { render, Component } from 'preact'
 import { html } from 'htm/preact'
-import { Icon } from './components/Icon.js'
+import { Icon } from './components/icon.js'
 
 class InsertMediaForm extends Component {
   constructor() {
