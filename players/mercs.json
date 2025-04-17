@@ -83,13 +83,13 @@
         "sp": 0
       },
       {
-        "level": 2,
-        "gp": 35,
-        "sp": 0,
         "cp": 0,
+        "date": "2025-03-23",
+        "gp": 35,
         "items": [],
+        "level": 2,
         "notes": "Reward from Burt for saving the Hive",
-        "date": "2025-03-23"
+        "sp": 0
       }
     ],
     "name": "Mercs",
@@ -98,56 +98,59 @@
   "pinned": {
     "ambience": [
       {
-        "id": "bazaar-ambience.mp3",
-        "label": "Bazaar Ambience"
-      },
-      {
-        "id": "archives-ambience.mp3",
-        "label": "Archives Ambience"
-      },
-      {
-        "id": "tavern-ambience.mp3",
-        "label": "Tavern Ambience"
-      },
-      {
         "id": "ruins-ambience.mp3",
         "label": "Ruins Ambience"
       },
       {
-        "id": "ambience-great-fire.mp3",
-        "label": "Great Fire"
-      },
-      {
-        "id": "ambience-night-fireworks.mp3",
-        "label": "Night Fireworks"
+        "id": "catacombs-ambience.mp3",
+        "label": "Catacombs Ambience"
       }
     ],
-    "bgm": [
-      {
-        "id": "ode-to-stormhaven-bgm.mp3",
-        "label": "Ode To Stormhaven"
-      },
-      {
-        "id": "bgm-your-chance-to-escape.mp3",
-        "label": "Your Chance To Escape"
-      },
-      {
-        "id": "bgm-seedy-harbor-nights.mp3",
-        "label": "Seedy Harbor Nights"
-      }
-    ],
+    "bgm": [],
     "cards": [
-      {
-        "id": "Stormhaven Guard",
-        "label": "Stormhaven Guard"
-      },
-      {
-        "id": "Burning Hand Cultist",
-        "label": "Burning Hand Cultist"
-      },
       {
         "id": "Skeleton Guard",
         "label": "Skeleton Guard"
+      },
+      {
+        "id": "Hyena",
+        "label": "Hyena"
+      },
+      {
+        "id": "Orc Guardian",
+        "label": "Orc Guardian"
+      },
+      {
+        "id": "Orc Spearman",
+        "label": "Orc Spearman"
+      },
+      {
+        "id": "Cultist Initiate",
+        "label": "Cultist Initiate"
+      },
+      {
+        "id": "Necromancer Apprentice",
+        "label": "Necromancer Apprentice"
+      },
+      {
+        "id": "Jugka",
+        "label": "Jugka"
+      },
+      {
+        "id": "Digrot",
+        "label": "Digrot"
+      },
+      {
+        "id": "Trixie",
+        "label": "Trixie"
+      },
+      {
+        "label": "Xugan (Quartermaster)",
+        "id": "Xugan (Quartermaster)"
+      },
+      {
+        "label": "Void Worms Swarm",
+        "id": "Void Worms Swarm"
       }
     ],
     "docs": [
@@ -160,15 +163,11 @@
         "label": "Campaign Events"
       },
       {
-        "id": "stormhaven.md",
-        "label": "Location - Stormhaven"
+        "id": "docs-burning-hand-cult-notes.md",
+        "label": "Burning Hand Cult Notes"
       }
     ],
     "images": [
-      {
-        "id": "map-stormhaven.jpg",
-        "label": "Map Stormhaven"
-      },
       {
         "id": "map-uruzad.jpg",
         "label": "Map Uruzad"
@@ -178,20 +177,8 @@
         "label": "Location Stormhaven"
       },
       {
-        "id": "location-bazaar.jpg",
-        "label": "Location Bazarr"
-      },
-      {
-        "id": "location-archives.jpg",
-        "label": "Location Archives"
-      },
-      {
         "id": "location-ruins-clearing.jpg",
         "label": "Location Ruins Clearing"
-      },
-      {
-        "id": "location-ruins-catacomb-entrance.jpg",
-        "label": "Location Ruins Catacomb Entrance"
       },
       {
         "id": "location-ruins-keep.jpg",
@@ -232,22 +219,6 @@
       {
         "id": "item-preserver-ceremonial-axe.jpeg",
         "label": "Preserver Ceremonial Axe"
-      },
-      {
-        "id": "map-fire-stage-1.jpg",
-        "label": "Fire Stage 1"
-      },
-      {
-        "id": "map-fire-stage-2.jpg",
-        "label": "Fire Stage 2"
-      },
-      {
-        "id": "location-finale-fireworks.jpeg",
-        "label": "Finale Fireworks"
-      },
-      {
-        "id": "location-night-of-flames.jpeg",
-        "label": "Night Of Flames"
       }
     ],
     "rules": []

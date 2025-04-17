@@ -218,6 +218,7 @@ select, .disabled-text {
       width: 1.5em;
       height: 1.5em;
       color: white;
+      fill: white;
       background-color: #472C2C;
       border-radius: 50%;
 
