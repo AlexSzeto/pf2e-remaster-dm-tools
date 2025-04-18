@@ -39,7 +39,6 @@ export function createAudioSource(path, fadeInDuration, fadeToGain = 1.0) {
       gainNode.disconnect()
       bufferSource = null
       gainNode = null
-      audioContext.close() // Close the audio context if no longer needed
     }, (currentTime + duration) * 1000) // Convert seconds to milliseconds
   }
 

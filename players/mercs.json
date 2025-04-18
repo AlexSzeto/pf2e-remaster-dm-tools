@@ -106,7 +106,28 @@
         "label": "Catacombs Ambience"
       }
     ],
-    "bgm": [],
+    "bgm": [
+      {
+        "id": "bgm-engarde-or-die.mp3",
+        "label": "Engarde Or Die"
+      },
+      {
+        "id": "bgm-sinister-pressure.mp3",
+        "label": "Sinister Pressure"
+      },
+      {
+        "label": "Sound Tactics Prevail",
+        "id": "bgm-sound-tactics-prevail.mp3"
+      },
+      {
+        "label": "Poisonous Death March",
+        "id": "slow-death-march-bgm.mp3"
+      },
+      {
+        "label": "Verzog Catacombs",
+        "id": "verzog-catacombs-bgm.mp3"
+      }
+    ],
     "cards": [
       {
         "id": "Skeleton Guard",
@@ -145,12 +166,12 @@
         "label": "Trixie"
       },
       {
-        "label": "Xugan (Quartermaster)",
-        "id": "Xugan (Quartermaster)"
+        "id": "Xugan (Quartermaster)",
+        "label": "Xugan (Quartermaster)"
       },
       {
-        "label": "Void Worms Swarm",
-        "id": "Void Worms Swarm"
+        "id": "Void Worms Swarm",
+        "label": "Void Worms Swarm"
       }
     ],
     "docs": [
