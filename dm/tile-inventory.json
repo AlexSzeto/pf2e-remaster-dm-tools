@@ -127,6 +127,10 @@
     {
       "path": "AS-TRP-Secret-Door-Wall.png",
       "count": 2
-    }
+    },
+    {
+      "path": "S-Full-Schist-Wood-Stair.png",
+      "count": 2
+    }    
   ]
 }

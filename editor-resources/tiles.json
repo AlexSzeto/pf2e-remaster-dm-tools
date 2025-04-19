@@ -256,6 +256,14 @@
       "label": "Secret Door",
       "width": 4,
       "height": 1
-    }    
+    },
+    {
+      "path": "S-Full-Schist-Wood-Stair.png",
+      "name": "S-Full-Schist-Wood-Stair",
+      "tags": ["heavy stone", "floor", "stairs", "rectangle"],
+      "label": "Stairs",
+      "width": 4,
+      "height": 2
+    }
   ]
 }
