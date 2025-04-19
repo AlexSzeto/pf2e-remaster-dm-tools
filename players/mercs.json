@@ -234,8 +234,12 @@
         "label": "Keroc Alchemy Lab"
       },
       {
-        "label": "Keroc Summoning Chamber",
-        "id": "location-keroc-summoning-chamber.jpeg"
+        "id": "location-keroc-summoning-chamber.jpeg",
+        "label": "Keroc Summoning Chamber"
+      },
+      {
+        "label": "Keroc Burial Chamber",
+        "id": "location-keroc-burial-chamber.jpeg"
       }
     ],
     "rules": []
