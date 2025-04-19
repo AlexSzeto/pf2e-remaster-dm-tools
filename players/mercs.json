@@ -116,16 +116,16 @@
         "label": "Sinister Pressure"
       },
       {
-        "label": "Sound Tactics Prevail",
-        "id": "bgm-sound-tactics-prevail.mp3"
+        "id": "bgm-sound-tactics-prevail.mp3",
+        "label": "Sound Tactics Prevail"
       },
       {
-        "label": "Poisonous Death March",
-        "id": "slow-death-march-bgm.mp3"
+        "id": "slow-death-march-bgm.mp3",
+        "label": "Poisonous Death March"
       },
       {
-        "label": "Verzog Catacombs",
-        "id": "verzog-catacombs-bgm.mp3"
+        "id": "verzog-catacombs-bgm.mp3",
+        "label": "Verzog Catacombs"
       }
     ],
     "cards": [
@@ -154,8 +154,8 @@
         "label": "Necromancer Apprentice"
       },
       {
-        "id": "Jugka",
-        "label": "Jugka"
+        "id": "Junka",
+        "label": "Junka"
       },
       {
         "id": "Digrot",
@@ -190,56 +190,52 @@
     ],
     "images": [
       {
-        "id": "map-uruzad.jpg",
-        "label": "Map Uruzad"
+        "id": "portrait-junka.jpeg",
+        "label": "Junka"
       },
       {
-        "id": "location-stormhaven.jpg",
-        "label": "Location Stormhaven"
+        "id": "portrait-xugan.jpeg",
+        "label": "Xugan"
       },
       {
-        "id": "location-ruins-clearing.jpg",
-        "label": "Location Ruins Clearing"
+        "id": "portrait-trixie.jpeg",
+        "label": "Trixie"
       },
       {
         "id": "location-ruins-keep.jpg",
         "label": "Location Ruins Keep"
       },
       {
-        "id": "portrait-borja.jpg",
-        "label": "Portrait Borja"
+        "id": "location-keroc-upper-ruins.jpeg",
+        "label": "Keroc Upper Ruins"
       },
       {
-        "id": "portrait-burt.jpg",
-        "label": "Portrait Burt"
+        "id": "location-keroc-temple-grounds.jpg",
+        "label": "Keroc Temple Grounds"
       },
       {
-        "id": "portrait-edwin.jpg",
-        "label": "Portrait Edwin"
+        "id": "location-keroc-armory.jpeg",
+        "label": "Keroc Armory"
       },
       {
-        "id": "portrait-fadon.jpg",
-        "label": "Portrait Fadon"
+        "id": "location-keroc-morgue.jpeg",
+        "label": "Keroc Morgue"
       },
       {
-        "id": "portrait-zara-xyndrash.jpg",
-        "label": "Zara Xyndrash"
+        "id": "location-keroc-excavation.jpeg",
+        "label": "Keroc Excavation"
       },
       {
-        "id": "portrait-zekie.png",
-        "label": "Zekie"
+        "id": "location-keroc-brewery.jpeg",
+        "label": "Keroc Brewery"
       },
       {
-        "id": "portrait-reginald-thorne.jpeg",
-        "label": "Reginald Thorne"
+        "id": "location-keroc-alchemy-lab.jpeg",
+        "label": "Keroc Alchemy Lab"
       },
       {
-        "id": "portrait-bulo.jpg",
-        "label": "Portrait Bulo"
-      },
-      {
-        "id": "item-preserver-ceremonial-axe.jpeg",
-        "label": "Preserver Ceremonial Axe"
+        "label": "Keroc Summoning Chamber",
+        "id": "location-keroc-summoning-chamber.jpeg"
       }
     ],
     "rules": []
