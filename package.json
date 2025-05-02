@@ -2,9 +2,10 @@
   "name": "pf2e-remaster-dm-tools",
   "version": "1.0.0",
   "description": "A PF2E Remastered DM Tool with a web based UI.",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dm-tools.mjs",
+    "dev": "node --watch dm-tools.mjs"
   },
   "repository": {
     "type": "git",
