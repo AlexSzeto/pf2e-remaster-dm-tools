@@ -90,10 +90,19 @@
         "level": 2,
         "notes": "Reward from Burt for saving the Hive",
         "sp": 0
+      },
+      {
+        "cp": 0,
+        "date": "2025-05-10",
+        "gp": 30,
+        "items": [],
+        "level": 2,
+        "notes": "",
+        "sp": 0
       }
     ],
     "name": "Mercs",
-    "partyLevel": 2
+    "partyLevel": 3
   },
   "pinned": {
     "ambience": [
@@ -238,8 +247,8 @@
         "label": "Keroc Summoning Chamber"
       },
       {
-        "label": "Keroc Burial Chamber",
-        "id": "location-keroc-burial-chamber.jpeg"
+        "id": "location-keroc-burial-chamber.jpeg",
+        "label": "Keroc Burial Chamber"
       }
     ],
     "rules": []
