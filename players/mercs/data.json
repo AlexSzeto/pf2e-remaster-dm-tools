@@ -1,247 +1,97 @@
 {
-  "players": {
-    "characters": [
-      {
-        "class": "Cleric",
-        "hp": 30,
-        "name": "Grom",
-        "perception": 6
-      },
-      {
-        "class": "Druid",
-        "hp": 26,
-        "name": "Typha",
-        "perception": 6
-      },
-      {
-        "class": "Bard",
-        "hp": 24,
-        "name": "Lemmy",
-        "perception": 7
-      },
-      {
-        "class": "Rogue",
-        "hp": 26,
-        "name": "Fayla",
-        "perception": 7
-      }
-    ],
-    "id": "mercs",
-    "ledger": [
-      {
-        "cp": 0,
-        "date": "2023-01-18",
-        "gp": 23,
-        "items": [],
-        "level": 2,
-        "notes": "bracelet stolen from a noble",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2023-01-18",
-        "gp": 0,
-        "items": [
-          {
-            "level": 1,
-            "name": "Darkstone Amulet",
-            "type": "permanent"
-          }
-        ],
-        "level": 2,
-        "notes": "",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2025-02-15",
-        "gp": 16,
-        "items": [
-          {
-            "level": 1,
-            "name": "Lesser Alchemist's Fire",
-            "type": "consumable"
-          }
-        ],
-        "level": 2,
-        "notes": "Reaven's personal items",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2025-02-15",
-        "gp": 0,
-        "items": [
-          {
-            "level": 1,
-            "name": "Highmountain Ceremonial Battle Axe",
-            "type": "permanent"
-          }
-        ],
-        "level": 2,
-        "notes": "Additional loot for Reaven",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2025-03-23",
-        "gp": 35,
-        "items": [],
-        "level": 2,
-        "notes": "Reward from Burt for saving the Hive",
-        "sp": 0
-      }
-    ],
-    "name": "Mercs",
-    "partyLevel": 2
-  },
-  "pinned": {
-    "ambience": [
-      {
-        "id": "ruins-ambience.mp3",
-        "label": "Ruins Ambience"
-      },
-      {
-        "id": "catacombs-ambience.mp3",
-        "label": "Catacombs Ambience"
-      }
-    ],
-    "bgm": [
-      {
-        "id": "bgm-engarde-or-die.mp3",
-        "label": "Engarde Or Die"
-      },
-      {
-        "id": "bgm-sinister-pressure.mp3",
-        "label": "Sinister Pressure"
-      },
-      {
-        "id": "bgm-sound-tactics-prevail.mp3",
-        "label": "Sound Tactics Prevail"
-      },
-      {
-        "id": "slow-death-march-bgm.mp3",
-        "label": "Poisonous Death March"
-      },
-      {
-        "id": "verzog-catacombs-bgm.mp3",
-        "label": "Verzog Catacombs"
-      }
-    ],
-    "cards": [
-      {
-        "id": "Skeleton Guard",
-        "label": "Skeleton Guard"
-      },
-      {
-        "id": "Hyena",
-        "label": "Hyena"
-      },
-      {
-        "id": "Orc Guardian",
-        "label": "Orc Guardian"
-      },
-      {
-        "id": "Orc Spearman",
-        "label": "Orc Spearman"
-      },
-      {
-        "id": "Cultist Initiate",
-        "label": "Cultist Initiate"
-      },
-      {
-        "id": "Necromancer Apprentice",
-        "label": "Necromancer Apprentice"
-      },
-      {
-        "id": "Junka",
-        "label": "Junka"
-      },
-      {
-        "id": "Digrot",
-        "label": "Digrot"
-      },
-      {
-        "id": "Trixie",
-        "label": "Trixie"
-      },
-      {
-        "id": "Xugan (Quartermaster)",
-        "label": "Xugan (Quartermaster)"
-      },
-      {
-        "id": "Void Worms Swarm",
-        "label": "Void Worms Swarm"
-      }
-    ],
-    "docs": [
-      {
-        "id": "characters.md",
-        "label": "Characters"
-      },
-      {
-        "id": "events.md",
-        "label": "Campaign Events"
-      },
-      {
-        "id": "docs-burning-hand-cult-notes.md",
-        "label": "Burning Hand Cult Notes"
-      }
-    ],
-    "images": [
-      {
-        "id": "portrait-junka.jpeg",
-        "label": "Junka"
-      },
-      {
-        "id": "portrait-xugan.jpeg",
-        "label": "Xugan"
-      },
-      {
-        "id": "portrait-trixie.jpeg",
-        "label": "Trixie"
-      },
-      {
-        "id": "location-ruins-keep.jpg",
-        "label": "Location Ruins Keep"
-      },
-      {
-        "id": "location-keroc-upper-ruins.jpeg",
-        "label": "Keroc Upper Ruins"
-      },
-      {
-        "id": "location-keroc-temple-grounds.jpg",
-        "label": "Keroc Temple Grounds"
-      },
-      {
-        "id": "location-keroc-armory.jpeg",
-        "label": "Keroc Armory"
-      },
-      {
-        "id": "location-keroc-morgue.jpeg",
-        "label": "Keroc Morgue"
-      },
-      {
-        "id": "location-keroc-excavation.jpeg",
-        "label": "Keroc Excavation"
-      },
-      {
-        "id": "location-keroc-brewery.jpeg",
-        "label": "Keroc Brewery"
-      },
-      {
-        "id": "location-keroc-alchemy-lab.jpeg",
-        "label": "Keroc Alchemy Lab"
-      },
-      {
-        "id": "location-keroc-summoning-chamber.jpeg",
-        "label": "Keroc Summoning Chamber"
-      },
-      {
-        "label": "Keroc Burial Chamber",
-        "id": "location-keroc-burial-chamber.jpeg"
-      }
-    ],
-    "rules": []
-  }
+  "characters": [
+    {
+      "class": "Cleric",
+      "hp": 30,
+      "name": "Grom",
+      "perception": 6
+    },
+    {
+      "class": "Druid",
+      "hp": 26,
+      "name": "Typha",
+      "perception": 6
+    },
+    {
+      "class": "Bard",
+      "hp": 24,
+      "name": "Lemmy",
+      "perception": 7
+    },
+    {
+      "class": "Rogue",
+      "hp": 26,
+      "name": "Fayla",
+      "perception": 7
+    }
+  ],
+  "id": "mercs",
+  "ledger": [
+    {
+      "cp": 0,
+      "date": "2023-01-18",
+      "gp": 23,
+      "items": [],
+      "level": 2,
+      "notes": "bracelet stolen from a noble",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2023-01-18",
+      "gp": 0,
+      "items": [
+        {
+          "level": 1,
+          "name": "Darkstone Amulet",
+          "type": "permanent"
+        }
+      ],
+      "level": 2,
+      "notes": "",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2025-02-15",
+      "gp": 16,
+      "items": [
+        {
+          "level": 1,
+          "name": "Lesser Alchemist's Fire",
+          "type": "consumable"
+        }
+      ],
+      "level": 2,
+      "notes": "Reaven's personal items",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2025-02-15",
+      "gp": 0,
+      "items": [
+        {
+          "level": 1,
+          "name": "Highmountain Ceremonial Battle Axe",
+          "type": "permanent"
+        }
+      ],
+      "level": 2,
+      "notes": "Additional loot for Reaven",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2025-03-23",
+      "gp": 35,
+      "items": [],
+      "level": 2,
+      "notes": "Reward from Burt for saving the Hive",
+      "sp": 0
+    }
+  ],
+  "name": "Mercs",
+  "description": "",
+  "partyLevel": 3
 }

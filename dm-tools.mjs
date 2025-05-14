@@ -3,8 +3,8 @@ import fileUpload from 'express-fileupload'
 import path from 'path'
 
 import { fileURLToPath } from 'url'
-import { loadJSON } from './core/util.mjs'
-import { addMediaEndpoints } from './core/media-crud.mjs'
+import { loadJSON } from './src/express/util.mjs'
+import { addMediaEndpoints } from './src/express/media-crud.mjs'
 
 /*
   Express setup
@@ -16,12 +16,12 @@ app.use(fileUpload())
   Settings
 */
 const port = 5000
-const settingsPath = 'settings.json'
+const configPath = 'config.json'
 
 const dataFilePath = (source, path) => path.join(__root, path.root, path.current, `${source}.json`)
 
 // Get the directory name of the current module
-let settings = { root: path.dirname(fileURLToPath(import.meta.url)) }
+let config = { root: path.dirname(fileURLToPath(import.meta.url)) }
 
 /*
 // Serve the index.html file
@@ -38,17 +38,17 @@ app.get('/hello', (req, res) => {
 
 
 // Start the server
-loadJSON(path.join(settings.root, settingsPath))
+loadJSON(path.join(config.root, configPath))
   .then((data) => {
-    settings = 
+    config = 
     {
-      ...settings,
+      ...config,
       ...data
     }
 
-    console.log('settings loaded:', settings)
+    console.log('settings loaded:', config)
 
-    addMediaEndpoints(app, settings)
+    addMediaEndpoints(app, config)
 
     app.listen(port, () => {
       console.log(`server is running at http://localhost:${port}`)

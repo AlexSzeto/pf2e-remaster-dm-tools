@@ -1,4 +1,7 @@
 {
+  "id": "alex",
+  "name": "Alex",
+  "description": "",
   "tiles": [
     {
       "path": "A-TRP-Heavy-Arch.png",
@@ -265,5 +268,288 @@
       "width": 4,
       "height": 2
     }
-  ]
+  ],
+  "tilesCount": [
+    {
+      "path": "A-TRP-Heavy-Arch.png",
+      "count": 8
+    },
+    {
+      "path": "A-TRP-HeavyWall.png",
+      "count": 50
+    },
+    {
+      "path": "BA-TRP-HeavyWall.png",
+      "count": 15
+    },
+    {
+      "path": "Col-L-TRP-Heavy.png",
+      "count": 31
+    },
+    {
+      "path": "E-B-TRP-RuinedRoughStoneFloor (1).png",
+      "count": 1
+    },
+    {
+      "path": "E-B-TRP-RuinedRoughStoneFloor (2).png",
+      "count": 2
+    },
+    {
+      "path": "E-B-TRP-RuinedRoughStoneFloor (3).png",
+      "count": 1
+    },
+    {
+      "path": "E-C-TRP-RuinRoughStoneFloor.png",
+      "count": 8
+    },
+    {
+      "path": "E-TRP-Mine-Floor.png",
+      "count": 4
+    },
+    {
+      "path": "E-TRP-RoughStone-Mine-Transition-Floor.png",
+      "count": 8
+    },
+    {
+      "path": "E-TRP-RoughStoneFloor.png",
+      "count": 31
+    },
+    {
+      "path": "EC-TRP-RoughStoneFloor.png",
+      "count": 8
+    },
+    {
+      "path": "ED-TRP-RoughStoneFloor.png",
+      "count": 8
+    },
+    {
+      "path": "EN-TRP-RoughStoneFloor.png",
+      "count": 4
+    },
+    {
+      "path": "F-TRP-RoughStoneFloor.png",
+      "count": 4
+    },
+    {
+      "path": "FB-TRP-RoughStoneFloor.png",
+      "count": 2
+    },
+    {
+      "path": "G-TRP-HeavyWall.png",
+      "count": 4
+    },
+    {
+      "path": "I-TRP-HeavyWall.png",
+      "count": 18
+    },
+    {
+      "path": "I-TRP-RoughStoneFloor.png",
+      "count": 4
+    },
+    {
+      "path": "IA-TRP-HeavyWall.png",
+      "count": 13
+    },
+    {
+      "path": "IA-TRP-RoughStoneFloor.png",
+      "count": 0
+    },
+    {
+      "path": "IIS-QuarryWall-v.1.0.png",
+      "count": 5
+    },
+    {
+      "path": "ILS-QuarryWall-v.1.0.png",
+      "count": 4
+    },
+    {
+      "path": "IOS-QuarryWall-v.1.0.png",
+      "count": 8
+    },
+    {
+      "path": "Q-TRP-HeavyWall.png",
+      "count": 12
+    },
+    {
+      "path": "S-TRP-RoughStoneFloor.png",
+      "count": 18
+    },
+    {
+      "path": "SS-Entrance-QuarryWall-v.1.1.png",
+      "count": 2
+    },
+    {
+      "path": "SS-QuarryWall-v.1.2.png",
+      "count": 8
+    },
+    {
+      "path": "U-TRP-RoughStoneFloor.png",
+      "count": 8
+    },
+    {
+      "path": "A-TRP-Iron-Door-Wall.png",
+      "count": 4
+    },
+    {
+      "path": "A-TRP-Wooden-Door-Wall.png",
+      "count": 4
+    },
+    {
+      "path": "AS-TRP-Secret-Door-Wall.png",
+      "count": 2
+    },
+    {
+      "path": "S-Full-Schist-Wood-Stair.png",
+      "count": 2
+    }    
+  ],
+  "pinned": {
+    "ambience": [
+      {
+        "id": "ruins-ambience.mp3",
+        "label": "Ruins Ambience"
+      },
+      {
+        "id": "catacombs-ambience.mp3",
+        "label": "Catacombs Ambience"
+      }
+    ],
+    "bgm": [
+      {
+        "id": "bgm-engarde-or-die.mp3",
+        "label": "Engarde Or Die"
+      },
+      {
+        "id": "bgm-sinister-pressure.mp3",
+        "label": "Sinister Pressure"
+      },
+      {
+        "id": "bgm-sound-tactics-prevail.mp3",
+        "label": "Sound Tactics Prevail"
+      },
+      {
+        "id": "slow-death-march-bgm.mp3",
+        "label": "Poisonous Death March"
+      },
+      {
+        "id": "verzog-catacombs-bgm.mp3",
+        "label": "Verzog Catacombs"
+      }
+    ],
+    "references": [
+      {
+        "id": "Skeleton Guard",
+        "label": "Skeleton Guard"
+      },
+      {
+        "id": "Hyena",
+        "label": "Hyena"
+      },
+      {
+        "id": "Orc Guardian",
+        "label": "Orc Guardian"
+      },
+      {
+        "id": "Orc Spearman",
+        "label": "Orc Spearman"
+      },
+      {
+        "id": "Cultist Initiate",
+        "label": "Cultist Initiate"
+      },
+      {
+        "id": "Necromancer Apprentice",
+        "label": "Necromancer Apprentice"
+      },
+      {
+        "id": "Junka",
+        "label": "Junka"
+      },
+      {
+        "id": "Digrot",
+        "label": "Digrot"
+      },
+      {
+        "id": "Trixie",
+        "label": "Trixie"
+      },
+      {
+        "id": "Xugan (Quartermaster)",
+        "label": "Xugan (Quartermaster)"
+      },
+      {
+        "id": "Void Worms Swarm",
+        "label": "Void Worms Swarm"
+      }
+    ],
+    "docs": [
+      {
+        "id": "characters.md",
+        "label": "Characters"
+      },
+      {
+        "id": "events.md",
+        "label": "Campaign Events"
+      },
+      {
+        "id": "docs-burning-hand-cult-notes.md",
+        "label": "Burning Hand Cult Notes"
+      }
+    ],
+    "images": [
+      {
+        "id": "portrait-junka.jpeg",
+        "label": "Junka"
+      },
+      {
+        "id": "portrait-xugan.jpeg",
+        "label": "Xugan"
+      },
+      {
+        "id": "portrait-trixie.jpeg",
+        "label": "Trixie"
+      },
+      {
+        "id": "location-ruins-keep.jpg",
+        "label": "Location Ruins Keep"
+      },
+      {
+        "id": "location-keroc-upper-ruins.jpeg",
+        "label": "Keroc Upper Ruins"
+      },
+      {
+        "id": "location-keroc-temple-grounds.jpg",
+        "label": "Keroc Temple Grounds"
+      },
+      {
+        "id": "location-keroc-armory.jpeg",
+        "label": "Keroc Armory"
+      },
+      {
+        "id": "location-keroc-morgue.jpeg",
+        "label": "Keroc Morgue"
+      },
+      {
+        "id": "location-keroc-excavation.jpeg",
+        "label": "Keroc Excavation"
+      },
+      {
+        "id": "location-keroc-brewery.jpeg",
+        "label": "Keroc Brewery"
+      },
+      {
+        "id": "location-keroc-alchemy-lab.jpeg",
+        "label": "Keroc Alchemy Lab"
+      },
+      {
+        "id": "location-keroc-summoning-chamber.jpeg",
+        "label": "Keroc Summoning Chamber"
+      },
+      {
+        "label": "Keroc Burial Chamber",
+        "id": "location-keroc-burial-chamber.jpeg"
+      }
+    ],
+    "rules": []
+  }
 }

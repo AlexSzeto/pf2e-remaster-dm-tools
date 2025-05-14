@@ -6,5 +6,9 @@
   "pc": {
     "root": "players",
     "current": "mercs"
+  },
+  "dm": {
+    "root": "dm",
+    "current": "alex"
   }
 }
