@@ -3,7 +3,7 @@
     "root": "campaigns",
     "current": "shadow-of-ashes"
   },
-  "pc": {
+  "players": {
     "root": "players",
     "current": "mercs"
   },
