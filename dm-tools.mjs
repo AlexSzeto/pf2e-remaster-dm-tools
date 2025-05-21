@@ -3,7 +3,7 @@ import fileUpload from 'express-fileupload'
 import path from 'path'
 
 import { fileURLToPath } from 'url'
-import { loadJSON } from './src/express/util.mjs'
+import { loadJSON, saveJSON, successResponse } from './src/express/util.mjs'
 import { addMediaEndpoints } from './src/express/media-crud.mjs'
 import { getHTML } from './src/express/html-template.mjs'
 import { addReferenceEndpoints } from './src/express/references-crud.mjs'
@@ -13,12 +13,14 @@ import { addReferenceEndpoints } from './src/express/references-crud.mjs'
 */
 const app = express()
 app.use(fileUpload())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 /*
   Settings
 */
 const port = 5000
-const configPath = 'config.json'
+const configFilename = 'config.json'
 
 const dataFilePath = (source, path) =>
   path.join(__root, path.root, path.current, `${source}.json`)
@@ -52,7 +54,7 @@ app.get('/src/*path', (req, res) => {
 })
 
 // Load configs, insert endpoints, and start server
-loadJSON(path.join(config.root, configPath))
+loadJSON(path.join(config.root, configFilename))
   .then((data) => {
     config = {
       ...config,
@@ -63,6 +65,22 @@ loadJSON(path.join(config.root, configPath))
 
     addMediaEndpoints(app, config)
     addReferenceEndpoints(app, config)
+
+    app.post('/:source/config', (req, res) => {
+      const source = req.params.source
+      const current = req.body.current
+      if (!current) {
+        return res.status(400).send({ error: 'No current folder specified' })
+      }
+      config[source].current = current
+      saveJSON(path.join(config.root, configFilename), config)
+        .then(() => {
+          res.status(200).send(successResponse(`Set ${source} current folder`))
+        })
+        .catch((err) => {
+          res.status(500).send({ error: 'Failed to set current folder' })
+        })
+    })    
 
     app.listen(port, () => {
       console.log(`server is running at http://localhost:${port}`)

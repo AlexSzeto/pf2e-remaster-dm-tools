@@ -35,7 +35,7 @@ export class CampaignManager extends Component {
     if (!name || name.length === 0) {
       return
     }
-    fetch('./campaign/manage', {
+    fetch('./campaign/folders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

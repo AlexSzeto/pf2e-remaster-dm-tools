@@ -34,7 +34,7 @@ export class PlayersManager extends Component {
     if (!name || name.length === 0) {
       return
     }
-    fetch('./players/manage', {
+    fetch('./players/folders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export class PlayersManager extends Component {
 
   setCurrentGroup(current) {
     this.setState({ current })
-    fetch('./players/current', {
+    fetch('./players/config', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

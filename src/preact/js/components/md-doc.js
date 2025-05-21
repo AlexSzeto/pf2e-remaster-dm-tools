@@ -18,7 +18,7 @@ export class MarkdownDocument extends Component {
     const imageLinks =
       /(\!\[.+\]\()((?!https?:\/\/).+(?:\.jpg|\.jpeg|\.png|\.gif|\.webp)\))/g
 
-    return text.replace(imageLinks, `$1/resource/$2`)
+    return text.replace(imageLinks, `$1/campaign/media/$2`)
   }
 
   createImageLinks() {

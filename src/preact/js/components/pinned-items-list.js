@@ -17,6 +17,6 @@ const PinnedItem = ({item, onClick, onUnpin}) => html`
 `
 export const PinnedItemsList = ({items, onClick, onUnpin}) => html`
   <div class="pinned-items-list">
-    ${items.map(item => PinnedItem({item, onClick, onUnpin}))}
+    ${(items ?? []).map(item => PinnedItem({item, onClick, onUnpin}))}
   </div>
 `

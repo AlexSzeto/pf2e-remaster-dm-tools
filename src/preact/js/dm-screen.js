@@ -9,7 +9,7 @@ import {
   InitiativeListItem,
   InitiativeTracker,
 } from './components/initiative-tracker.js'
-import { campaignResource, deepCompare, getCookie, setCookie } from './common/util.js'
+import { campaignMedia, deepCompare, getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
 import { MarkdownDocument } from './components/md-doc.js'
 import { rawLine, BudgetDisplay, BudgetTracker, calculateRemainder, countBudget, totalBudgetByLevel } from './components/budget-tracker.js'
@@ -106,7 +106,7 @@ class App extends Component {
           [type]: {
             label,
             controls: createAudioSource(
-              campaignResource(url),
+              campaignMedia(url),
               fadeInDuration,
               this.globalVolume(type)
             ),
@@ -199,7 +199,7 @@ class App extends Component {
   }
 
   savePlayersData() {
-    fetch(`/players`, {
+    fetch(`/players/data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -212,7 +212,7 @@ class App extends Component {
   }
 
   saveCampaignData() {
-    fetch(`/campaign`, {
+    fetch(`/campaign/data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ class App extends Component {
       return
     }
 
-    fetch(campaignResource(path))
+    fetch(campaignMedia(path))
       .then((response) => response.text())
       .then((text) => {
         this.setState({
@@ -253,7 +253,7 @@ class App extends Component {
 
     formData.append('file', blob, path)
 
-    fetch(`/resource`, {
+    fetch(`/campaign/media`, {
       method: 'POST',
       body: formData,
     }).then((response) => {
@@ -470,15 +470,23 @@ class App extends Component {
     }
 
     // Get current campaign from cookie
-    fetch(`/campaign`)
-      .then((response) => response.json())
-      .then((campaign) => {
+    Promise.all([
+      fetch(`/campaign/data`),
+      fetch(`/dm/data`),
+    ])
+      .then(responses => Promise.all(responses.map(response => response.json())))
+      .then(([campaign, dm]) => {
+
+        console.log('Campaign loaded:', campaign)
+        console.log('DM loaded:', dm)
+
         // Update state with loaded data
         const savedImages = getCookie('screenImages')
         const initiatives = getCookie('initiativeTracker')
 
         this.setState({
           campaign,
+          pinned: dm.pinned,
           screen: {
             ...this.state.screen,
             images: savedImages
@@ -492,14 +500,16 @@ class App extends Component {
         console.error('Error loading data from campaigns.json:', error)
       })
 
-    fetch(`/players`)
+    fetch(`/players/data`)
       .then((response) => response.json())
-      .then((data) => {
-        const { pinned, players } = data
+      .then((players) => {
+
+        console.log('Players loaded:', players)
+
         this.setState({
           players,
-          pinned
         }, () => {
+          console.log('state',this.state)
           this.addPlayersToInitiativeList(this.state.players.characters)
         })
       })
@@ -629,7 +639,7 @@ class App extends Component {
               <div class="${location}-container">
                 <${FramedImage}
                   type=${location}
-                  url=${campaignResource(this.state.screen.images[location])}
+                  url=${campaignMedia(this.state.screen.images[location])}
                   cover=${location === 'background'
                     ? this.state.screen.images.cover
                     : false}
