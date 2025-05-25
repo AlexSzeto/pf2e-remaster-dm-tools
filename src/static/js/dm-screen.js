@@ -204,10 +204,7 @@ class App extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        players: this.state.players,
-        pinned: this.state.pinned
-      }),
+      body: JSON.stringify(this.state.players),
     })
   }
 
@@ -415,6 +412,7 @@ class App extends Component {
       },
       players: {
         name: '',
+        description: '',
         id: '',
         partyLevel: 1,
         characters: [],
@@ -473,12 +471,14 @@ class App extends Component {
     Promise.all([
       fetch(`/campaign/data`),
       fetch(`/dm/data`),
+      fetch(`/players/data`),
     ])
       .then(responses => Promise.all(responses.map(response => response.json())))
-      .then(([campaign, dm]) => {
+      .then(([campaign, dm, players]) => {
 
         console.log('Campaign loaded:', campaign)
         console.log('DM loaded:', dm)
+        console.log('Players loaded:', players)
 
         // Update state with loaded data
         const savedImages = getCookie('screenImages')
@@ -486,6 +486,7 @@ class App extends Component {
 
         this.setState({
           campaign,
+          players,
           pinned: dm.pinned,
           screen: {
             ...this.state.screen,
@@ -494,27 +495,13 @@ class App extends Component {
               : this.state.screen.images,
           },
           combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
-        })
-      })
-      .catch((error) => {
-        console.error('Error loading data from campaigns.json:', error)
-      })
-
-    fetch(`/players/data`)
-      .then((response) => response.json())
-      .then((players) => {
-
-        console.log('Players loaded:', players)
-
-        this.setState({
-          players,
         }, () => {
           console.log('state',this.state)
           this.addPlayersToInitiativeList(this.state.players.characters)
         })
       })
       .catch((error) => {
-        console.error('Error loading data from players.json:', error)
+        console.error('Error loading data from campaigns.json:', error)
       })
 
     setInterval(() => {

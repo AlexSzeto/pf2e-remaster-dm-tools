@@ -35,7 +35,7 @@ import {
   createSpellTemplate,
 } from './common/dm-data.js'
 import { Card } from './components/card.js'
-import { campaignResource, getCookie } from './common/util.js'
+import { campaignMedia, getCookie } from './common/util.js'
 
 const dice = (data) =>
   `${data.count}d${data.sides}${

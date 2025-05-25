@@ -47,6 +47,7 @@ const countItems = (items) => {
 }
 
 export const countBudget = (items, minLevel, maxLevel) => {
+  items = items || []
   const sum = items
     .filter((item) => item.level >= minLevel && item.level <= maxLevel)
     .reduce(

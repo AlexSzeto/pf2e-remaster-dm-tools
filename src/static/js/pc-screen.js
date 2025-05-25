@@ -2,7 +2,7 @@ import { render, Component } from 'preact'
 import { html } from 'htm/preact'
 
 import { InitiativeDisplay } from './components/initiative-tracker.js'
-import { campaignResource, getCookie } from './common/util.js'
+import { campaignMedia, getCookie } from './common/util.js'
 import { CrossfadeImage } from './components/crossfade-image.js'
 
 class App extends Component {
@@ -23,7 +23,7 @@ class App extends Component {
       },
     }
 
-    fetch('./campaign/current')
+    fetch('./campaign/data')
       .then((response) => response.json())
       .then((campaignData) => {
         this.setState({ campaignId: campaignData.id })
@@ -51,14 +51,14 @@ class App extends Component {
         <div class="background-container">
           <${CrossfadeImage}
             cover=${this.state.images.cover}
-            url=${campaignResource(this.state.images.background)}
+            url=${campaignMedia(this.state.images.background)}
           />
         </div>
         <div class="left-container">
-          <${CrossfadeImage} url=${campaignResource(this.state.images.left)} />
+          <${CrossfadeImage} url=${campaignMedia(this.state.images.left)} />
         </div>
         <div class="right-container">
-          <${CrossfadeImage} url=${campaignResource(this.state.images.right)} />
+          <${CrossfadeImage} url=${campaignMedia(this.state.images.right)} />
         </div>
       </div>
       <div

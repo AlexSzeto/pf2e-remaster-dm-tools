@@ -96,7 +96,7 @@ export const addMediaEndpoints = (app, config) => {
         .map((word) => word.toUpperCase())
         .join(' ')
     const subtype = req.body.subtype ?? id.split('-')[0]
-    const tags = req.body.tags ?? []
+    const tags = req.body.tags.split(',') ?? []
 
     if (!file) {
       return res.status(400).send(errorResponse('no file uploaded'))
@@ -117,9 +117,8 @@ export const addMediaEndpoints = (app, config) => {
       .writeFile(writePath, file.data)
       .then(() =>
         addReference(config, source, type, {
-          id,
-          name,
-          subtype,
+          path: id,
+          label: name,
           tags,
         })
       )

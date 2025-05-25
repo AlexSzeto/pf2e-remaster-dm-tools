@@ -45,7 +45,7 @@ app.get('/:page', (req, res) => {
 app.get('/src/*path', (req, res) => {
   // console.log('get:', req.params.path)
   // Prevent directory traversal attacks
-  const filePath = path.join(config.root, 'src/preact', req.params.path.join('/'))
+  const filePath = path.join(config.root, 'src/static', req.params.path.join('/'))
   res.sendFile(filePath, (err) => {
     if (err) {
       res.status(404).send('File not found')

@@ -13,16 +13,20 @@ const dataPathOf = (config, source) =>
     dataFilename
   )
 
-export const addReference = async (config, source, type, entry) => {
+export const matchReference = id => (entry) => {
+  return (entry.id && entry.id === id) || (entry.path && entry.path === id)
+}
+
+export const addReference = async (config, source, subtype, entry) => {
   return new Promise((resolve, reject) => {
     const dataPath = dataPathOf(config, source)
     loadJSON(dataPath)
       .then((data) => {
-        if (!data[type]) {
-          data[type] = []
+        if (!data[subtype]) {
+          data[subtype] = []
         }
-        const references = data[type]
-        const entryIndex = references.findIndex((e) => e.id === entry.id)
+        const references = data[subtype]
+        const entryIndex = references.findIndex(entry.id ? matchReference(entry.id) : matchReference(entry.path))
         if (entryIndex !== -1) {
           references[entryIndex] = entry
         } else {
@@ -36,16 +40,16 @@ export const addReference = async (config, source, type, entry) => {
   })
 }
 
-export const deleteReference = async (config, source, type, id) => {
+export const deleteReference = async (config, source, subtype, id) => {
   return new Promise((resolve, reject) => {
     const dataPath = dataPathOf(config, source)
     loadJSON(dataPath)
       .then((data) => {
-        if (!data[type]) {
-          data[type] = []
+        if (!data[subtype]) {
+          data[subtype] = []
         }
-        const references = data[type]
-        const entryIndex = references.findIndex((e) => e.id === id)
+        const references = data[subtype]
+        const entryIndex = references.findIndex(matchReference(id))
         if (entryIndex !== -1) {
           references.splice(entryIndex, 1)
         }

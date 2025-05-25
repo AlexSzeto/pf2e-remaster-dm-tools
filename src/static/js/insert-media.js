@@ -2,21 +2,25 @@ import { render, Component } from 'preact'
 import { html } from 'htm/preact'
 import { Icon } from './components/icon.js'
 
+const defaultState = {
+      saving: false,      
+      name: '',
+      subtypes:[],
+      tags:[],
+      preview: ''
+}
+
 class InsertMediaForm extends Component {
   constructor() {
     super()
     this.state = {
-      saving: false,      
       campaign: {
         name: '',
         description: '',
       },
-      name: '',
-      folder: '',
-      options:[],
-      preview: ''
+      ...defaultState,
     }
-    fetch(`/campaign`)
+    fetch(`/campaign/data`)
       .then((response) => response.json())
       .then((campaign) => { this.setState({ campaign }) })
   }
@@ -42,8 +46,10 @@ class InsertMediaForm extends Component {
         case 'gif':
         case 'svg':
           this.setState({ 
-            folder: 'images',
-            options: [
+            subtypes: [
+              { value: 'images', text: 'Image' },
+            ],
+            tags: [
               { value: 'portrait', text: 'Portrait' },
               { value: 'location', text: 'Location' },
               { value: 'item', text: 'Item'},
@@ -57,10 +63,13 @@ class InsertMediaForm extends Component {
         case 'ogg':
         case 'wav':
           this.setState({
-            folder: 'audio',
-            options: [
-              { value: 'bgm', text: 'Background Music' },
-              { value: 'ambience', text: 'Ambience' }
+            subtypes: [
+              { value: 'bgms', text: 'Background Music' },
+              { value: 'ambiences', text: 'Ambience' },
+            ],
+            tags: [
+              { value: 'looping', text: 'Looping' },
+              { value: 'play-once', text: 'Play Once' },
             ],
             preview: URL.createObjectURL(e.target.files[0])
           })
@@ -68,9 +77,11 @@ class InsertMediaForm extends Component {
         case 'md':
         case 'txt':
           this.setState({
-            folder: 'docs',
-            options: [
-              { value: 'docs', text: 'Document' }
+            subtypes: [
+              { value: 'docs', text: 'Documents' },
+            ],
+            tags: [
+              { value: 'docs', text: 'Document' },
             ],
             preview: URL.createObjectURL(e.target.files[0])
           })
@@ -84,20 +95,25 @@ class InsertMediaForm extends Component {
     this.setState({ saving: true })
     const form = e.target
     const formData = new FormData(form)
+    console.log('Submitting media form', formData)
+
+    const tags = [
+      formData.get('baseTag'),
+      ...(formData.get('tags')
+        ? formData.get('tags').split(',').map(tag => tag.trim())
+        : []
+      )
+    ]
+    formData.set('tags', tags)
+    formData.delete('baseTag')
     // for (const [key, value] of formData.entries()) {
     //   console.log(`${key}: ${value}`);
     // }
-    fetch('./resource', {
+    fetch('./campaign/media', {
       method: 'POST',
       body: formData
     }).then(() => {
-      this.setState({
-        saving: false,
-        name: '',
-        folder: '',
-        options: [],
-        preview: ''
-      })
+      this.setState(defaultState)
       form.reset()
     })
   }
@@ -122,12 +138,20 @@ class InsertMediaForm extends Component {
           <label for="file">File</label>
           <input disabled=${this.state.saving} type="file" name="file" onChange=${e => this.updateTypeOptions(e)}/>
         </div>
-        <input type="hidden" name="folder" value=${this.state.folder} />          
 
         <div>
-          <label for="folder">Type</label>
-          <select disabled=${this.state.saving} name="type">
-            ${this.state.options.map(option => html`
+          <label for="subtype">Subtype</label>
+          <select disabled=${this.state.saving} name="subtype">
+            ${this.state.subtypes.map(option => html`
+              <option value=${option.value}>${option.text}</option>
+            `)}
+          </select>
+        </div>
+
+        <div>
+          <label for="baseTag">Tag</label>
+          <select disabled=${this.state.saving} name="baseTag">
+            ${this.state.tags.map(option => html`
               <option value=${option.value}>${option.text}</option>
             `)}
           </select>
@@ -141,7 +165,7 @@ class InsertMediaForm extends Component {
       </form>
 
       <div class="media-preview">
-        ${this.state.folder==="images" && html`
+        ${this.state.type==="images" && html`
           <img id="image-preview" src=${this.state.preview}/>
         `}
       </div>
