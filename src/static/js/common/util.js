@@ -69,6 +69,6 @@ export function debounce(func, delay) {
   }
 }
 
-export function campaignResource(filename) {
-  return filename ? `/resource/${filename}` : ''
+export function campaignMedia(filename) {
+  return filename ? `/campaign/media/${filename}` : ''
 }

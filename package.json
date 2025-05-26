@@ -1,0 +1,27 @@
+{
+  "name": "pf2e-remaster-dm-tools",
+  "version": "1.0.0",
+  "description": "A PF2E Remastered DM Tool with a web based UI.",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node dm-tools.mjs",
+    "dev": "node --watch dm-tools.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexSzeto/pf2e-remaster-dm-tools.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlexSzeto/pf2e-remaster-dm-tools/issues"
+  },
+  "homepage": "https://github.com/AlexSzeto/pf2e-remaster-dm-tools#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.1",
+    "fs": "^0.0.1-security",
+    "preact-render-to-string": "^6.5.13"
+  }
+}

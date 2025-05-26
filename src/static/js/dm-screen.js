@@ -9,7 +9,7 @@ import {
   InitiativeListItem,
   InitiativeTracker,
 } from './components/initiative-tracker.js'
-import { campaignResource, deepCompare, getCookie, setCookie } from './common/util.js'
+import { campaignMedia, deepCompare, getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
 import { MarkdownDocument } from './components/md-doc.js'
 import { rawLine, BudgetDisplay, BudgetTracker, calculateRemainder, countBudget, totalBudgetByLevel } from './components/budget-tracker.js'
@@ -106,7 +106,7 @@ class App extends Component {
           [type]: {
             label,
             controls: createAudioSource(
-              campaignResource(url),
+              campaignMedia(url),
               fadeInDuration,
               this.globalVolume(type)
             ),
@@ -199,20 +199,27 @@ class App extends Component {
   }
 
   savePlayersData() {
-    fetch(`/players`, {
+    fetch(`/players/data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        players: this.state.players,
-        pinned: this.state.pinned
-      }),
+      body: JSON.stringify(this.state.players),
+    })
+  }
+
+  saveDMData() {
+    fetch(`/dm/data`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.dm),
     })
   }
 
   saveCampaignData() {
-    fetch(`/campaign`, {
+    fetch(`/campaign/data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -235,7 +242,7 @@ class App extends Component {
       return
     }
 
-    fetch(campaignResource(path))
+    fetch(campaignMedia(path))
       .then((response) => response.text())
       .then((text) => {
         this.setState({
@@ -253,7 +260,7 @@ class App extends Component {
 
     formData.append('file', blob, path)
 
-    fetch(`/resource`, {
+    fetch(`/campaign/media`, {
       method: 'POST',
       body: formData,
     }).then((response) => {
@@ -379,24 +386,30 @@ class App extends Component {
       return
     }
     this.setState({
-      pinned: {
-        ...this.state.pinned,
-        [type]: [...this.state.pinned[type], { label, id }],
-      },
-    }, () => this.savePlayersData())
+      dm: {
+        ...this.state.dm,
+        pinned: {
+          ...this.state.dm.pinned,
+          [type]: [...this.state.dm.pinned[type], { label, id }],
+        },
+      }
+    }, () => this.saveDMData())
   }
 
   unpinItem(type, id) {
     this.setState({
-      pinned: {
-        ...this.state.pinned,
-        [type]: this.state.pinned[type].filter(item => item.id !== id),
-      },
-    }, () => this.savePlayersData())
+      dm: {
+        ...this.state.dm,
+        pinned: {
+          ...this.state.dm.pinned,
+          [type]: this.state.dm.pinned[type].filter(item => item.id !== id),
+        },
+      }
+    }, () => this.saveDMData())
   }
 
   isPinned(type, id) {
-    return this.state.pinned[type].find(item => item.id === id)
+    return this.state.dm.pinned[type].find(item => item.id === id)
   }
 
   constructor(props) {
@@ -415,6 +428,7 @@ class App extends Component {
       },
       players: {
         name: '',
+        description: '',
         id: '',
         partyLevel: 1,
         characters: [],
@@ -459,26 +473,43 @@ class App extends Component {
         insertImage: false,
         insertName: false,
       },
-      pinned: {
-        images: [],
-        bgm: [],
-        ambience: [],
-        rules: [],
-        cards: [],
-        docs: []
+      dm: {
+        id: '',
+        description: '',
+        name: '',
+        tiles: [],
+        pinned: {
+          images: [],
+          bgm: [],
+          ambience: [],
+          rules: [],
+          cards: [],
+          docs: []
+        }
       }
     }
 
     // Get current campaign from cookie
-    fetch(`/campaign`)
-      .then((response) => response.json())
-      .then((campaign) => {
+    Promise.all([
+      fetch(`/campaign/data`),
+      fetch(`/dm/data`),
+      fetch(`/players/data`),
+    ])
+      .then(responses => Promise.all(responses.map(response => response.json())))
+      .then(([campaign, dm, players]) => {
+
+        console.log('Campaign loaded:', campaign)
+        console.log('DM loaded:', dm)
+        console.log('Players loaded:', players)
+
         // Update state with loaded data
         const savedImages = getCookie('screenImages')
         const initiatives = getCookie('initiativeTracker')
 
         this.setState({
           campaign,
+          dm,
+          players,
           screen: {
             ...this.state.screen,
             images: savedImages
@@ -486,25 +517,13 @@ class App extends Component {
               : this.state.screen.images,
           },
           combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
-        })
-      })
-      .catch((error) => {
-        console.error('Error loading data from campaigns.json:', error)
-      })
-
-    fetch(`/players`)
-      .then((response) => response.json())
-      .then((data) => {
-        const { pinned, players } = data
-        this.setState({
-          players,
-          pinned
         }, () => {
+          console.log('state',this.state)
           this.addPlayersToInitiativeList(this.state.players.characters)
         })
       })
       .catch((error) => {
-        console.error('Error loading data from players.json:', error)
+        console.error('Error loading data from campaigns.json:', error)
       })
 
     setInterval(() => {
@@ -629,7 +648,7 @@ class App extends Component {
               <div class="${location}-container">
                 <${FramedImage}
                   type=${location}
-                  url=${campaignResource(this.state.screen.images[location])}
+                  url=${campaignMedia(this.state.screen.images[location])}
                   cover=${location === 'background'
                     ? this.state.screen.images.cover
                     : false}
@@ -723,7 +742,7 @@ class App extends Component {
         >
           <${PinnedItemsList} 
             items=${
-              this.state.pinned.docs
+              this.state.dm.pinned.docs
                 .filter(item => !this.state.notes.docs.some(doc => doc.loaded && doc.path === item.id))
             }
             onClick=${item => this.loadDocument(item.label, item.id)}
@@ -777,12 +796,12 @@ class App extends Component {
           ]}
         >
           <${PinnedItemsList}
-            items=${this.state.pinned.cards}
+            items=${this.state.dm.pinned.cards}
             onUnpin=${id => this.unpinItem('cards', id)}
             onClick=${card => this.addCard(card.id)}
           />
           <${PinnedItemsList}
-            items=${this.state.pinned.rules}
+            items=${this.state.dm.pinned.rules}
             onUnpin=${id => this.unpinItem('rules', id)}
             onClick=${rule => this.addRule(rule.id)}
           />

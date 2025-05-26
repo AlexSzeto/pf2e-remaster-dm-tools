@@ -6,14 +6,14 @@ export class CampaignManager extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      campaigns: [],
+      folders: [],
       current: '',
     }
     this.loadCampaigns()
   }
 
   loadCampaigns() {
-    fetch('./campaign/manage')
+    fetch('./campaign/folders')
       .then((response) => response.json())
       .then((campaignData) => {
         const nextState = {
@@ -35,7 +35,7 @@ export class CampaignManager extends Component {
     if (!name || name.length === 0) {
       return
     }
-    fetch('./campaign/manage', {
+    fetch('./campaign/folders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export class CampaignManager extends Component {
 
   setCurrentCampaign(current) {
     this.setState({ current })
-    fetch('./campaign/current', {
+    fetch('./campaign/config', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export class CampaignManager extends Component {
       <div class="subsection">
         <h2>Select</h2>
         <div class="subsection vertical-list">
-          ${this.state.campaigns.map(
+          ${this.state.folders.map(
             (campaign) => html`
               <div>
                 <a

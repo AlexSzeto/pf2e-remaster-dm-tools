@@ -8,7 +8,7 @@ class Layout extends Component {
       campaign: {},
     }
 
-    fetch(`/campaign`)
+    fetch(`/campaign/data`)
       .then((response) => response.json())
       .then((campaign) => { this.setState({ campaign }) })
   }

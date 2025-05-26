@@ -1,5 +1,5 @@
 import { html } from 'htm/preact'
-import { campaignResource } from '../common/util.js'
+import { campaignMedia } from '../common/util.js'
 import { Modal } from './../components/modal.js'
 import { PinButton } from '../components/pinned-items-list.js'
 import { Icon } from './../components/icon.js'
@@ -19,7 +19,7 @@ ${images
       <div class="image-container">
         <div class="image"
           style=${{
-            backgroundImage: `url(${campaignResource(image.path)})`,
+            backgroundImage: `url(${campaignMedia(image.path)})`,
           }}
           onClick=${() => {
             onSelect(image.path)

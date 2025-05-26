@@ -28,6 +28,8 @@ class MapEditor {
   // }
 
   #mapPath = null
+  #name = null
+
   mapData = {
     width: 40,
     height: 40,
@@ -78,6 +80,11 @@ class MapEditor {
   #screen = null
   #buffer = null
 
+  #UNDO_BUFFER_SIZE = 50
+  #undoBuffer = []
+  #redoBuffer = []
+
+  onCreateMapFile = () => {}
   onUpdateSelectedTiles = () => {}
   onUpdateMapData = () => {}
 
@@ -131,6 +138,7 @@ class MapEditor {
     })
 
     screenCanvas.addEventListener('mousedown', (event) => {
+      this.#saveUndoBuffer()
       const { x, y } = this.#absoluteCursorPositionOf(event)
       this.#mouse.down = { x, y }
 
@@ -296,6 +304,19 @@ class MapEditor {
     screenCanvas.addEventListener('keydown', (event) => {
       let { x, y } = this.#mouse.absolute
       const tile = this.#getCursorTile(x, y)
+
+      const isCtrl = event.ctrlKey || event.metaKey
+      if(isCtrl) {
+        switch (event.key) {
+          case 'z':
+            this.#undo()
+            return
+          case 'r':
+            this.#redo()
+            return
+        }
+        return
+      }
       switch (event.key) {
         case 'a':
           if(this.#drawMode === this.#DRAW_TILE) {
@@ -309,6 +330,7 @@ class MapEditor {
           this.#redrawCanvas()
           break
         case 'd':
+          this.#saveUndoBuffer()
           switch (this.#drawMode) {
             case this.#DRAW_PROP:
               const prop = this.#getCursorProp(x, y)
@@ -325,6 +347,7 @@ class MapEditor {
           }
           break
         case 'r':
+          this.#saveUndoBuffer()
           if (tile) {
             tile.rotation = (tile.rotation + 90) % 360
             this.#redrawCanvas()
@@ -359,9 +382,13 @@ class MapEditor {
     )    
   }
 
+  updateName(name) {
+    this.#name = name
+  }
+  
   loadMap(path) {
     this.#mapPath = path
-    return fetch(`./resource/${path}`)
+    return fetch(`./campaign/media/${path}`)
       .then((response) => response.json())
       .then((mapData) => {
         this.mapData = mapData
@@ -370,37 +397,76 @@ class MapEditor {
       })
   }
 
+  #saveUndoBuffer() {
+    const mapDataJSON = JSON.stringify(this.mapData)
+    if(this.#undoBuffer.length > 0) {
+      const prevDataJSON = this.#undoBuffer[0]
+      if(prevDataJSON === mapDataJSON) {
+        return false
+      }
+    }
+    this.#undoBuffer.unshift(mapDataJSON)
+    this.#redoBuffer = []
+    if(this.#undoBuffer.length > this.#UNDO_BUFFER_SIZE) {
+      this.#undoBuffer.pop()
+    }
+    return true
+  }
+
   saveMap(name = null) {
     let filename = this.#mapPath
     if(name) { 
       filename = `${name.toLowerCase().replace(/\s+/g, '-')}.json`
+      this.#name = name
+    } else {
+      name = this.#name
     }
 
     if(!filename) {
       return
     }
 
-    const mapFileData = JSON.stringify(this.mapData)
+    const mapFileData = JSON.stringify(this.mapData, null, 2)
     const mapDataBlob = new Blob([mapFileData], { type: 'application/json' })
 
     const formData = new FormData()
     formData.append('file', mapDataBlob, filename)
-    if(name) {
-      formData.append('name', name)
-    }
+    formData.append('name', name ?? this.#name)
+    formData.append('subtype', 'maps')
 
-    fetch('./resource', {
+    fetch('./campaign/media', {
       method: 'POST',
       body: formData
-    }).then(() => {
+    }).then(() => {      
       if(name) {
-        fetch(`/campaign`)
-        .then((response) => response.json())
-        .then((campaign) => { this.setState({ campaign }) })
+        this.onCreateMapFile()
       }
     })
 
     this.onUpdateMapData(this.mapData)
+  }
+  
+  #restoreFromBuffer(pullFrom, pushTo) {
+    const mapDataJSON = JSON.stringify(this.mapData)
+    while(pullFrom.length > 0 && pullFrom[0] === mapDataJSON) {
+      this.#undoBuffer.shift()
+    }
+    if(pullFrom.length > 0) {
+      const prevDataJSON = pullFrom.shift()
+      pushTo.unshift(mapDataJSON)
+      this.mapData = JSON.parse(prevDataJSON)
+      this.#redrawCanvas()
+      this.onUpdateMapData(this.mapData)
+      this.saveMap()
+    }
+  }
+
+  #undo() {
+    this.#restoreFromBuffer(this.#undoBuffer, this.#redoBuffer)
+  }
+
+  #redo() {
+    this.#restoreFromBuffer(this.#redoBuffer, this.#undoBuffer)
   }
 
   exportMap(name) {
@@ -423,10 +489,10 @@ class MapEditor {
       const formData = new FormData()
       formData.append('file', blob, `${name.toLowerCase().replace(/\s+/g, '-')}.jpeg`)
       formData.append('name', name)
-      formData.append('folder', 'images')
-      formData.append('type', 'battlemap')
+      formData.append('subtype', 'images')
+      formData.append('tags', ['battlemap'])
 
-      fetch('./resource', {
+      fetch('./campaign/media', {
         method: 'POST',
         body: formData
       }).then(() => {
@@ -437,7 +503,7 @@ class MapEditor {
   }
 
   loadTiles(url) {
-    return fetch('/tileset')
+    return fetch('/dm/data')
       .then(result => result.json())
       .then((data) => {
         this.tileTags = getTagsList(data.tiles)
@@ -445,7 +511,7 @@ class MapEditor {
         return Promise.allSettled(this.tilesLibrary.map((tile) => {
           return new Promise((resolve) => {
             const img = new Image()
-            img.src = `tile/${tile.path}`
+            img.src = `dm/media/${tile.path}`
             tile.image = img
             img.onload = () => {
               resolve()
@@ -633,6 +699,10 @@ class MapEditor {
     this.#buffer.restore()
   }
 
+  redraw() {
+    this.#redrawCanvas()
+  }
+
   #redrawCanvas() {
     this.#clearCanvas(this.#buffer)
     this.#buffer.save()
@@ -809,7 +879,7 @@ class App extends Component {
       showFileList: false,
     }
 
-    fetch(`/campaign`)
+    fetch(`/campaign/data`)
       .then((response) => response.json())
       .then((campaign) => { this.setState({ campaign }) })
 
@@ -834,6 +904,13 @@ class App extends Component {
     editor.onUpdateMapData = (mapData) => {
       this.updateUsage()
     }
+
+    editor.onCreateMapFile = () => {
+      fetch(`/campaign/data`)
+      .then((response) => response.json())
+      .then((campaign) => { this.setState({ campaign }) })
+    }
+
   }
 
   updateUsage() {
@@ -873,6 +950,25 @@ class App extends Component {
         <button onClick=${() => this.setState({ showFileList: true })}>Load</button>
         <button onClick=${() => this.editor.exportMap(this.state.filename)}>Export</button>
       </div>
+      <h3>Config</h3>
+      <div class="map-config">
+        <label for="width">Width:</label>
+        <input type="number" id="width" name="width" value=${this.editor.mapData.width} onChange=${(event) => {
+          const width = parseInt(event.target.value, 10)
+          if(width > 0 && width !== this.editor.mapData.width) {
+            this.editor.mapData.width = width
+            this.editor.redraw()
+          }
+        }} />
+        <label for="height">Height:</label>
+        <input type="number" id="height" name="height" value=${this.editor.mapData.height} onChange=${(event) => {
+          const height = parseInt(event.target.value, 10)
+          if(height > 0 && height !== this.editor.mapData.height) {
+            this.editor.mapData.height = height
+            this.editor.redraw()
+          }
+        }} />
+      </div>
       <h3>Tiles</h3>
       <${TagList}
         tags=${this.state.tags}
@@ -897,7 +993,7 @@ class App extends Component {
             </div>
             <div class="image-container">
               <img 
-                src=${`tile/${tile.path}`} alt=${tile.label}
+                src=${`dm/media/${tile.path}`} alt=${tile.label}
                 onClick=${() => {
                   this.editor.toggleDrawTile(tile.path)
                   this.setState({ selectedTile: this.editor.drawTilePath })
@@ -928,7 +1024,10 @@ class App extends Component {
               this.setState({ 
                 filename: label,
                 showFileList: false 
-              }, () => this.updateUsage())
+              }, () => {
+              this.editor.updateName(label)
+              this.updateUsage()}
+            )
             })
         }}
       />`}

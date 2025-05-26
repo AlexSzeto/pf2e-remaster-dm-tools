@@ -1,4 +1,5 @@
 {
+  "root": "F:\\DMToolkit\\pf2e-remaster-dm-tools",
   "campaign": {
     "root": "campaigns",
     "current": "shadow-of-ashes"
@@ -6,5 +7,9 @@
   "players": {
     "root": "players",
     "current": "mercs"
+  },
+  "dm": {
+    "root": "dm",
+    "current": "alex"
   }
 }

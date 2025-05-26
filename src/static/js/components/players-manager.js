@@ -5,14 +5,14 @@ export class PlayersManager extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      players: [],
+      folders: [],
       current: '',
     }
     this.loadPlayerGroups()
   }
 
   loadPlayerGroups() {
-    fetch('./players/manage')
+    fetch('./players/folders')
       .then((response) => response.json())
       .then((data) => {
         const nextState = {
@@ -34,7 +34,7 @@ export class PlayersManager extends Component {
     if (!name || name.length === 0) {
       return
     }
-    fetch('./players/manage', {
+    fetch('./players/folders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export class PlayersManager extends Component {
 
   setCurrentGroup(current) {
     this.setState({ current })
-    fetch('./players/current', {
+    fetch('./players/config', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -69,8 +69,8 @@ export class PlayersManager extends Component {
       <div class="subsection">
         <h2>Select</h2>
         <div class="subsection vertical-list">
-          ${this.state.players.map(
-            ({players:group}) => html`
+          ${this.state.folders.map(
+            (group) => html`
               <div>
                 <a
                   href="#"
