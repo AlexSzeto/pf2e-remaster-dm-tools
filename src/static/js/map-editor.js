@@ -28,6 +28,8 @@ class MapEditor {
   // }
 
   #mapPath = null
+  #name = null
+
   mapData = {
     width: 40,
     height: 40,
@@ -359,9 +361,13 @@ class MapEditor {
     )    
   }
 
+  updateName(name) {
+    this.#name = name
+  }
+  
   loadMap(path) {
     this.#mapPath = path
-    return fetch(`./resource/${path}`)
+    return fetch(`./campaign/media/${path}`)
       .then((response) => response.json())
       .then((mapData) => {
         this.mapData = mapData
@@ -374,27 +380,29 @@ class MapEditor {
     let filename = this.#mapPath
     if(name) { 
       filename = `${name.toLowerCase().replace(/\s+/g, '-')}.json`
+      this.#name = name
+    } else {
+      name = this.#name
     }
 
     if(!filename) {
       return
     }
 
-    const mapFileData = JSON.stringify(this.mapData)
+    const mapFileData = JSON.stringify(this.mapData, null, 2)
     const mapDataBlob = new Blob([mapFileData], { type: 'application/json' })
 
     const formData = new FormData()
     formData.append('file', mapDataBlob, filename)
-    if(name) {
-      formData.append('name', name)
-    }
+    formData.append('name', name ?? this.#name)
+    formData.append('subtype', 'maps')
 
-    fetch('./resource', {
+    fetch('./campaign/media', {
       method: 'POST',
       body: formData
     }).then(() => {
       if(name) {
-        fetch(`/campaign`)
+        fetch(`/campaign/data`)
         .then((response) => response.json())
         .then((campaign) => { this.setState({ campaign }) })
       }
@@ -423,10 +431,10 @@ class MapEditor {
       const formData = new FormData()
       formData.append('file', blob, `${name.toLowerCase().replace(/\s+/g, '-')}.jpeg`)
       formData.append('name', name)
-      formData.append('folder', 'images')
-      formData.append('type', 'battlemap')
+      formData.append('subtype', 'images')
+      formData.append('tags', ['battlemap'])
 
-      fetch('./resource', {
+      fetch('./campaign/media', {
         method: 'POST',
         body: formData
       }).then(() => {
@@ -437,7 +445,7 @@ class MapEditor {
   }
 
   loadTiles(url) {
-    return fetch('/tileset')
+    return fetch('/dm/data')
       .then(result => result.json())
       .then((data) => {
         this.tileTags = getTagsList(data.tiles)
@@ -445,7 +453,7 @@ class MapEditor {
         return Promise.allSettled(this.tilesLibrary.map((tile) => {
           return new Promise((resolve) => {
             const img = new Image()
-            img.src = `tile/${tile.path}`
+            img.src = `dm/media/${tile.path}`
             tile.image = img
             img.onload = () => {
               resolve()
@@ -809,7 +817,7 @@ class App extends Component {
       showFileList: false,
     }
 
-    fetch(`/campaign`)
+    fetch(`/campaign/data`)
       .then((response) => response.json())
       .then((campaign) => { this.setState({ campaign }) })
 
@@ -897,7 +905,7 @@ class App extends Component {
             </div>
             <div class="image-container">
               <img 
-                src=${`tile/${tile.path}`} alt=${tile.label}
+                src=${`dm/media/${tile.path}`} alt=${tile.label}
                 onClick=${() => {
                   this.editor.toggleDrawTile(tile.path)
                   this.setState({ selectedTile: this.editor.drawTilePath })
@@ -928,7 +936,10 @@ class App extends Component {
               this.setState({ 
                 filename: label,
                 showFileList: false 
-              }, () => this.updateUsage())
+              }, () => {
+              this.editor.updateName(label)
+              this.updateUsage()}
+            )
             })
         }}
       />`}

@@ -85,18 +85,19 @@ export const addMediaEndpoints = (app, config) => {
   app.post('/:source/media', (req, res) => {
     const file = req.files.file
     const filename = file.name
-    const source = req.params.source
+    const source = req.params.source    
     const type = mediaTypeOf(filename)
+    const body = JSON.parse(JSON.stringify(req.body))
 
-    const id = req.body.id ?? path.basename(filename)
+    const id = path.basename(filename)
     const name =
-      req.body.name ??
+      body.name ??
       id
         .split('-')
         .map((word) => word.toUpperCase())
         .join(' ')
-    const subtype = req.body.subtype ?? id.split('-')[0]
-    const tags = req.body.tags.split(',') ?? []
+    const subtype = body.subtype ?? id.split('-')[0]
+    const tags = body.tags?.split(',') ?? []
 
     if (!file) {
       return res.status(400).send(errorResponse('no file uploaded'))

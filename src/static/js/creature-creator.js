@@ -623,7 +623,7 @@ class CreaturePreview extends Component {
   saveCard = () => {
     try {
       const data = this.props.data
-      fetch(`/card`, {
+      fetch(`/campaign/data/card`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -5,6 +5,14 @@ import path from 'path'
 const dataFilename = 'data.json'
 const jsonTemplatesPath = 'src/express/templates/json'
 
+const subtypeSingularToPlural = {
+  image: 'images',
+  bgm: 'bgms',
+  ambience: 'ambiences',
+  card: 'cards',
+  map: 'maps',
+}
+
 const dataPathOf = (config, source) =>
   path.join(
     config.root,
@@ -14,7 +22,7 @@ const dataPathOf = (config, source) =>
   )
 
 export const matchReference = id => (entry) => {
-  return (entry.id && entry.id === id) || (entry.path && entry.path === id)
+  return (entry.name && entry.name === id) || (entry.path && entry.path === id)
 }
 
 export const addReference = async (config, source, subtype, entry) => {
@@ -26,7 +34,7 @@ export const addReference = async (config, source, subtype, entry) => {
           data[subtype] = []
         }
         const references = data[subtype]
-        const entryIndex = references.findIndex(entry.id ? matchReference(entry.id) : matchReference(entry.path))
+        const entryIndex = references.findIndex(entry.path ? matchReference(entry.path) : matchReference(entry.name))
         if (entryIndex !== -1) {
           references[entryIndex] = entry
         } else {
@@ -149,6 +157,28 @@ export const addReferenceEndpoints = (app, config) => {
       })
       .catch((err) => {
         res.status(500).send({ error: 'Failed to create folder' })
+      })
+  })
+
+  app.post('/:source/data/:subtype', (req, res) => {
+    const source = req.params.source
+    const subtype = req.params.subtype
+    const entry = req.body
+
+    if (!entry.name && !entry.path) {
+      return res.status(400).send({ error: 'Entry must have a name or path' })
+    }
+
+    if (!subtypeSingularToPlural[subtype]) {
+      return res.status(400).send({ error: `Unknown subtype ${subtype}` })
+    }
+
+    addReference(config, source, subtypeSingularToPlural[subtype], entry)
+      .then(() => {
+        res.status(200).send(successResponse(`Added ${subtype} entry`))
+      })
+      .catch((err) => {
+        res.status(500).send({ error: 'Failed to add entry' })
       })
   })
 }
