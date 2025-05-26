@@ -470,44 +470,8 @@
     ],
     "cards": [
       {
-        "id": "Skeleton Guard",
-        "label": "Skeleton Guard"
-      },
-      {
-        "id": "Hyena",
-        "label": "Hyena"
-      },
-      {
-        "id": "Orc Guardian",
-        "label": "Orc Guardian"
-      },
-      {
-        "id": "Orc Spearman",
-        "label": "Orc Spearman"
-      },
-      {
         "id": "Cultist Initiate",
         "label": "Cultist Initiate"
-      },
-      {
-        "id": "Necromancer Apprentice",
-        "label": "Necromancer Apprentice"
-      },
-      {
-        "id": "Junka",
-        "label": "Junka"
-      },
-      {
-        "id": "Digrot",
-        "label": "Digrot"
-      },
-      {
-        "id": "Trixie",
-        "label": "Trixie"
-      },
-      {
-        "id": "Xugan (Quartermaster)",
-        "label": "Xugan (Quartermaster)"
       },
       {
         "id": "Void Worms Swarm",
@@ -524,8 +488,8 @@
         "label": "Campaign Events"
       },
       {
-        "id": "docs-burning-hand-cult-notes.md",
-        "label": "Burning Hand Cult Notes"
+        "label": "Ruins Of Keroc",
+        "id": "ruins-of-keroc.md"
       }
     ],
     "images": [

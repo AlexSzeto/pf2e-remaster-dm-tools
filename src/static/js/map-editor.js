@@ -80,6 +80,11 @@ class MapEditor {
   #screen = null
   #buffer = null
 
+  #UNDO_BUFFER_SIZE = 50
+  #undoBuffer = []
+  #redoBuffer = []
+
+  onCreateMapFile = () => {}
   onUpdateSelectedTiles = () => {}
   onUpdateMapData = () => {}
 
@@ -133,6 +138,7 @@ class MapEditor {
     })
 
     screenCanvas.addEventListener('mousedown', (event) => {
+      this.#saveUndoBuffer()
       const { x, y } = this.#absoluteCursorPositionOf(event)
       this.#mouse.down = { x, y }
 
@@ -298,6 +304,19 @@ class MapEditor {
     screenCanvas.addEventListener('keydown', (event) => {
       let { x, y } = this.#mouse.absolute
       const tile = this.#getCursorTile(x, y)
+
+      const isCtrl = event.ctrlKey || event.metaKey
+      if(isCtrl) {
+        switch (event.key) {
+          case 'z':
+            this.#undo()
+            return
+          case 'r':
+            this.#redo()
+            return
+        }
+        return
+      }
       switch (event.key) {
         case 'a':
           if(this.#drawMode === this.#DRAW_TILE) {
@@ -311,6 +330,7 @@ class MapEditor {
           this.#redrawCanvas()
           break
         case 'd':
+          this.#saveUndoBuffer()
           switch (this.#drawMode) {
             case this.#DRAW_PROP:
               const prop = this.#getCursorProp(x, y)
@@ -327,6 +347,7 @@ class MapEditor {
           }
           break
         case 'r':
+          this.#saveUndoBuffer()
           if (tile) {
             tile.rotation = (tile.rotation + 90) % 360
             this.#redrawCanvas()
@@ -376,6 +397,22 @@ class MapEditor {
       })
   }
 
+  #saveUndoBuffer() {
+    const mapDataJSON = JSON.stringify(this.mapData)
+    if(this.#undoBuffer.length > 0) {
+      const prevDataJSON = this.#undoBuffer[0]
+      if(prevDataJSON === mapDataJSON) {
+        return false
+      }
+    }
+    this.#undoBuffer.unshift(mapDataJSON)
+    this.#redoBuffer = []
+    if(this.#undoBuffer.length > this.#UNDO_BUFFER_SIZE) {
+      this.#undoBuffer.pop()
+    }
+    return true
+  }
+
   saveMap(name = null) {
     let filename = this.#mapPath
     if(name) { 
@@ -400,15 +437,36 @@ class MapEditor {
     fetch('./campaign/media', {
       method: 'POST',
       body: formData
-    }).then(() => {
+    }).then(() => {      
       if(name) {
-        fetch(`/campaign/data`)
-        .then((response) => response.json())
-        .then((campaign) => { this.setState({ campaign }) })
+        this.onCreateMapFile()
       }
     })
 
     this.onUpdateMapData(this.mapData)
+  }
+  
+  #restoreFromBuffer(pullFrom, pushTo) {
+    const mapDataJSON = JSON.stringify(this.mapData)
+    while(pullFrom.length > 0 && pullFrom[0] === mapDataJSON) {
+      this.#undoBuffer.shift()
+    }
+    if(pullFrom.length > 0) {
+      const prevDataJSON = pullFrom.shift()
+      pushTo.unshift(mapDataJSON)
+      this.mapData = JSON.parse(prevDataJSON)
+      this.#redrawCanvas()
+      this.onUpdateMapData(this.mapData)
+      this.saveMap()
+    }
+  }
+
+  #undo() {
+    this.#restoreFromBuffer(this.#undoBuffer, this.#redoBuffer)
+  }
+
+  #redo() {
+    this.#restoreFromBuffer(this.#redoBuffer, this.#undoBuffer)
   }
 
   exportMap(name) {
@@ -641,6 +699,10 @@ class MapEditor {
     this.#buffer.restore()
   }
 
+  redraw() {
+    this.#redrawCanvas()
+  }
+
   #redrawCanvas() {
     this.#clearCanvas(this.#buffer)
     this.#buffer.save()
@@ -842,6 +904,13 @@ class App extends Component {
     editor.onUpdateMapData = (mapData) => {
       this.updateUsage()
     }
+
+    editor.onCreateMapFile = () => {
+      fetch(`/campaign/data`)
+      .then((response) => response.json())
+      .then((campaign) => { this.setState({ campaign }) })
+    }
+
   }
 
   updateUsage() {
@@ -880,6 +949,25 @@ class App extends Component {
         >Create</button>
         <button onClick=${() => this.setState({ showFileList: true })}>Load</button>
         <button onClick=${() => this.editor.exportMap(this.state.filename)}>Export</button>
+      </div>
+      <h3>Config</h3>
+      <div class="map-config">
+        <label for="width">Width:</label>
+        <input type="number" id="width" name="width" value=${this.editor.mapData.width} onChange=${(event) => {
+          const width = parseInt(event.target.value, 10)
+          if(width > 0 && width !== this.editor.mapData.width) {
+            this.editor.mapData.width = width
+            this.editor.redraw()
+          }
+        }} />
+        <label for="height">Height:</label>
+        <input type="number" id="height" name="height" value=${this.editor.mapData.height} onChange=${(event) => {
+          const height = parseInt(event.target.value, 10)
+          if(height > 0 && height !== this.editor.mapData.height) {
+            this.editor.mapData.height = height
+            this.editor.redraw()
+          }
+        }} />
       </div>
       <h3>Tiles</h3>
       <${TagList}

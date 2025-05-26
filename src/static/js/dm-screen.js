@@ -208,6 +208,16 @@ class App extends Component {
     })
   }
 
+  saveDMData() {
+    fetch(`/dm/data`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.dm),
+    })
+  }
+
   saveCampaignData() {
     fetch(`/campaign/data`, {
       method: 'POST',
@@ -376,24 +386,30 @@ class App extends Component {
       return
     }
     this.setState({
-      pinned: {
-        ...this.state.pinned,
-        [type]: [...this.state.pinned[type], { label, id }],
-      },
-    }, () => this.savePlayersData())
+      dm: {
+        ...this.state.dm,
+        pinned: {
+          ...this.state.dm.pinned,
+          [type]: [...this.state.dm.pinned[type], { label, id }],
+        },
+      }
+    }, () => this.saveDMData())
   }
 
   unpinItem(type, id) {
     this.setState({
-      pinned: {
-        ...this.state.pinned,
-        [type]: this.state.pinned[type].filter(item => item.id !== id),
-      },
-    }, () => this.savePlayersData())
+      dm: {
+        ...this.state.dm,
+        pinned: {
+          ...this.state.dm.pinned,
+          [type]: this.state.dm.pinned[type].filter(item => item.id !== id),
+        },
+      }
+    }, () => this.saveDMData())
   }
 
   isPinned(type, id) {
-    return this.state.pinned[type].find(item => item.id === id)
+    return this.state.dm.pinned[type].find(item => item.id === id)
   }
 
   constructor(props) {
@@ -457,13 +473,19 @@ class App extends Component {
         insertImage: false,
         insertName: false,
       },
-      pinned: {
-        images: [],
-        bgm: [],
-        ambience: [],
-        rules: [],
-        cards: [],
-        docs: []
+      dm: {
+        id: '',
+        description: '',
+        name: '',
+        tiles: [],
+        pinned: {
+          images: [],
+          bgm: [],
+          ambience: [],
+          rules: [],
+          cards: [],
+          docs: []
+        }
       }
     }
 
@@ -486,8 +508,8 @@ class App extends Component {
 
         this.setState({
           campaign,
+          dm,
           players,
-          pinned: dm.pinned,
           screen: {
             ...this.state.screen,
             images: savedImages
@@ -720,7 +742,7 @@ class App extends Component {
         >
           <${PinnedItemsList} 
             items=${
-              this.state.pinned.docs
+              this.state.dm.pinned.docs
                 .filter(item => !this.state.notes.docs.some(doc => doc.loaded && doc.path === item.id))
             }
             onClick=${item => this.loadDocument(item.label, item.id)}
@@ -774,12 +796,12 @@ class App extends Component {
           ]}
         >
           <${PinnedItemsList}
-            items=${this.state.pinned.cards}
+            items=${this.state.dm.pinned.cards}
             onUnpin=${id => this.unpinItem('cards', id)}
             onClick=${card => this.addCard(card.id)}
           />
           <${PinnedItemsList}
-            items=${this.state.pinned.rules}
+            items=${this.state.dm.pinned.rules}
             onUnpin=${id => this.unpinItem('rules', id)}
             onClick=${rule => this.addRule(rule.id)}
           />

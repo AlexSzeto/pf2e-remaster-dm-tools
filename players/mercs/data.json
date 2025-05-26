@@ -1,97 +1,97 @@
 {
-    "characters": [
-      {
-        "class": "Cleric",
-        "hp": 30,
-        "name": "Grom",
-        "perception": 6
-      },
-      {
-        "class": "Druid",
-        "hp": 26,
-        "name": "Typha",
-        "perception": 6
-      },
-      {
-        "class": "Bard",
-        "hp": 24,
-        "name": "Lemmy",
-        "perception": 7
-      },
-      {
-        "class": "Rogue",
-        "hp": 26,
-        "name": "Fayla",
-        "perception": 7
-      }
-    ],
-    "id": "mercs",
-    "ledger": [
-      {
-        "cp": 0,
-        "date": "2023-01-18",
-        "gp": 23,
-        "items": [],
-        "level": 2,
-        "notes": "bracelet stolen from a noble",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2023-01-18",
-        "gp": 0,
-        "items": [
-          {
-            "level": 1,
-            "name": "Darkstone Amulet",
-            "type": "permanent"
-          }
-        ],
-        "level": 2,
-        "notes": "",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2025-02-15",
-        "gp": 16,
-        "items": [
-          {
-            "level": 1,
-            "name": "Lesser Alchemist's Fire",
-            "type": "consumable"
-          }
-        ],
-        "level": 2,
-        "notes": "Reaven's personal items",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2025-02-15",
-        "gp": 0,
-        "items": [
-          {
-            "level": 1,
-            "name": "Highmountain Ceremonial Battle Axe",
-            "type": "permanent"
-          }
-        ],
-        "level": 2,
-        "notes": "Additional loot for Reaven",
-        "sp": 0
-      },
-      {
-        "cp": 0,
-        "date": "2025-03-23",
-        "gp": 35,
-        "items": [],
-        "level": 2,
-        "notes": "Reward from Burt for saving the Hive",
-        "sp": 0
-      }
-    ],
-    "name": "Mercs",
-    "description": "",
-    "partyLevel": 1
+  "characters": [
+    {
+      "class": "Cleric",
+      "hp": 30,
+      "name": "Grom",
+      "perception": 6
+    },
+    {
+      "class": "Druid",
+      "hp": 26,
+      "name": "Typha",
+      "perception": 6
+    },
+    {
+      "class": "Bard",
+      "hp": 24,
+      "name": "Lemmy",
+      "perception": 7
+    },
+    {
+      "class": "Rogue",
+      "hp": 26,
+      "name": "Fayla",
+      "perception": 7
+    }
+  ],
+  "id": "mercs",
+  "ledger": [
+    {
+      "cp": 0,
+      "date": "2023-01-18",
+      "gp": 23,
+      "items": [],
+      "level": 2,
+      "notes": "bracelet stolen from a noble",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2023-01-18",
+      "gp": 0,
+      "items": [
+        {
+          "level": 1,
+          "name": "Darkstone Amulet",
+          "type": "permanent"
+        }
+      ],
+      "level": 2,
+      "notes": "",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2025-02-15",
+      "gp": 16,
+      "items": [
+        {
+          "level": 1,
+          "name": "Lesser Alchemist's Fire",
+          "type": "consumable"
+        }
+      ],
+      "level": 2,
+      "notes": "Reaven's personal items",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2025-02-15",
+      "gp": 0,
+      "items": [
+        {
+          "level": 1,
+          "name": "Highmountain Ceremonial Battle Axe",
+          "type": "permanent"
+        }
+      ],
+      "level": 2,
+      "notes": "Additional loot for Reaven",
+      "sp": 0
+    },
+    {
+      "cp": 0,
+      "date": "2025-03-23",
+      "gp": 35,
+      "items": [],
+      "level": 2,
+      "notes": "Reward from Burt for saving the Hive",
+      "sp": 0
+    }
+  ],
+  "name": "Mercs",
+  "description": "",
+  "partyLevel": 1
 }
