@@ -36,7 +36,10 @@ export const addReference = async (config, source, subtype, entry) => {
         const references = data[subtype]
         const entryIndex = references.findIndex(entry.path ? matchReference(entry.path) : matchReference(entry.name))
         if (entryIndex !== -1) {
-          references[entryIndex] = entry
+          references[entryIndex] = {
+            ...references[entryIndex],
+            entry
+          }
         } else {
           references.push(entry)
         }

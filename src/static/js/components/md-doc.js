@@ -11,7 +11,10 @@ export class MarkdownDocument extends Component {
 
   constructor({ label, path, text, loaded, onEdit, onClose, onPreviewImage, onContextAction }) {
     super()
-    this.state = { readonly: true }
+    this.state = { 
+      lastSaved: '',
+      readonly: true 
+    }
   }
 
   enhanceMarkdownText(text) {
@@ -105,6 +108,7 @@ export class MarkdownDocument extends Component {
   }
 
   saveDocument() {
+    this.setState({ lastSaved: new Date().toLocaleString() })
     this.props.onEdit(this.props.path, this.editor.getValue())
   }
 
@@ -115,14 +119,14 @@ export class MarkdownDocument extends Component {
         this.editor.focus()
       })
     } else {
-      this.props.onEdit(this.props.path, this.editor.getValue())
+      this.saveDocument()
       this.setState({ readonly: true })
     }
   }
 
   saveAndCloseDocument() {
     if (!this.state.readonly) {
-      this.props.onEdit(this.props.path, this.editor.getValue())
+      this.saveDocument()
     }
     requestAnimationFrame(() => this.props.onClose(this.props.path))
   }
@@ -164,6 +168,7 @@ export class MarkdownDocument extends Component {
               }</pre>
             </div>
           </div>
+          ${this.state.lastSaved.length > 0 ? html`<div>Last saved on ${this.state.lastSaved}</div>` : ''}
         </${ContentSection}>
       </div>
       `}

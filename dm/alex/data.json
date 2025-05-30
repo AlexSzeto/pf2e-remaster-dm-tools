@@ -484,12 +484,16 @@
         "label": "Characters"
       },
       {
-        "id": "events.md",
-        "label": "Campaign Events"
+        "label": "Session Plan",
+        "id": "events.md"
       },
       {
         "label": "Ruins Of Keroc",
         "id": "ruins-of-keroc.md"
+      },
+      {
+        "label": "Xyndrasis",
+        "id": "xyndrasis.md"
       }
     ],
     "images": [

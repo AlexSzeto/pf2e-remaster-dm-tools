@@ -25,7 +25,7 @@ class NameGenerator extends Component {
       generatedNames: [],
     }
 
-    fetch(`/campaign`)
+    fetch(`/campaign/data`)
       .then((response) => response.json())
       .then((campaign) => { this.setState({ campaign }) })
   }

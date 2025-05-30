@@ -87,7 +87,12 @@ export const addMediaEndpoints = (app, config) => {
     const filename = file.name
     const source = req.params.source    
     const type = mediaTypeOf(filename)
-    const body = JSON.parse(JSON.stringify(req.body))
+    let body
+    try {
+      body = JSON.parse(JSON.stringify(req.body))
+    } catch (err) {
+      body = {}
+    }
 
     const id = path.basename(filename)
     const name =
