@@ -514,24 +514,8 @@
         "label": "Location Ruins Keep"
       },
       {
-        "id": "location-keroc-upper-ruins.jpeg",
-        "label": "Keroc Upper Ruins"
-      },
-      {
         "id": "location-keroc-temple-grounds.jpg",
         "label": "Keroc Temple Grounds"
-      },
-      {
-        "id": "location-keroc-armory.jpeg",
-        "label": "Keroc Armory"
-      },
-      {
-        "id": "location-keroc-morgue.jpeg",
-        "label": "Keroc Morgue"
-      },
-      {
-        "id": "location-keroc-excavation.jpeg",
-        "label": "Keroc Excavation"
       },
       {
         "id": "location-keroc-brewery.jpeg",
@@ -542,12 +526,36 @@
         "label": "Keroc Alchemy Lab"
       },
       {
-        "id": "location-keroc-summoning-chamber.jpeg",
-        "label": "Keroc Summoning Chamber"
-      },
-      {
         "label": "Keroc Burial Chamber",
         "id": "location-keroc-burial-chamber.jpeg"
+      },
+      {
+        "label": "Portrait Hethor",
+        "id": "portrait-hethor.jpg"
+      },
+      {
+        "label": "Portrait Nerkith",
+        "id": "portrait-nerkith.jpg"
+      },
+      {
+        "label": "Portrait Yisha",
+        "id": "portrait-yisha.jpeg"
+      },
+      {
+        "label": "Xyndrasis Overlook",
+        "id": "location-xyndrasis-overlook.jpg"
+      },
+      {
+        "label": "Map Xyndrasis",
+        "id": "map-xyndrasis.jpg"
+      },
+      {
+        "label": "Rat's Nest",
+        "id": "location-rats-nest.jpg"
+      },
+      {
+        "label": "Location Limestone Cavern",
+        "id": "location-limestone-cavern.jpg"
       }
     ],
     "rules": []
