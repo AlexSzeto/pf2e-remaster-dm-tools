@@ -987,8 +987,8 @@ class App extends Component {
           <div class="tile ${this.state.selectedTile === tile.path ? 'selected' : ''}">
             <div class="label">
               ${tile.width}×${tile.height} ${tile.label}
-              <span class="${this.usageOf(tile.path) > tile.inventory ? 'full' : ''}">
-                <strong> (${this.usageOf(tile.path)}/${tile.inventory})</strong>
+              <span class="${this.usageOf(tile.path) > tile.count ? 'full' : ''}">
+                <strong> (${this.usageOf(tile.path)}/${tile.count})</strong>
               </span>
             </div>
             <div class="image-container">
@@ -1006,7 +1006,7 @@ class App extends Component {
       <h3>Print List</h3>
       <ul class="print-list">
         ${this.editor.tilesLibrary
-          .map((tile) => ({ path: tile.path, name: tile.name, count: this.usageOf(tile.path) - tile.inventory }))
+          .map((tile) => ({ path: tile.path, name: tile.name, count: this.usageOf(tile.path) - tile.count }))
           .filter(tile => tile.count > 0)
           .map(tile => html`
             <li>${tile.name} (${tile.count})</li>

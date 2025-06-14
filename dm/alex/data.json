@@ -474,8 +474,20 @@
         "label": "Cultist Initiate"
       },
       {
-        "id": "Void Worms Swarm",
-        "label": "Void Worms Swarm"
+        "id": "Blight Worms Swarm",
+        "label": "Blight Worms Swarm"
+      },
+      {
+        "label": "Animated Statue",
+        "id": "Animated Statue"
+      },
+      {
+        "label": "Hunting Spider (Elite)",
+        "id": "Hunting Spider (Elite)"
+      },
+      {
+        "label": "Carrion Beetle",
+        "id": "Carrion Beetle"
       }
     ],
     "docs": [
