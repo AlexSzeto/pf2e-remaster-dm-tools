@@ -46,6 +46,7 @@ app.get('/src/*path', (req, res) => {
   // console.log('get:', req.params.path)
   // Prevent directory traversal attacks
   const filePath = path.join(config.root, 'src/static', req.params.path.join('/'))
+  console.log('filePath:', filePath)
   res.sendFile(filePath, (err) => {
     if (err) {
       res.status(404).send('File not found')
@@ -57,8 +58,8 @@ app.get('/src/*path', (req, res) => {
 loadJSON(path.join(config.root, configFilename))
   .then((data) => {
     config = {
-      ...config,
       ...data,
+      ...config,
     }
 
     console.log('settings loaded:', config)
