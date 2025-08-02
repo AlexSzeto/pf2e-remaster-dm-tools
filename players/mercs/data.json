@@ -2,27 +2,27 @@
   "characters": [
     {
       "class": "Cleric",
-      "hp": 30,
+      "hp": 40,
       "name": "Grom",
-      "perception": 6
+      "perception": 9
     },
     {
       "class": "Druid",
-      "hp": 26,
+      "hp": 35,
       "name": "Typha",
-      "perception": 6
+      "perception": 7
     },
     {
       "class": "Bard",
-      "hp": 24,
+      "hp": 32,
       "name": "Lemmy",
-      "perception": 7
+      "perception": 8
     },
     {
       "class": "Rogue",
-      "hp": 26,
+      "hp": 36,
       "name": "Fayla",
-      "perception": 7
+      "perception": 8
     }
   ],
   "id": "mercs",
@@ -89,9 +89,44 @@
       "level": 2,
       "notes": "Reward from Burt for saving the Hive",
       "sp": 0
+    },
+    {
+      "level": 3,
+      "gp": 0,
+      "sp": 0,
+      "cp": 0,
+      "items": [
+        {
+          "level": 4,
+          "type": "permanent",
+          "name": "Spacious Pouch"
+        },
+        {
+          "level": 1,
+          "type": "consumable",
+          "name": "Monkey Pin"
+        }
+      ],
+      "notes": "",
+      "date": "2025-06-14"
+    },
+    {
+      "level": 3,
+      "gp": 0,
+      "sp": 5,
+      "cp": 0,
+      "items": [
+        {
+          "level": 1,
+          "type": "permanent",
+          "name": "Aeon Stone Consumed"
+        }
+      ],
+      "notes": "",
+      "date": "2025-06-14"
     }
   ],
   "name": "Mercs",
   "description": "",
-  "partyLevel": 1
+  "partyLevel": 3
 }

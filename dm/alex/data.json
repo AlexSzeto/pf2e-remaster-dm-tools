@@ -568,6 +568,10 @@
       {
         "label": "Location Limestone Cavern",
         "id": "location-limestone-cavern.jpg"
+      },
+      {
+        "label": "Stormhaven Riots",
+        "id": "location-stormhaven-riots.jpg"
       }
     ],
     "rules": []
