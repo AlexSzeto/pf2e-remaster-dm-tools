@@ -542,16 +542,52 @@
         "id": "map-xyndrasis.jpg"
       },
       {
-        "label": "Rat's Nest",
-        "id": "location-rats-nest.jpg"
+        "label": "Xyndrasis Outskirts",
+        "id": "location-xyndrasis-outskirts.jpeg"
       },
       {
-        "label": "Location Limestone Cavern",
-        "id": "location-limestone-cavern.jpg"
+        "label": "Xyndrasis Temple",
+        "id": "location-xyndrasis-temple.jpeg"
       },
       {
-        "label": "Stormhaven Riots",
-        "id": "location-stormhaven-riots.jpg"
+        "label": "Xyndrasis Lab",
+        "id": "location-xyndrasis-lab.jpeg"
+      },
+      {
+        "label": "Xyndrasis Armory",
+        "id": "location-xyndrasis-armory.jpeg"
+      },
+      {
+        "label": "Xyndrasis Streets 2",
+        "id": "location-xyndrasis-streets-2.jpeg"
+      },
+      {
+        "label": "Xyndrasis Streets",
+        "id": "location-xyndrasis-streets.jpeg"
+      },
+      {
+        "label": "Arcane Lab Library",
+        "id": "location-arcane-lab-library.jpeg"
+      },
+      {
+        "label": "Arcane Lab Research",
+        "id": "location-arcane-lab-research.jpeg"
+      },
+      {
+        "label": "Xyndrasis Armory Vault",
+        "id": "location-xyndrasis-armory-vault.jpeg"
+      },
+      {
+        "label": "Xyndrasis Armory Common Room",
+        "id": "location-xyndrasis-armory-common-room.jpeg"
+      },
+      {
+        "label": "Xyndrash Manor Foyer",
+        "id": "location-xyndrash-manor-foyer.jpeg"
+      },
+      {
+        "label": "Xyndrash Manor Bedroom",
+        "id": "location-xyndrash-manor-bedroom.jpeg"
       }
     ],
     "rules": []
