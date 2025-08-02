@@ -474,8 +474,8 @@
         "label": "Cultist Initiate"
       },
       {
-        "id": "Blight Worms Swarm",
-        "label": "Blight Worms Swarm"
+        "id": "Mind Crawler Swarm",
+        "label": "Mind Crawler Swarm"
       },
       {
         "label": "Animated Statue",
@@ -500,47 +500,15 @@
         "id": "events.md"
       },
       {
-        "label": "Ruins Of Keroc",
-        "id": "ruins-of-keroc.md"
-      },
-      {
         "label": "Xyndrasis",
         "id": "xyndrasis.md"
+      },
+      {
+        "label": "Xyndrasis Labarinth",
+        "id": "xyndrasis-labarinth.md"
       }
     ],
     "images": [
-      {
-        "id": "portrait-junka.jpeg",
-        "label": "Junka"
-      },
-      {
-        "id": "portrait-xugan.jpeg",
-        "label": "Xugan"
-      },
-      {
-        "id": "portrait-trixie.jpeg",
-        "label": "Trixie"
-      },
-      {
-        "id": "location-ruins-keep.jpg",
-        "label": "Location Ruins Keep"
-      },
-      {
-        "id": "location-keroc-temple-grounds.jpg",
-        "label": "Keroc Temple Grounds"
-      },
-      {
-        "id": "location-keroc-brewery.jpeg",
-        "label": "Keroc Brewery"
-      },
-      {
-        "id": "location-keroc-alchemy-lab.jpeg",
-        "label": "Keroc Alchemy Lab"
-      },
-      {
-        "label": "Keroc Burial Chamber",
-        "id": "location-keroc-burial-chamber.jpeg"
-      },
       {
         "label": "Portrait Hethor",
         "id": "portrait-hethor.jpg"

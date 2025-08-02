@@ -2,26 +2,25 @@ import { render, Component } from 'preact'
 import { html } from 'htm/preact'
 
 import { ContentSection, LabeledItem } from './components/content-section.js'
-import { FramedImage } from './components/framed-image.js'
 
-import { Card } from './components/card.js'
-import {
-  InitiativeListItem,
-  InitiativeTracker,
-} from './components/initiative-tracker.js'
-import { campaignMedia, deepCompare, getCookie, setCookie } from './common/util.js'
+import { getCookie, setCookie } from './common/util.js'
 import { createAudioSource } from './common/audio.js'
-import { MarkdownDocument } from './components/md-doc.js'
-import { rawLine, BudgetDisplay, BudgetTracker, calculateRemainder, countBudget, totalBudgetByLevel } from './components/budget-tracker.js'
+import { loadRule } from './modals/rules-search-modal.js'
 
 import { ImageSelectorModal } from './modals/image-selector-modal.js'
 import { FileSelectorModal } from './modals/file-modal.js'
 import { CardSelectorModal } from './modals/card-modal.js'
-import { loadRule, RulesSearchModal } from './modals/rules-search-modal.js'
+import { RulesSearchModal } from './modals/rules-search-modal.js'
 import { ImageViewerModal } from './modals/image-viewer-modal.js'
-import { PinnedItemsList } from './components/pinned-items-list.js'
 
-const imageLocations = ['background', 'left', 'right']
+import { Images } from './dm-modules/images.js'
+import { Audio } from './dm-modules/audio.js'
+import { Documents } from './dm-modules/documents.js'
+import { Cards } from './dm-modules/cards.js'
+import { Initiative } from './dm-modules/initiative-tracker.js'
+import { Treasure } from './dm-modules/treasure.js'
+import { InitiativeListItem } from './components/initiative-tracker.js'
+
 const audioTypes = ['bgm', 'ambience']
 
 const audioTypeMaps = {
@@ -106,7 +105,7 @@ class App extends Component {
           [type]: {
             label,
             controls: createAudioSource(
-              campaignMedia(url),
+              `/campaign/media/${url}`,
               fadeInDuration,
               this.globalVolume(type)
             ),
@@ -242,7 +241,7 @@ class App extends Component {
       return
     }
 
-    fetch(campaignMedia(path))
+    fetch(`/campaign/media/${path}`)
       .then((response) => response.text())
       .then((text) => {
         this.setState({
@@ -631,94 +630,23 @@ class App extends Component {
   }
 
   render() {
-    const explorationImage = html`
-    <div style="grid-area: image">
-      <${ContentSection}
-        label="Image"
-        actions=${[
-          {
-            icon: this.state.screen.images.cover ? 'exit-fullscreen' : 'fullscreen',
-            onClick: () => this.toggleBackgroundCover(),
-          },
-        ]}
-      >
-        <div class="images-layout">
-          ${imageLocations.map(
-            (location) => html`
-              <div class="${location}-container">
-                <${FramedImage}
-                  type=${location}
-                  url=${campaignMedia(this.state.screen.images[location])}
-                  cover=${location === 'background'
-                    ? this.state.screen.images.cover
-                    : false}
-                  onClick=${() => this.showModal(location)}
-                  onModal=${(url) => () => this.showImageViewerModal(url)}
-                />
-              </div>
-            `
-          )}
-        </div>
-      </${ContentSection}>
-    </div>    
-    `
-
-    const explorationAudio = html`
-    <div style="grid-area: audio">
-      <${ContentSection}
-        label="Audio"
-        actions=${[
-          {
-            icon: this.state.screen.duckAudio ? 'volume-full' : 'volume-low',
-            onClick: () => this.toggleAudioDuck(),
-          },
-          {
-            icon: 'square',
-            onClick: () => this.stopAllAudio(),
-          },
-        ]}
-      >
-        <div class="audio-grid">
-          ${audioTypes.map(
-            (type) => html`
-            <${LabeledItem} label=${audioTypeMaps[type].label}>
-              <div onClick=${() => this.showModal(type)}>
-                <div class="disabled-text">
-                  <div
-                    class="volume-slider ${
-                      this.state.screen[type].volume >= 0.99 ||
-                      this.state.screen[type].volume === 0
-                        ? 'inactive'
-                        : ''
-                    }"
-                    style=${`width: ${this.state.screen[type].volume * 100}%`}
-                  >
-                  </div>
-                  <div class="audio-label">
-                    ${
-                      this.state.screen[type].label === ''
-                        ? 'None'
-                        : this.state.screen[type].label +
-                          ' ' +
-                          (this.state.screen[type].volume * 100).toFixed(0) +
-                          '%'
-                    }
-                  </div>
-                </div>
-              </div>
-            </${LabeledItem}>
-          `
-          )}
-        </div>
-      </${ContentSection}>
-    </div>
-    `
-
     const explorationTab = html`
       <h2 class="collapsible">Immersive Mode</h2>
       <div class="tab">
         <div class="tab-content immersive-mode-grid">
-          ${explorationImage} ${explorationAudio}
+            <${Images} 
+                images=${this.state.screen.images} 
+                onShowImage=${(location, url) => this.showImage(location, url)}
+                onToggleBackgroundCover=${() => this.toggleBackgroundCover()}
+                onShowModal=${(modal) => this.showModal(modal)}
+                onShowImageViewer=${(url) => this.showImageViewerModal(url)}
+            />
+            <${Audio} 
+                screen=${this.state.screen} 
+                onToggleAudioDuck=${() => this.toggleAudioDuck()}
+                onStopAllAudio=${() => this.stopAllAudio()}
+                onShowModal=${(modal) => this.showModal(modal)}
+            />
         </div>
       </div>
     `
@@ -727,49 +655,21 @@ class App extends Component {
     <h2 class="collapsible">Notes</h2>
     <div class="tab">
       <div class="tab-content notes-grid">
-        <${ContentSection}
-          label="Documents"
-          actions=${[
-            {
-              icon: 'plus',
-              onClick: () => this.showModal('docs'),
-            },
-            {
-              icon: 'x',
-              onClick: () => this.closeAllDocuments(),
-            },
-          ]}
-        >
-          <${PinnedItemsList} 
-            items=${
-              this.state.dm.pinned.docs
-                .filter(item => !this.state.notes.docs.some(doc => doc.loaded && doc.path === item.id))
-            }
-            onClick=${item => this.loadDocument(item.label, item.id)}
-            onUnpin=${id => this.unpinItem('docs', id)}
-          />
-          <div class="doc-grid">
-            ${this.state.notes.docs.map(
-              (doc) => html`
-                <div class="doc-container ${doc.loaded ? '' : 'hidden'}">
-                  <${MarkdownDocument}
-                    loaded=${doc.loaded}
-                    label=${doc.label}
-                    path=${doc.path}
-                    text=${doc.text}
-                    onContextAction=${(id, editor) => { 
-                      this.editor = editor 
-                      this.showModal(id)
-                    }}
-                    onPreviewImage=${(url) => this.showImageViewerModal(url)}
-                    onEdit=${(path, text) => this.saveDocument(path, text)}
-                    onClose=${(path) => this.closeDocument(path)}
-                  />
-                </div>
-              `
-            )}
-          </div>
-        </${ContentSection}>
+        <${Documents} 
+            docs=${this.state.notes.docs} 
+            pinnedDocs=${this.state.dm.pinned.docs} 
+            onLoadDocument=${(label, path) => this.loadDocument(label, path)}
+            onSaveDocument=${(path, text) => this.saveDocument(path, text)}
+            onCloseDocument=${(path) => this.closeDocument(path)}
+            onCloseAllDocuments=${() => this.closeAllDocuments()}
+            onUnpin=${(type, id) => this.unpinItem(type, id)}
+            onShowModal=${(modal) => this.showModal(modal)}
+            onShowImageViewer=${(url) => this.showImageViewerModal(url)}
+            onContextAction=${(id, editor) => { 
+                this.editor = editor 
+                this.showModal(id)
+            }}
+        />
       </div>
     </div>    
     `
@@ -778,77 +678,23 @@ class App extends Component {
     <h2 class="collapsible">Combat</h2>
     <div class="tab">
       <div class="tab-content combat-grid">
-          <${ContentSection}
-          label="Reference Cards"
-          actions=${[
-            {
-              icon: 'search',
-              onClick: () => this.showModal('search'),
-            },
-            {
-              icon: 'plus',
-              onClick: () => this.showModal('card'),
-            },
-            {
-              icon: 'x',
-              onClick: () => this.updateCards([]),
-            },
-          ]}
-        >
-          <${PinnedItemsList}
-            items=${this.state.dm.pinned.cards}
-            onUnpin=${id => this.unpinItem('cards', id)}
-            onClick=${card => this.addCard(card.id)}
-          />
-          <${PinnedItemsList}
-            items=${this.state.dm.pinned.rules}
-            onUnpin=${id => this.unpinItem('rules', id)}
-            onClick=${rule => this.addRule(rule.id)}
-          />
-          <div class="card-grid">
-            ${this.state.notes.cards.map(
-              (card) => html`
-              <div class="reference-card-frame">
-              <${ContentSection}
-                label=""
-                actions=${[
-                  {
-                    icon: 'bookmark',
-                    onClick: () => card.ref 
-                      ? this.togglePin('rules', card.name, `${card.ref.type}/${card.ref.rule}`)
-                      : this.togglePin('cards', card.name, card.name),
-                  },
-                  {
-                    icon: 'log-in',
-                    onClick: () => this.addCharacterToInitiative(card),
-                  },
-                  {
-                    icon: 'x',
-                    onClick: () => this.removeNotesCard(card),
-                  },
-                ]}
-              >
-                  <${Card} data=${card} onSearch=${query => this.addRule(`spells/${query}`)}/>
-              </${ContentSection}>
-              </div>
-              `
-            )}
-          </div>
-        </${ContentSection}>      
-        <${ContentSection}
-          label="Initiative Tracker"
-          actions=${[
-            {
-              icon: 'plus',
-              onClick: () => this.showModal('combatCards'),
-            },
-          ]}
-        >
-          <${InitiativeTracker}
-            data=${this.state.combat}
-            onUpdate=${(data) => this.updateInitiateTracker(data)}
-          />
-        </${ContentSection}>
+        <${Cards} 
+            cards=${this.state.notes.cards} 
+            pinnedCards=${this.state.dm.pinned.cards} 
+            pinnedRules=${this.state.dm.pinned.rules} 
+            onAddCard=${(name) => this.addCard(name)}
+            onAddRule=${(id) => this.addRule(id)}
+            onUpdateCards=${(cards) => this.updateCards(cards)}
+            onRemoveCard=${(card) => this.removeNotesCard(card)}
+            onTogglePin=${(type, label, id) => this.togglePin(type, label, id)}
+            onShowModal=${(modal) => this.showModal(modal)}
+            onAddCharacterToInitiative=${(card) => this.addCharacterToInitiative(card)}
+        />
+        <${Initiative} 
+            combat=${this.state.combat} 
+            onUpdateInitiativeTracker=${(data) => this.updateInitiateTracker(data)}
+            onShowModal=${(modal) => this.showModal(modal)}
+        />
       </div>
     </div>
     `
@@ -856,98 +702,23 @@ class App extends Component {
     const upkeepTab = html`
     <h2 class="collapsible">Upkeep</h2>
     <div class="tab">
-      <div class="tab-content budget-grid">
-        <div>
-          <${BudgetTracker}
-            id="party-budget"
-            label="Party Ledger"
-            level=${this.state.players.partyLevel}
-            items=${this.state.players.ledger}
-            trackDate=${true}
-
-            onUpdateLevel=${(level) => {this.updatePlayersLevel(level)}}
-            onAddLine=${(line) => {
-              this.setState({
-                players: {
-                  ...this.state.players,
-                  ledger: [...this.state.players.ledger, line],
-                },
-              }, () => this.savePlayersData())
-            }}
-            onDeleteLine=${(line) => {
-              this.setState({
-                players: {
-                  ...this.state.players,
-                  ledger: this.state.players.ledger.filter((l) => !deepCompare(rawLine(l), line)),
-                },
-              }, () => this.savePlayersData())
-            }}
-          />
-          <strong>ACCQUIRED</strong>
-          <${BudgetDisplay}
-            budget=${countBudget(this.state.players.ledger, this.state.players.partyLevel, this.state.players.partyLevel)}
-          />
-        </div>
-        <div>
-          <${BudgetTracker}
-            id="treasure-budget"
-            label="Treasure by Level"
-            level=${this.state.players.partyLevel}
-            items=${this.state.campaign.treasures.map(line => ({
-              ...line,
-              used: this.state.players.ledger.some(l => {
-                const { date, ...stripped } = l
-                return deepCompare(stripped, line)
-              })
-            }))}
-
-            onUpdateLevel=${(level) => {this.updatePlayersLevel(level)}}
-            onAddLine=${(line) => {
-              this.setState({
-                campaign: {
-                  ...this.state.campaign,
-                  treasures: [...this.state.campaign.treasures, line],
-                },
-              }, () => this.saveCampaignData())
-            }}
-            onSendLine=${(line, date) => {
-              this.setState({
-                players: {
-                  ...this.state.players,
-                  ledger: [...this.state.players.ledger, { ...line, date }],
-                },
-              }, () => {
-                this.savePlayersData()
-              })
-            }}
-            onDeleteLine=${(line) => {
-              this.setState({
-                campaign: {
-                  ...this.state.campaign,
-                  treasures: this.state.campaign.treasures.filter((l) => !deepCompare(rawLine(l), line)),
-                },
-              }, () => this.saveCampaignData())
-            }}
-          />
-          <div>
-            <strong>SPENT</strong>
-            <${BudgetDisplay}
-              budget=${countBudget(this.state.campaign.treasures, this.state.players.partyLevel, this.state.players.partyLevel)}
-            />
-          </div>
-          <div>
-            <strong>REMAINING</strong>
-            <${BudgetDisplay}
-              budget=${
-                calculateRemainder(
-                  totalBudgetByLevel(this.state.players.partyLevel, this.state.players.characters.length),
-                  countBudget(this.state.campaign.treasures, this.state.players.partyLevel, this.state.players.partyLevel)
-                )              
-              }
-            />
-          </div>
-        </div>
-      </div>
+        <${Treasure} 
+            players=${this.state.players} 
+            campaign=${this.state.campaign} 
+            onUpdatePlayersLevel=${(level) => this.updatePlayersLevel(level)}
+            onUpdateLedger=${(ledger) => this.setState({ players: { ...this.state.players, ledger } }, () => this.savePlayersData())}
+            onUpdateTreasures=${(treasures) => this.setState({ campaign: { ...this.state.campaign, treasures } }, () => this.saveCampaignData())}
+            onSendTreasure=${(line, date) => {
+                this.setState({
+                  players: {
+                    ...this.state.players,
+                    ledger: [...this.state.players.ledger, { ...line, date }],
+                  },
+                }, () => {
+                  this.savePlayersData()
+                })
+              }}
+        />
     </div>
     `
     return html`
@@ -968,7 +739,7 @@ class App extends Component {
           onClose=${() => this.hideModal('insertImage')}
         />
       `}
-      ${imageLocations.map(
+      ${['background', 'left', 'right'].map(
         (location) => html`
           ${this.state.modals[location] &&
           html`
@@ -1051,3 +822,4 @@ class App extends Component {
 }
 
 render(html`<${App} />`, document.querySelector('.page-content'))
+
