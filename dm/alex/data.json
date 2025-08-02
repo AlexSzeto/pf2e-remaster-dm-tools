@@ -444,28 +444,32 @@
       {
         "id": "catacombs-ambience.mp3",
         "label": "Catacombs Ambience"
+      },
+      {
+        "label": "Cavern Stream Ambience",
+        "id": "cavern-stream-ambience.mp3"
       }
     ],
     "bgm": [
       {
-        "id": "bgm-engarde-or-die.mp3",
-        "label": "Engarde Or Die"
-      },
-      {
         "id": "bgm-sinister-pressure.mp3",
         "label": "Sinister Pressure"
-      },
-      {
-        "id": "bgm-sound-tactics-prevail.mp3",
-        "label": "Sound Tactics Prevail"
       },
       {
         "id": "slow-death-march-bgm.mp3",
         "label": "Poisonous Death March"
       },
       {
-        "id": "verzog-catacombs-bgm.mp3",
-        "label": "Verzog Catacombs"
+        "label": "Blind Terror",
+        "id": "bgm-blind-terror.mp3"
+      },
+      {
+        "label": "Rocky Horror Showdown",
+        "id": "bgm-rocky-horror-showdown.mp3"
+      },
+      {
+        "label": "Burdens Of Our Decay",
+        "id": "bgm-burdens-of-our-decay.mp3"
       }
     ],
     "cards": [
