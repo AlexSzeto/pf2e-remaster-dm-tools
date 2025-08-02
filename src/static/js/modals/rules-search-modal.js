@@ -5,19 +5,7 @@ import { Modal } from './../components/modal.js'
 import { debounce } from '../common/util.js'
 
 export function loadRule(type, rule) {
-  return fetch(`/rule/${type}/${rule}`)
-    .then((response) => response.json())
-    .then(data => {
-      if(data.error) {
-        throw new Error(data.error)
-      } else {
-        return data
-      }
-    })
-    .then((data) => ({
-      ref: { type, rule },
-      ...spellToCard(data)
-    }))      
+  window.open(`https://2e.aonprd.com/Search.aspx?q=${rule}`, '_blank')
 }
 
 export class RulesSearchModal extends Component {

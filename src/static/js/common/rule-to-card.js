@@ -73,179 +73,157 @@ export const spellToCard = (spellRulesJson) => {
   return transformedJson
 }
 
-export const pathbuilderToCard = (pathbuilderJson) => {
-  const build = pathbuilderJson.build
-  const abilities = build.abilities
-  const profs = build.proficiencies
+export const pathbuilderToCard = (inputData) => {
+    const build = inputData.build;
 
-  const abilityMods = {}
-  for (const [key, val] of Object.entries(abilities)) {
-    if (typeof val === 'number') {
-      abilityMods[key] = Math.floor(val / 2 - 5)
+    // Helper function to calculate ability bonus
+    const calculateAbilityBonus = (abilityScore) => {
+        return Math.floor(abilityScore / 2) - 5;
+    };
+
+    // Lookup table for proficiencies and their associated abilities
+    // This is my best guess, you can adjust it as needed.
+    const proficiencyAbilityMap = {
+        'perception': 'wis',
+        'fortitude': 'con',
+        'reflex': 'dex',
+        'will': 'wis',
+        'acrobatics': 'dex',
+        'arcana': 'int',
+        'athletics': 'str',
+        'crafting': 'int',
+        'deception': 'cha',
+        'diplomacy': 'cha',
+        'intimidation': 'cha',
+        'medicine': 'wis',
+        'nature': 'wis',
+        'occultism': 'int',
+        'performance': 'cha',
+        'religion': 'wis',
+        'society': 'int',
+        'stealth': 'dex',
+        'survival': 'wis',
+        'thievery': 'dex'
+    };
+
+    // --- Extracting and calculating data ---
+
+    const name = build.name;
+    const level = build.level;
+    const className = build.class;
+
+    // Abilities and their bonuses
+    const abilities = build.abilities;
+    const abilityBonuses = {};
+    for (const abilityKey in abilities) {
+        if (typeof abilities[abilityKey] === 'number') {
+            abilityBonuses[abilityKey] = calculateAbilityBonus(abilities[abilityKey]);
+        }
     }
-  }
 
-  const abilityNames = {
-    str: 'Str',
-    dex: 'Dex',
-    con: 'Con',
-    int: 'Int',
-    wis: 'Wis',
-    cha: 'Cha',
-  }
+    // Languages
+    let languagesText = build.languages.includes("None selected") ? "" : build.languages.join(", ");
+    // If 'Darkvision' is in specials, add it to perception text
+    const perceptionBonus = build.proficiencies.perception + abilityBonuses.wis;
+    const perceptionText = `${perceptionBonus >= 0 ? '+' : ''}${perceptionBonus}` +
+                           (build.specials.includes("Darkvision") ? "; darkvision" : "");
 
-  const skillToAbility = {
-    acrobatics: 'dex',
-    arcana: 'int',
-    athletics: 'str',
-    crafting: 'int',
-    deception: 'cha',
-    diplomacy: 'cha',
-    intimidation: 'cha',
-    medicine: 'wis',
-    nature: 'wis',
-    occultism: 'int',
-    performance: 'cha',
-    religion: 'wis',
-    society: 'int',
-    stealth: 'dex',
-    survival: 'wis',
-    thievery: 'dex',
-  }
-
-  const stats = []
-
-  // Perception
-  stats.push({
-    name: 'Perception',
-    text: `+${profs.perception + abilityMods.wis * 2}; ${
-      build.specials.includes('Darkvision') ? 'darkvision' : ''
-    }`.trim(),
-  })
-
-  // Languages
-  stats.push({
-    name: 'Languages',
-    newline: true,
-    text:
-      'Common, ' +
-      (build.languages || []).filter((l) => l != 'None Selected').join(', '),
-  })
-
-  // Skills
-  const skills = []
-  for (const [skill, mod] of Object.entries(profs)) {
-    if (skill in skillToAbility) {
-      const ability = skillToAbility[skill]
-      const total = mod + (abilityMods[ability] || 0) * 2
-      if(mod > 0) {
-        skills.push(`${skill.charAt(0).toUpperCase() + skill.slice(1)} +${total}`)
-      }
+    // Skills (proficiencies + ability bonus)
+    const skills = [];
+    for (const profKey in build.proficiencies) {
+        if (proficiencyAbilityMap[profKey] && build.proficiencies[profKey] > 0) { // Only include if there's a proficiency value
+            const abilityForProf = proficiencyAbilityMap[profKey];
+            const skillTotal = build.proficiencies[profKey] + abilityBonuses[abilityForProf];
+            skills.push(`${profKey.charAt(0).toUpperCase() + profKey.slice(1)} ${skillTotal >= 0 ? '+' : ''}${skillTotal}`);
+        }
     }
-  }
+    // Add lores
+    build.lores.forEach(lore => {
+        const loreName = lore[0];
+        const loreValue = lore[1] + abilityBonuses.int; // Lores typically use Intelligence
+        skills.push(`Lore: ${loreName} ${loreValue >= 0 ? '+' : ''}${loreValue}`);
+    });
+    skills.sort(); // Sort skills alphabetically
 
-  // Lore skills
-  const lores = (build.lores || []).map(([name, prof]) => {
-    const loreMod = prof + (abilityMods.int || 0)
-    return `Lore: ${name} +${loreMod}`
-  })
+    // Items (Armor and Weapons)
+    const items = [];
+    build.armor.forEach(armor => items.push(armor.name));
+    build.weapons.forEach(weapon => items.push(weapon.name));
 
-  stats.push({
-    name: 'Skills',
-    newline: true,
-    text: [...skills, ...lores].join(', '),
-  })
+    // Feats
+    const feats = build.feats.map(feat => feat[0]);
 
-  // Ability modifiers
-  for (const [abbr, mod] of Object.entries(abilityMods)) {
-    stats.push({
-      name: abilityNames[abbr],
-      text: `+${mod}`,
-      ...(abbr === 'str' && { newline: true }),
-    })
-  }
+    // AC, Fortitude, Reflex, Will, HP, Speed
+    const acTotal = build.acTotal.acTotal;
+    const fortitudeSave = build.proficiencies.fortitude + abilityBonuses.con;
+    const reflexSave = build.proficiencies.reflex + abilityBonuses.dex;
+    const willSave = build.proficiencies.will + abilityBonuses.wis;
+    const totalHP = build.attributes.ancestryhp + (build.attributes.classhp * level) + (build.attributes.bonushpPerLevel * level) + build.attributes.bonushp + (abilityBonuses.con * level); // Simplified HP calculation
+    const speed = build.attributes.speed + build.attributes.speedBonus;
 
-  // Items
-  const weapons = build.weapons.map((w) => w.display)
-  const armors = build.armor.map((a) => a.display)
-  stats.push({
-    name: 'Items',
-    newline: true,
-    text: [...armors, ...weapons].join(', '),
-  })
+    // Melee weapons
+    const meleeWeapons = build.weapons.filter(weapon => weapon.attack !== null && weapon.attack !== undefined)
+                                       .map(weapon => {
+                                           let damageType = weapon.damageType;
+                                           if (damageType === 'S') damageType = 'Slashing';
+                                           if (damageType === 'P') damageType = 'Piercing';
+                                           if (damageType === 'B') damageType = 'Bludgeoning';
 
-  // AC
-  stats.push({
-    hr: true,
-    name: 'AC',
-    text: `${build.acTotal.acTotal}`,
-  })
+                                           return `${weapon.name} ${weapon.attack >= 0 ? '+' : ''}${weapon.attack} ${weapon.die}+${weapon.damageBonus} ${damageType}`;
+                                        });
 
-  // Saves
-  const saveMap = {
-    Fort: 'fortitude',
-    Ref: 'reflex',
-    Will: 'will',
-  }
-  const saveAbilityMap = {
-    fortitude: 'con',
-    reflex: 'dex',
-    will: 'wis',
-  }
-  for (const [label, key] of Object.entries(saveMap)) {
-    const ability = saveAbilityMap[key]
-    const total = profs[key] + (abilityMods[ability] || 0) * 2
-    stats.push({
-      name: label,
-      text: `+${total}`,
-    })
-  }
+    // --- Constructing the output JSON ---
 
-  // HP
-  const hp =
-    build.attributes.ancestryhp +
-    build.attributes.bonushp +
-    build.level *
-      (build.attributes.classhp +
-        abilityMods.con +
-        build.attributes.bonushpPerLevel)
-  stats.push({
-    name: 'HP',
-    newline: true,
-    text: `${hp}`,
-  })
+    const output = {
+        name: name,
+        stats: [],
+        traits: [build.sizeName, build.ancestry],
+        type: `${className} ${level}`
+    };
 
-  // Feats
-  build.feats.forEach(([name]) => {
-    stats.push({
-      name,
-      newline: true,
-      text: '',
-    })
-  })
+    // Add stats
+    output.stats.push({ name: "Perception", text: perceptionText });
+    if (languagesText) {
+        output.stats.push({ name: "Languages", newline: true, text: languagesText });
+    }
+    if (skills.length > 0) {
+        output.stats.push({ name: "Skills", newline: true, text: skills.join(", ") });
+    }
 
-  // Speed
-  const speed = build.attributes.speed + build.attributes.speedBonus
-  stats.push({
-    hr: true,
-    name: 'Speed',
-    text: `${speed}`,
-  })
+    // Ability scores
+    output.stats.push({ name: "Str", newline: true, text: `${abilityBonuses.str >= 0 ? '+' : ''}${abilityBonuses.str}` });
+    output.stats.push({ name: "Dex", text: `${abilityBonuses.dex >= 0 ? '+' : ''}${abilityBonuses.dex}` });
+    output.stats.push({ name: "Con", text: `${abilityBonuses.con >= 0 ? '+' : ''}${abilityBonuses.con}` });
+    output.stats.push({ name: "Int", text: `${abilityBonuses.int >= 0 ? '+' : ''}${abilityBonuses.int}` });
+    output.stats.push({ name: "Wis", text: `${abilityBonuses.wis >= 0 ? '+' : ''}${abilityBonuses.wis}` });
+    output.stats.push({ name: "Cha", text: `${abilityBonuses.cha >= 0 ? '+' : ''}${abilityBonuses.cha}` });
 
-  // Melee
-  build.weapons.forEach((w) => {
-    stats.push({
-      action: 'single',
-      name: 'Melee',
-      newline: true,
-      text: `${w.display} +${w.attack} ${w.die}+${w.damageBonus} ${w.damageType}`,
-    })
-  })
+    // Items
+    if (items.length > 0) {
+        output.stats.push({ name: "Items", newline: true, text: items.join(", ") });
+    }
 
-  return {
-    name: build.name,
-    stats,
-    traits: [build.sizeName, build.ancestry],
-    type: `${build.class} ${build.level}`,
-  }
+    // AC and Saves
+    output.stats.push({ hr: true, name: "AC", text: `${acTotal}` });
+    output.stats.push({ name: "Fort", text: `${fortitudeSave >= 0 ? '+' : ''}${fortitudeSave}` });
+    output.stats.push({ name: "Ref", text: `${reflexSave >= 0 ? '+' : ''}${reflexSave}` });
+    output.stats.push({ name: "Will", text: `${willSave >= 0 ? '+' : ''}${willSave}` });
+
+    // HP
+    output.stats.push({ name: "HP", newline: true, text: `${totalHP}` });
+
+    // Feats
+    feats.forEach(feat => {
+        output.stats.push({ name: feat, newline: true, text: "" });
+    });
+
+    // Speed
+    output.stats.push({ hr: true, name: "Speed", text: `${speed}` });
+
+    // Melee attacks
+    meleeWeapons.forEach(weaponText => {
+        output.stats.push({ action: "single", name: "Melee", newline: true, text: weaponText });
+    });
+
+    return output;
 }
