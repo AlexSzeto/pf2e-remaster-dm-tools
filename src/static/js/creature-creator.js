@@ -36,6 +36,7 @@ import {
 } from './common/dm-data.js'
 import { Card } from './components/card.js'
 import { campaignMedia, getCookie } from './common/util.js'
+import { pathbuilderToCard } from './common/rule-to-card.js'
 
 const dice = (data) =>
   `${data.count}d${data.sides}${
@@ -47,13 +48,31 @@ const bonusText = (data) => `${data > 0 ? '+' : ''}${data}`
 class CreatureRoadMaps extends Component {
   constructor(props) {
     super(props)
-    this.state = { roadmap: 0 }
+    this.state = { 
+      roadmap: 0,
+      pathbuilderData: ''
+    }
   }
 
   changeRoadMap = (e) => {
     const roadmap = e.target.value
     this.setState({ roadmap })
     this.props.onUpdate(roadmap)
+  }
+
+  handlePathbuilderDataChange = (e) => {
+    this.setState({ pathbuilderData: e.target.value })
+  }
+
+  convertFromPathbuilder = () => {
+    try {
+      const parsedData = JSON.parse(this.state.pathbuilderData)
+      const cardData = pathbuilderToCard(parsedData)
+      this.props.onPathbuilderConvert(cardData)
+    } catch (error) {
+      console.error('Error parsing Pathbuilder data:', error)
+      alert('Error parsing Pathbuilder data. Please check the format.')
+    }
   }
 
   render() {
@@ -69,6 +88,21 @@ class CreatureRoadMaps extends Component {
               html`<option value=${index}>${roadmap.name}</option>`
           )}
         </select>
+        
+        <div style="margin-top: 20px;">
+          <h3>Convert from Pathbuilder</h3>
+          <textarea
+            rows="10"
+            cols="50"
+            placeholder="Paste Pathbuilder JSON data here..."
+            value=${this.state.pathbuilderData}
+            onInput=${this.handlePathbuilderDataChange}
+            style="width: 100%; margin-bottom: 10px;"
+          ></textarea>
+          <button onClick=${this.convertFromPathbuilder} type="button">
+            Convert
+          </button>
+        </div>
       </div>
     `
   }
@@ -680,6 +714,12 @@ class App extends Component {
     this.setState({ data: next })
   }
 
+  handlePathbuilderConvert = (cardData) => {
+    const next = [...this.state.data]
+    next[3] = cardData
+    this.setState({ data: next, step: 3 })
+  }
+
   createCreatureFromRoadmap = () => {
     const roadmap = creatureRoadMaps[this.state.data[0]]
     const creature = roadmap
@@ -966,7 +1006,10 @@ class App extends Component {
         <h1>Creature Builder</h1>
         ${this.state.step === 0 &&
         html`<h2>Select a Creature Roadmap</h2>
-          <${CreatureRoadMaps} onUpdate=${(data) => this.setData(0, data)} />`}
+          <${CreatureRoadMaps} 
+            onUpdate=${(data) => this.setData(0, data)} 
+            onPathbuilderConvert=${this.handlePathbuilderConvert}
+          />`}
         ${this.state.step === 1 &&
         html`<h2>Choose Stats Range</h2>
           <${CreatureBuilder}
