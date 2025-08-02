@@ -2,20 +2,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Chrome",
-      "request": "launch",
-      "type": "chrome",
-      "url": "http://localhost:5000",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
+      "name": "Start Server",
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "program": "${workspaceFolder}/dm-tools.mjs",
+      "console": "integratedTerminal",
+      "restart": true,
+      "runtimeArgs": ["--watch"],
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${file}"
+      "env": {
+        "NODE_ENV": "development"
+      }
     }
   ]
 }
