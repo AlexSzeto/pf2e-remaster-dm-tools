@@ -470,16 +470,8 @@
     ],
     "cards": [
       {
-        "id": "Cultist Initiate",
-        "label": "Cultist Initiate"
-      },
-      {
-        "id": "Mind Crawler Swarm",
-        "label": "Mind Crawler Swarm"
-      },
-      {
-        "label": "Animated Statue",
-        "id": "Animated Statue"
+        "label": "Arcane Guardian",
+        "id": "Arcane Guardian"
       },
       {
         "label": "Hunting Spider (Elite)",
@@ -488,6 +480,18 @@
       {
         "label": "Carrion Beetle",
         "id": "Carrion Beetle"
+      },
+      {
+        "label": "Void Crawler Swarm",
+        "id": "Void Crawler Swarm"
+      },
+      {
+        "label": "Void Zombie",
+        "id": "Void Zombie"
+      },
+      {
+        "label": "Void Zealot",
+        "id": "Void Zealot"
       }
     ],
     "docs": [
