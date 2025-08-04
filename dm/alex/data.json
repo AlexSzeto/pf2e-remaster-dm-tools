@@ -448,10 +448,6 @@
       {
         "label": "Cavern Stream Ambience",
         "id": "cavern-stream-ambience.mp3"
-      },
-      {
-        "label": "Cavern Stream Ambience",
-        "id": "cavern-stream-ambience.mp3"
       }
     ],
     "bgm": [
@@ -474,22 +470,10 @@
       {
         "label": "Burdens Of Our Decay",
         "id": "bgm-burdens-of-our-decay.mp3"
-        "label": "Blind Terror",
-        "id": "bgm-blind-terror.mp3"
-      },
-      {
-        "label": "Rocky Horror Showdown",
-        "id": "bgm-rocky-horror-showdown.mp3"
-      },
-      {
-        "label": "Burdens Of Our Decay",
-        "id": "bgm-burdens-of-our-decay.mp3"
       }
     ],
     "cards": [
       {
-        "label": "Arcane Guardian",
-        "id": "Arcane Guardian"
         "label": "Arcane Guardian",
         "id": "Arcane Guardian"
       },
@@ -500,22 +484,6 @@
       {
         "label": "Carrion Beetle",
         "id": "Carrion Beetle"
-      },
-      {
-        "label": "Void Crawler Swarm",
-        "id": "Void Crawler Swarm"
-      },
-      {
-        "label": "Void Zombie",
-        "id": "Void Zombie"
-      },
-      {
-        "label": "Void Zealot",
-        "id": "Void Zealot"
-      },
-      {
-        "label": "Yi'tha",
-        "id": "Yi'tha"
       },
       {
         "label": "Void Crawler Swarm",
@@ -546,10 +514,6 @@
       {
         "label": "Xyndrasis",
         "id": "xyndrasis.md"
-      },
-      {
-        "label": "Xyndrasis Labarinth",
-        "id": "xyndrasis-labarinth.md"
       },
       {
         "label": "Xyndrasis Labarinth",
