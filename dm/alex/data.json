@@ -522,14 +522,6 @@
     ],
     "images": [
       {
-        "label": "Portrait Hethor",
-        "id": "portrait-hethor.jpg"
-      },
-      {
-        "label": "Portrait Nerkith",
-        "id": "portrait-nerkith.jpg"
-      },
-      {
         "label": "Portrait Yi'tha",
         "id": "portrait-yitha.jpeg"
       },
@@ -588,6 +580,18 @@
       {
         "label": "Xyndrash Manor Bedroom",
         "id": "location-xyndrash-manor-bedroom.jpeg"
+      },
+      {
+        "label": "Portrait Nerkith",
+        "id": "portrait-nerkith.jpg"
+      },
+      {
+        "label": "Zero",
+        "id": "portrait-zero.jpeg"
+      },
+      {
+        "label": "Hethor (Fixed)",
+        "id": "portrait-hethor-fixed.png"
       }
     ],
     "rules": []
