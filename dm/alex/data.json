@@ -448,6 +448,10 @@
       {
         "label": "Cavern Stream Ambience",
         "id": "cavern-stream-ambience.mp3"
+      },
+      {
+        "label": "Cavern Stream Ambience",
+        "id": "cavern-stream-ambience.mp3"
       }
     ],
     "bgm": [
@@ -470,10 +474,22 @@
       {
         "label": "Burdens Of Our Decay",
         "id": "bgm-burdens-of-our-decay.mp3"
+        "label": "Blind Terror",
+        "id": "bgm-blind-terror.mp3"
+      },
+      {
+        "label": "Rocky Horror Showdown",
+        "id": "bgm-rocky-horror-showdown.mp3"
+      },
+      {
+        "label": "Burdens Of Our Decay",
+        "id": "bgm-burdens-of-our-decay.mp3"
       }
     ],
     "cards": [
       {
+        "label": "Arcane Guardian",
+        "id": "Arcane Guardian"
         "label": "Arcane Guardian",
         "id": "Arcane Guardian"
       },
@@ -484,6 +500,22 @@
       {
         "label": "Carrion Beetle",
         "id": "Carrion Beetle"
+      },
+      {
+        "label": "Void Crawler Swarm",
+        "id": "Void Crawler Swarm"
+      },
+      {
+        "label": "Void Zombie",
+        "id": "Void Zombie"
+      },
+      {
+        "label": "Void Zealot",
+        "id": "Void Zealot"
+      },
+      {
+        "label": "Yi'tha",
+        "id": "Yi'tha"
       },
       {
         "label": "Void Crawler Swarm",
@@ -518,17 +550,13 @@
       {
         "label": "Xyndrasis Labarinth",
         "id": "xyndrasis-labarinth.md"
+      },
+      {
+        "label": "Xyndrasis Labarinth",
+        "id": "xyndrasis-labarinth.md"
       }
     ],
     "images": [
-      {
-        "label": "Portrait Hethor",
-        "id": "portrait-hethor.jpg"
-      },
-      {
-        "label": "Portrait Nerkith",
-        "id": "portrait-nerkith.jpg"
-      },
       {
         "label": "Portrait Yi'tha",
         "id": "portrait-yitha.jpeg"
@@ -540,6 +568,66 @@
       {
         "label": "Map Xyndrasis",
         "id": "map-xyndrasis.jpg"
+      },
+      {
+        "label": "Xyndrasis Outskirts",
+        "id": "location-xyndrasis-outskirts.jpeg"
+      },
+      {
+        "label": "Xyndrasis Temple",
+        "id": "location-xyndrasis-temple.jpeg"
+      },
+      {
+        "label": "Xyndrasis Lab",
+        "id": "location-xyndrasis-lab.jpeg"
+      },
+      {
+        "label": "Xyndrasis Armory",
+        "id": "location-xyndrasis-armory.jpeg"
+      },
+      {
+        "label": "Xyndrasis Streets 2",
+        "id": "location-xyndrasis-streets-2.jpeg"
+      },
+      {
+        "label": "Xyndrasis Streets",
+        "id": "location-xyndrasis-streets.jpeg"
+      },
+      {
+        "label": "Arcane Lab Library",
+        "id": "location-arcane-lab-library.jpeg"
+      },
+      {
+        "label": "Arcane Lab Research",
+        "id": "location-arcane-lab-research.jpeg"
+      },
+      {
+        "label": "Xyndrasis Armory Vault",
+        "id": "location-xyndrasis-armory-vault.jpeg"
+      },
+      {
+        "label": "Xyndrasis Armory Common Room",
+        "id": "location-xyndrasis-armory-common-room.jpeg"
+      },
+      {
+        "label": "Xyndrash Manor Foyer",
+        "id": "location-xyndrash-manor-foyer.jpeg"
+      },
+      {
+        "label": "Xyndrash Manor Bedroom",
+        "id": "location-xyndrash-manor-bedroom.jpeg"
+      },
+      {
+        "label": "Portrait Nerkith",
+        "id": "portrait-nerkith.jpg"
+      },
+      {
+        "label": "Zero",
+        "id": "portrait-zero.jpeg"
+      },
+      {
+        "label": "Hethor (Fixed)",
+        "id": "portrait-hethor-fixed.png"
       }
     ],
     "rules": []
