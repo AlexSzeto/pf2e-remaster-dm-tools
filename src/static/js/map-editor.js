@@ -12,6 +12,7 @@ class MapEditor {
     tile: '#f0f0f0',
     gridLine: '#aaaaaa',
     unitLine: '#000000',
+    dimensions: '#000000',
 
     tileCursor: 'rgba(255, 0, 0, 0.2)',
     propCursor: 'rgba(0, 0, 255, 0.2)',
@@ -87,6 +88,7 @@ class MapEditor {
   onCreateMapFile = () => {}
   onUpdateSelectedTiles = () => {}
   onUpdateMapData = () => {}
+  onSave = () => {}
 
   get #mapPixelWidth() {
     return this.mapData.width * MapEditor.UNIT_WIDTH
@@ -154,6 +156,7 @@ class MapEditor {
                 this.#drag = {
                   type: this.#DRAG_TILES,
                 }
+                this.#moveSelectedTilesToTop()
               } else {
                 const tile = this.#getCursorTile(x, y)
                 if (tile) {
@@ -161,6 +164,7 @@ class MapEditor {
                     type: this.#DRAG_TILES,
                   }
                   this.#selectedTiles = [tile]
+                  this.#moveSelectedTilesToTop()
                   this.onUpdateSelectedTiles(this.#selectedTiles)
                 } else {
                   this.#drag = {
@@ -326,6 +330,7 @@ class MapEditor {
             this.onUpdateSelectedTiles(this.#selectedTiles)
           } else {
             this.#drawMode = this.#DRAW_TILE            
+            this.#selectedProps = []
           }
           this.#redrawCanvas()
           break
@@ -439,6 +444,7 @@ class MapEditor {
       body: formData
     }).then(() => {      
       if(name) {
+        this.onSave()
         this.onCreateMapFile()
       }
     })
@@ -651,10 +657,32 @@ class MapEditor {
       buffer.lineWidth = 4
       buffer.textAlign = 'center'
       buffer.textBaseline = 'middle'
-      buffer.strokeText(prop.label, prop.x + prop.width / 2, prop.y + prop.height / 2)
-      buffer.fillText(prop.label, prop.x + prop.width / 2, prop.y + prop.height / 2)
+      const lines = prop.label.split('\\')
+      for (let i = 0; i < lines.length; i++) {
+        buffer.strokeText(lines[i], prop.x + prop.width / 2, prop.y + (prop.height - (lines.length-1) * 40) / 2 + i * 40)
+        buffer.fillText(lines[i], prop.x + prop.width / 2, prop.y + (prop.height - (lines.length-1) * 40) / 2 + i * 40)
+      }
       buffer.restore()
     })
+  }
+
+  #drawDimension(buffer) {
+    const { x1, y1, x2, y2 } = this.selectedRegion
+    const text = `(${(x2 - x1) / MapEditor.GRID_WIDTH / 2}, ${(y2 - y1) / MapEditor.GRID_WIDTH / 2})`
+    if (x2 - x1 <= MapEditor.GRID_WIDTH && y2 - y1 <= MapEditor.GRID_WIDTH) {
+      return
+    }
+    buffer.save()
+    buffer.globalAlpha = 1.0
+    buffer.font = "bold 30px Arial"
+    buffer.fillStyle = '#000000'
+    buffer.strokeStyle = '#ffffff'
+    buffer.lineWidth = 4
+    buffer.textAlign = 'center'
+    buffer.textBaseline = 'middle'
+    buffer.strokeText(text, x1, y1)
+    buffer.fillText(text, x1, y1)
+    buffer.restore()
   }
 
   get selectedRegion() {
@@ -681,6 +709,13 @@ class MapEditor {
       x2: this.#snapGrid(x, false),
       y2: this.#snapGrid(y, false)
     }
+  }
+
+  #moveSelectedTilesToTop() {
+    const selectedTiles = this.#selectedTiles.slice()
+    this.mapData.tiles = this.mapData.tiles.filter((tile) => !selectedTiles.includes(tile))
+    this.mapData.tiles.push(...selectedTiles)
+    this.#redrawCanvas()
   }
 
   #drawCursor() {
@@ -712,6 +747,8 @@ class MapEditor {
     this.#drawTiles(this.#buffer)
     this.#drawProps(this.#buffer)
     this.#drawCursor()
+    this.#drawDimension(this.#buffer)
+
     this.#buffer.restore()
 
     this.#screen.drawImage(this.#buffer.canvas, 0, 0)
@@ -849,7 +886,7 @@ class MapEditor {
   }
 
   #getCursorTile(x, y) {
-    return this.mapData.tiles.find((tile) => this.#tileOnCursor(tile, x, y))
+    return [...this.mapData.tiles].reverse().find((tile) => this.#tileOnCursor(tile, x, y))
   }  
 
   #tileOnProp(prop, x, y) {
@@ -875,6 +912,7 @@ class App extends Component {
 
       campaign: null,
       filename: '',
+      lastSaved: '',
 
       showFileList: false,
     }
@@ -884,16 +922,7 @@ class App extends Component {
       .then((campaign) => { this.setState({ campaign }) })
 
     editor.onUpdateSelectedTiles = (selectedTiles) => {
-      if(selectedTiles.length === 1) {
-        const tags = this.editor.tileDataOf(selectedTiles[0].path).tags
-        this.editor.setSelectedTags(tags)
-        this.editor.setDrawTile(selectedTiles[0].path)
-        this.setState({ 
-          selectedTags: tags,
-          selectedTile: selectedTiles[0].path,
-          filtered: this.editor.sortedFilteredTiles,
-        })
-      } else if(selectedTiles.length === 0) {
+      if(selectedTiles.length === 0) {
         this.editor.setDrawTile(null)
         this.setState({ 
           selectedTile: null,
@@ -909,6 +938,11 @@ class App extends Component {
       fetch(`/campaign/data`)
       .then((response) => response.json())
       .then((campaign) => { this.setState({ campaign }) })
+    }
+
+    editor.onSave = () => {
+      const now = new Date().toLocaleString()
+      this.setState({ lastSaved: now })
     }
 
   }
@@ -950,6 +984,9 @@ class App extends Component {
         <button onClick=${() => this.setState({ showFileList: true })}>Load</button>
         <button onClick=${() => this.editor.exportMap(this.state.filename)}>Export</button>
       </div>
+      <div>
+        ${this.state.lastSaved.length > 0 ? html`<div>Last saved on ${this.state.lastSaved}</div>` : ''}
+      </div>
       <h3>Config</h3>
       <div class="map-config">
         <label for="width">Width:</label>
@@ -974,14 +1011,19 @@ class App extends Component {
         tags=${this.state.tags}
         selected=${this.state.selectedTags}
         onSelect=${tag => {
-          const next = toggleTag(tag, this.state.selectedTags)
-          this.editor.setSelectedTags(next)
+          const selectedTags = toggleTag(tag, this.state.selectedTags)
+          this.editor.setSelectedTags(selectedTags)
+          const filtered = this.editor.sortedFilteredTiles
+          const selectedTile = filtered.some(tile => tile.path === this.state.selectedTile) ? this.state.selectedTile : null
+          this.editor.setDrawTile(selectedTile)
           this.setState({
-            selectedTags: next,
-            filtered: this.editor.sortedFilteredTiles,
+            selectedTile,
+            selectedTags,
+            filtered,
           })
         }}
       />
+      <div>${this.state.selectedTile ? `Selected Tile: ${this.state.selectedTile}` : 'No Tile Selected'}</div>
       <div class="tile-list">
         ${this.state.filtered.map((tile) => html`
           <div class="tile ${this.state.selectedTile === tile.path ? 'selected' : ''}">
