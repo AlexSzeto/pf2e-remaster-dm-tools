@@ -6,7 +6,7 @@ import { errorResponse, successResponse } from './util.mjs'
 import { addReference, deleteReference } from './references-crud.mjs'
 
 const mediaExtensions = {
-  images: ['jpg', 'jpeg', 'png', 'gif'],
+  images: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
   videos: ['mp4', 'avi'],
   audio: ['mp3', 'wav'],
   docs: ['md', 'txt'],
