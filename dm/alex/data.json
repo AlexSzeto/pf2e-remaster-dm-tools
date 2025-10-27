@@ -548,18 +548,6 @@
     ],
     "cards": [
       {
-        "label": "Arcane Guardian",
-        "id": "Arcane Guardian"
-      },
-      {
-        "label": "Hunting Spider (Elite)",
-        "id": "Hunting Spider (Elite)"
-      },
-      {
-        "label": "Carrion Beetle",
-        "id": "Carrion Beetle"
-      },
-      {
         "label": "Void Crawler Swarm",
         "id": "Void Crawler Swarm"
       },
@@ -574,6 +562,10 @@
       {
         "label": "Yi'tha",
         "id": "Yi'tha"
+      },
+      {
+        "label": "Iloth the Shepherd",
+        "id": "Iloth the Shepherd"
       }
     ],
     "docs": [
