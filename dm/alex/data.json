@@ -526,10 +526,6 @@
     ],
     "bgm": [
       {
-        "id": "bgm-sinister-pressure.mp3",
-        "label": "Sinister Pressure"
-      },
-      {
         "id": "slow-death-march-bgm.mp3",
         "label": "Poisonous Death March"
       },
@@ -538,12 +534,16 @@
         "id": "bgm-blind-terror.mp3"
       },
       {
-        "label": "Rocky Horror Showdown",
-        "id": "bgm-rocky-horror-showdown.mp3"
-      },
-      {
         "label": "Burdens Of Our Decay",
         "id": "bgm-burdens-of-our-decay.mp3"
+      },
+      {
+        "label": "Xyndrasis Wakes",
+        "id": "xyndrasis-wakes.mp3"
+      },
+      {
+        "label": "Renu: First Reckoning",
+        "id": "renu-first-reckoning.mp3"
       }
     ],
     "cards": [
@@ -612,10 +612,6 @@
         "id": "location-xyndrasis-outskirts.jpeg"
       },
       {
-        "label": "Xyndrasis Temple",
-        "id": "location-xyndrasis-temple.jpeg"
-      },
-      {
         "label": "Xyndrasis Streets 2",
         "id": "location-xyndrasis-streets-2.jpeg"
       },
@@ -636,48 +632,12 @@
         "id": "portrait-hethor-fixed.png"
       },
       {
-        "label": "Xyndrasis Armory Vault",
-        "id": "location-xyndrasis-armory-vault.jpeg"
+        "label": "Empowered Temple",
+        "id": "location-xyndrasis-empowered.jpg"
       },
       {
-        "label": "Sands Edge",
-        "id": "location-sands-edge.jpg"
-      },
-      {
-        "label": "Location Cattail Grove",
-        "id": "location-cattail-grove.jpg"
-      },
-      {
-        "label": "Faewind Forest",
-        "id": "location-faewind-forest.jpg"
-      },
-      {
-        "label": "Map Uruzad",
-        "id": "map-uruzad.jpg"
-      },
-      {
-        "label": "Churmok",
-        "id": "location-churmok.jpg"
-      },
-      {
-        "label": "Cottonwood",
-        "id": "location-cottonwood.jpg"
-      },
-      {
-        "label": "Xyndrasis Tunnels",
-        "id": "location-xyndrasis-tunnels.jpg"
-      },
-      {
-        "label": "Keroc Burial Chamber",
-        "id": "location-keroc-burial-chamber.jpeg"
-      },
-      {
-        "label": "Keroc Temple Grounds",
-        "id": "location-keroc-temple-grounds.jpg"
-      },
-      {
-        "label": "Keroc Upper Ruins",
-        "id": "location-keroc-upper-ruins.jpeg"
+        "label": "Xyndrasis Lab",
+        "id": "location-xyndrasis-lab.jpeg"
       }
     ],
     "rules": []
