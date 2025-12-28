@@ -23,6 +23,12 @@
       "hp": 36,
       "name": "Fayla",
       "perception": 8
+    },
+    {
+      "class": "Fighter",
+      "hp": 39,
+      "name": "Hatherien",
+      "perception": 7
     }
   ],
   "id": "mercs",
