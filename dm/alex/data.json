@@ -562,28 +562,20 @@
       {
         "label": "Yi'tha",
         "id": "Yi'tha"
-      },
-      {
-        "label": "Iloth the Shepherd",
-        "id": "Iloth the Shepherd"
       }
     ],
     "docs": [
       {
-        "id": "characters.md",
-        "label": "Characters"
+        "label": "Xyndrasis",
+        "id": "xyndrasis.md"
       },
       {
         "label": "Session Plan",
         "id": "events.md"
       },
       {
-        "label": "Xyndrasis",
-        "id": "xyndrasis.md"
-      },
-      {
-        "label": "World Building - Drakonis",
-        "id": "campaign-overview.md"
+        "label": "Dm Cheatsheet",
+        "id": "dm-cheatsheet.md"
       }
     ],
     "images": [

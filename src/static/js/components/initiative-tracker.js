@@ -227,7 +227,7 @@ export class InitiativeTracker extends Component {
           ></input>
           <button class="square"
             onClick=${() => this.dealDamage(index)}>
-            <${Icon} icon="bolt" type="solid"/>
+            <${Icon} icon="zap" type="solid"/>
           </button>
           <input
             name="initiative"
