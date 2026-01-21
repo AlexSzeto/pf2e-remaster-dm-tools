@@ -622,6 +622,30 @@
       {
         "label": "Xyndrasis Lab",
         "id": "location-xyndrasis-lab.jpeg"
+      },
+      {
+        "label": "Tighis",
+        "id": "portrait-xyndrasis-truthseeker.png"
+      },
+      {
+        "label": "Gravelk",
+        "id": "portrait-gravelk.jpg"
+      },
+      {
+        "label": "Gravelk",
+        "id": "portrait-gravelk.png"
+      },
+      {
+        "label": "Gydra and Xesom",
+        "id": "portrait-gydra-and-xesom.jpg"
+      },
+      {
+        "label": "Loribelle",
+        "id": "portrait-loribelle.jpg"
+      },
+      {
+        "label": "Xyndrasis Temple Secret Entrance",
+        "id": "location-xyndrasis-temple-secret-entrance.jpg"
       }
     ],
     "rules": []
