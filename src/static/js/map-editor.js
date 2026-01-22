@@ -711,6 +711,24 @@ class MapEditor {
     }
   }
 
+  cropMap() {
+    let width = 0
+    let height = 0
+    this.mapData.tiles.forEach((tile) => {
+      const tileX = tile.x / MapEditor.GRID_WIDTH + this.tileDataOf(tile.path).width
+      const tileY = tile.y / MapEditor.GRID_WIDTH + this.tileDataOf(tile.path).height
+      if (tileX > width) {
+        width = tileX
+      }
+      if (tileY > height) {
+        height = tileY
+      }
+    })
+    this.mapData.width = Math.ceil(width / 2) + 1
+    this.mapData.height = Math.ceil(height / 2) + 1
+    this.redraw()
+  }
+
   #moveSelectedTilesToTop() {
     const selectedTiles = this.#selectedTiles.slice()
     this.mapData.tiles = this.mapData.tiles.filter((tile) => !selectedTiles.includes(tile))
@@ -1005,6 +1023,11 @@ class App extends Component {
             this.editor.redraw()
           }
         }} />
+        <button onClick=${() => { 
+          this.editor.cropMap()
+          document.querySelector('#width').value = this.editor.mapData.width
+          document.querySelector('#height').value = this.editor.mapData.height
+        }}>Crop</button>
       </div>
       <h3>Tiles</h3>
       <${TagList}
@@ -1028,7 +1051,7 @@ class App extends Component {
         ${this.state.filtered.map((tile) => html`
           <div class="tile ${this.state.selectedTile === tile.path ? 'selected' : ''}">
             <div class="label">
-              ${tile.width}×${tile.height} ${tile.label}
+              ${tile.width/2}×${tile.height/2} ${tile.label}
               <span class="${this.usageOf(tile.path) === tile.count ? 'warn' : (this.usageOf(tile.path) > tile.count ? 'full' : '')}">
                 <strong> (${this.usageOf(tile.path)}/${tile.count})</strong>
               </span>
@@ -1045,6 +1068,22 @@ class App extends Component {
           </div>
         `)}
       </div>
+      <h3>Pack List</h3>
+      <ul class="parts-list">
+        ${this.editor.tilesLibrary
+          .map((tile) => ({ path: tile.path, name: tile.name, count: this.usageOf(tile.path) }))
+          .filter(tile => tile.count > 0)
+          .map(tile => html`
+            <li>
+              <div class="image-container">
+              <img 
+                src=${`dm/media/${tile.path}`} alt=${tile.label} />
+              </div>
+              <div>${tile.name} (${tile.count})</div>
+            </li>
+          `)
+        }
+      </ul>
       <h3>Print List</h3>
       <ul class="print-list">
         ${this.editor.tilesLibrary
