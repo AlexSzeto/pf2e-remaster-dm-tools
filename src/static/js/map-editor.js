@@ -513,7 +513,7 @@ class MapEditor {
       .then(result => result.json())
       .then((data) => {
         this.tileTags = getTagsList(data.tiles)
-        this.tilesLibrary = data.tiles
+        this.tilesLibrary = data.tiles.filter((tile) => tile.count > 0)
         return Promise.allSettled(this.tilesLibrary.map((tile) => {
           return new Promise((resolve) => {
             const img = new Image()
@@ -1029,7 +1029,7 @@ class App extends Component {
           <div class="tile ${this.state.selectedTile === tile.path ? 'selected' : ''}">
             <div class="label">
               ${tile.width}×${tile.height} ${tile.label}
-              <span class="${this.usageOf(tile.path) > tile.count ? 'full' : ''}">
+              <span class="${this.usageOf(tile.path) === tile.count ? 'warn' : (this.usageOf(tile.path) > tile.count ? 'full' : '')}">
                 <strong> (${this.usageOf(tile.path)}/${tile.count})</strong>
               </span>
             </div>

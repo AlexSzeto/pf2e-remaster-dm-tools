@@ -59,6 +59,10 @@ h3 {
       text-align: left;
       margin-bottom: 0.1em;
 
+      .warn {
+        color: orange;
+      }
+      
       .full {
         color: red;
       }

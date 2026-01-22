@@ -507,6 +507,486 @@
       "width": 4,
       "height": 2,
       "count": 2
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-A.png",
+      "name": "E-TRP-Cavern-Tiles-A",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-B.png",
+      "name": "E-TRP-Cavern-Tiles-B",
+      "width": 4,
+      "height": 4,
+      "count": 2,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "tunnel"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-C.png",
+      "name": "E-TRP-Cavern-Tiles-C",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "tunnel"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-Edge-B.png",
+      "name": "E-TRP-Cavern-Tiles-Edge-B",
+      "width": 4,
+      "height": 4,
+      "count": 3,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "floor",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-F.png",
+      "name": "E-TRP-Cavern-Tiles-F",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "tunnel"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-Floor.png",
+      "name": "E-TRP-Cavern-Tiles-Floor",
+      "width": 4,
+      "height": 4,
+      "count": 8,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "floor"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-G.png",
+      "name": "E-TRP-Cavern-Tiles-G",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-H.png",
+      "name": "E-TRP-Cavern-Tiles-H",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-J.png",
+      "name": "E-TRP-Cavern-Tiles-J",
+      "width": 4,
+      "height": 4,
+      "count": 3,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-K.png",
+      "name": "E-TRP-Cavern-Tiles-K",
+      "width": 4,
+      "height": 4,
+      "count": 2,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-L.png",
+      "name": "E-TRP-Cavern-Tiles-L",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-M.png",
+      "name": "E-TRP-Cavern-Tiles-M",
+      "width": 4,
+      "height": 4,
+      "count": 2,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-N.png",
+      "name": "E-TRP-Cavern-Tiles-N",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "tunnel"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-O.png",
+      "name": "E-TRP-Cavern-Tiles-O",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "tunnel"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-P.png",
+      "name": "E-TRP-Cavern-Tiles-P",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "tunnel"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-Q.png",
+      "name": "E-TRP-Cavern-Tiles-Q",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-R.png",
+      "name": "E-TRP-Cavern-Tiles-R",
+      "width": 4,
+      "height": 4,
+      "count": 2,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "floor",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-S.png",
+      "name": "E-TRP-Cavern-Tiles-S",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "tunnel",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-Stairs.png",
+      "name": "E-TRP-Cavern-Tiles-Stairs",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "stairs"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-Stalagmite-A.png",
+      "name": "E-TRP-Cavern-Tiles-Stalagmite-A",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "wall",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-T.png",
+      "name": "E-TRP-Cavern-Tiles-T",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-U.png",
+      "name": "E-TRP-Cavern-Tiles-U",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-V.png",
+      "name": "E-TRP-Cavern-Tiles-V",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-W.png",
+      "name": "E-TRP-Cavern-Tiles-W",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-X.png",
+      "name": "E-TRP-Cavern-Tiles-X",
+      "width": 4,
+      "height": 4,
+      "count": 2,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-Y.png",
+      "name": "E-TRP-Cavern-Tiles-Y",
+      "width": 4,
+      "height": 4,
+      "count": 2,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "floor",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-ZA.png",
+      "name": "E-TRP-Cavern-Tiles-ZA",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-ZC.png",
+      "name": "E-TRP-Cavern-Tiles-ZC",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Tiles-UO.png",
+      "name": "E-TRP-Cavern-Tiles-UO",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge",
+        "water"
+      ]
+    },
+    {
+      "path": "E-TRP-Cavern-Water.png",
+      "name": "E-TRP-Cavern-Water",
+      "width": 4,
+      "height": 4,
+      "count": 6,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "water"
+      ]
+    },
+    {
+      "path": "HS-TRP-Cavern-Tiles.png",
+      "name": "HS-TRP-Cavern-Tiles",
+      "width": 4,
+      "height": 2,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "I-TRP-Cavern-Floor.png",
+      "name": "I-TRP-Cavern-Floor",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "floor"
+      ]
+    },
+    {
+      "path": "IL-TRP-Cavern-Tiles.png",
+      "name": "IL-TRP-Cavern-Tiles",
+      "width": 2,
+      "height": 2,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "IO-TRP-Cavern-Tiles.png",
+      "name": "IO-TRP-Cavern-Tiles",
+      "width": 2,
+      "height": 2,
+      "count": 4,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "JS-TRP-Cavern-Tiles.png",
+      "name": "JS-TRP-Cavern-Tiles",
+      "width": 4,
+      "height": 2,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "S-TRP-Cavern-Floor.png",
+      "name": "S-TRP-Cavern-Floor",
+      "width": 4,
+      "height": 2,
+      "count": 4,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "floor"
+      ]
+    },
+    {
+      "path": "S-TRP-Cavern-Tiles.png",
+      "name": "S-TRP-Cavern-Tiles",
+      "width": 4,
+      "height": 2,
+      "count": 0,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "TRP-Cavern-Stalagmite-Floor.png",
+      "name": "TRP-Cavern-Stalagmite-Floor",
+      "width": 4,
+      "height": 4,
+      "count": 1,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "edge"
+      ]
+    },
+    {
+      "path": "U-TRP-Cavern-Water.png",
+      "name": "U-TRP-Cavern-Water",
+      "width": 8,
+      "height": 8,
+      "count": 2,
+      "label": "Cavern",
+      "tags": [
+        "cavern",
+        "water"
+      ]
     }
   ],
   "pinned": {
