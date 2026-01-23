@@ -1126,6 +1126,18 @@
       {
         "label": "Xyndrasis Temple Secret Entrance",
         "id": "location-xyndrasis-temple-secret-entrance.jpg"
+      },
+      {
+        "label": "Artifact Viewing Chamber",
+        "id": "location-artifact-viewing-chamber.jpg"
+      },
+      {
+        "label": "Xyndrasis Hidden Bunker",
+        "id": "location-xyndrasis-hidden-bunker.jpg"
+      },
+      {
+        "label": "Tear of Xovina",
+        "id": "portrait-tear-of-xovina.jpg"
       }
     ],
     "rules": []
