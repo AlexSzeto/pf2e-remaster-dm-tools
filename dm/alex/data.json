@@ -1015,17 +1015,13 @@
       {
         "label": "Cavern Stream Ambience",
         "id": "cavern-stream-ambience.mp3"
+      },
+      {
+        "label": "Army Of Zombies",
+        "id": "army-of-zombies.mp3"
       }
     ],
     "bgm": [
-      {
-        "id": "slow-death-march-bgm.mp3",
-        "label": "Poisonous Death March"
-      },
-      {
-        "label": "Blind Terror",
-        "id": "bgm-blind-terror.mp3"
-      },
       {
         "label": "Burdens Of Our Decay",
         "id": "bgm-burdens-of-our-decay.mp3"
@@ -1037,6 +1033,22 @@
       {
         "label": "Renu: First Reckoning",
         "id": "renu-first-reckoning.mp3"
+      },
+      {
+        "label": "Desecrated Damnation",
+        "id": "bgm-desecrated-damnation.mp3"
+      },
+      {
+        "label": "A Waltz Of Regrets",
+        "id": "bgm-a-waltz-of-regrets.mp3"
+      },
+      {
+        "label": "Sinister Pressure",
+        "id": "bgm-sinister-pressure.mp3"
+      },
+      {
+        "label": "Fireball Lightning Repeat",
+        "id": "fireball-lightning-repeat-bgm.mp3"
       }
     ],
     "cards": [
