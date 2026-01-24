@@ -1187,6 +1187,10 @@
       {
         "label": "Tear of Xovina",
         "id": "portrait-tear-of-xovina.jpg"
+      },
+      {
+        "label": "Xyndrasis Outpost Interior",
+        "id": "location-xyndrasis-outpost-interior.jpg"
       }
     ],
     "rules": []
