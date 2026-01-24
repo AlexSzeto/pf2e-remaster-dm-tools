@@ -288,6 +288,19 @@
       "count": 2
     },
     {
+      "path": "T-TRP-RoughStoneFloor.png",
+      "name": "T-TRP-RoughStoneFloor",
+      "tags": [
+        "heavy stone",
+        "floor",
+        "rounded"
+      ],
+      "label": "Round Floor",
+      "width": 4,
+      "height": 4,
+      "count": 4
+    },
+    {
       "path": "G-TRP-HeavyWall.png",
       "name": "G-TRP-HeavyWall",
       "tags": [
@@ -1032,16 +1045,40 @@
         "id": "Void Crawler Swarm"
       },
       {
-        "label": "Void Zombie",
-        "id": "Void Zombie"
-      },
-      {
         "label": "Void Zealot",
         "id": "Void Zealot"
       },
       {
         "label": "Yi'tha",
         "id": "Yi'tha"
+      },
+      {
+        "label": "Spider Swarm",
+        "id": "Spider Swarm"
+      },
+      {
+        "label": "Hunting Spider (Elite)",
+        "id": "Hunting Spider (Elite)"
+      },
+      {
+        "label": "Grevik",
+        "id": "Grevik"
+      },
+      {
+        "label": "Void Zombie",
+        "id": "Void Zombie"
+      },
+      {
+        "label": "Zombie Brute",
+        "id": "Zombie Brute"
+      },
+      {
+        "label": "Void Wormthrower",
+        "id": "Void Wormthrower"
+      },
+      {
+        "label": "Animated Armor",
+        "id": "Animated Armor"
       }
     ],
     "docs": [
