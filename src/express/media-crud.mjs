@@ -122,7 +122,7 @@ export const addMediaEndpoints = (app, config) => {
     fsPromise
       .writeFile(writePath, file.data)
       .then(() =>
-        addReference(config, source, type, {
+        addReference(config, source, subtype, {
           path: id,
           label: name,
           tags,
@@ -140,6 +140,7 @@ export const addMediaEndpoints = (app, config) => {
     const filename = req.params.file
     const source = req.params.source
     const type = mediaTypeOf(filename)
+    const subtype = req.body.subtype ?? type
 
     const id = req.body.id ?? path.basename(filename)
 
@@ -152,7 +153,7 @@ export const addMediaEndpoints = (app, config) => {
     fsPromise
       .unlink(path.join(folder, filename))
       .then(() =>
-        deleteReference(config, source, type, id)
+        deleteReference(config, source, subtype, id)
       )
       .then(() => {
         res.status(200).send(successResponse(`deleted ${filename}`))
