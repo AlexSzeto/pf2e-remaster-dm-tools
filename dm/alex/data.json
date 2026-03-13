@@ -366,6 +366,30 @@
       "count": 0
     },
     {
+      "path": "X-TRP-HeavyWall.png",
+      "name": "X-TRP-HeavyWall",
+      "width": 9,
+      "height": 9,
+      "count": 4,
+      "label": "Wall",
+      "tags": [
+        "heavy stone",
+        "wall"
+      ]
+    },
+    {
+      "path": "V-TRP-RoughStoneFloor.png",
+      "name": "V-TRP-RoughStoneFloor",
+      "tags": [
+        "heavy stone",
+        "floor"
+      ],
+      "label": "Floor",
+      "width": 8,
+      "height": 8,
+      "count": 4
+    },
+    {
       "path": "IIS-QuarryWall-v.1.0.png",
       "name": "IIS-QuarryWall-v.1.0",
       "tags": [

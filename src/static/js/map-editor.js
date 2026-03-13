@@ -422,6 +422,7 @@ class MapEditor {
     let filename = this.#mapPath
     if(name) { 
       filename = `${name.toLowerCase().replace(/\s+/g, '-')}.json`
+      this.#mapPath = filename
       this.#name = name
     } else {
       name = this.#name
