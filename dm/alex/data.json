@@ -187,14 +187,14 @@
       "path": "E-TRP-Mine-Floor.png",
       "name": "E-TRP-Mine-Floor",
       "tags": [
-        "mine",
+        "old-mine",
         "floor",
         "basic"
       ],
-      "label": "Mine",
+      "label": "Old Mine",
       "width": 4,
       "height": 4,
-      "count": 4
+      "count": 1
     },
     {
       "path": "E-TRP-RoughStone-Mine-Transition-Floor.png",
@@ -397,10 +397,10 @@
         "wall",
         "basic"
       ],
-      "label": "Wall",
+      "label": "I Wall",
       "width": 2,
       "height": 2,
-      "count": 5
+      "count": 8
     },
     {
       "path": "ILS-QuarryWall-v.1.0.png",
@@ -413,7 +413,7 @@
       "label": "L Wall",
       "width": 2,
       "height": 2,
-      "count": 4
+      "count": 7
     },
     {
       "path": "IOS-QuarryWall-v.1.0.png",
@@ -478,7 +478,123 @@
       "label": "Wall",
       "width": 4,
       "height": 2,
-      "count": 8
+      "count": 10
+    },
+    {
+      "path": "A-QuarryFloor.png",
+      "name": "A-QuarryFloor",
+      "width": 4,
+      "height": 1,
+      "count": 0,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
+    },
+    {
+      "path": "BA-QuarryFloor.png",
+      "name": "BA-QuarryFloor",
+      "width": 3,
+      "height": 1,
+      "count": 0,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
+    },
+    {
+      "path": "E-QuarryFloor.png",
+      "name": "E-QuarryFloor",
+      "width": 4,
+      "height": 4,
+      "count": 8,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
+    },
+    {
+      "path": "F-QuarryFloor.png",
+      "name": "F-QuarryFloor",
+      "width": 4,
+      "height": 4,
+      "count": 0,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "floor"
+      ]
+    },
+    {
+      "path": "I-QuarryFloor.png",
+      "name": "I-QuarryFloor",
+      "width": 2,
+      "height": 2,
+      "count": 0,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
+    },
+    {
+      "path": "IA-QuarryFloor.png",
+      "name": "IA-QuarryFloor",
+      "width": 2,
+      "height": 1,
+      "count": 0,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
+    },
+    {
+      "path": "R-QuarryFloor.png",
+      "name": "R-QuarryFloor",
+      "width": 8,
+      "height": 4,
+      "count": 0,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
+    },
+    {
+      "path": "S-QuarryFloor.png",
+      "name": "S-QuarryFloor",
+      "width": 4,
+      "height": 2,
+      "count": 0,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
+    },
+    {
+      "path": "U-QuarryFloor.png",
+      "name": "U-QuarryFloor",
+      "width": 8,
+      "height": 8,
+      "count": 3,
+      "label": "Floor",
+      "tags": [
+        "mine",
+        "basic",
+        "floor"
+      ]
     },
     {
       "path": "U-TRP-RoughStoneFloor.png",
@@ -1081,20 +1197,8 @@
         "id": "Void Crawler Swarm"
       },
       {
-        "label": "Void Zealot",
-        "id": "Void Zealot"
-      },
-      {
         "label": "Yi'tha",
         "id": "Yi'tha"
-      },
-      {
-        "label": "Spider Swarm",
-        "id": "Spider Swarm"
-      },
-      {
-        "label": "Hunting Spider (Elite)",
-        "id": "Hunting Spider (Elite)"
       },
       {
         "label": "Grevik",
@@ -1109,12 +1213,12 @@
         "id": "Zombie Brute"
       },
       {
-        "label": "Void Wormthrower",
-        "id": "Void Wormthrower"
-      },
-      {
         "label": "Animated Armor",
         "id": "Animated Armor"
+      },
+      {
+        "label": "Purple Slime",
+        "id": "Purple Slime"
       }
     ],
     "docs": [
@@ -1157,18 +1261,6 @@
         "id": "location-xyndrasis-streets.jpeg"
       },
       {
-        "label": "Portrait Nerkith",
-        "id": "portrait-nerkith.jpg"
-      },
-      {
-        "label": "Zero",
-        "id": "portrait-zero.jpeg"
-      },
-      {
-        "label": "Hethor (Fixed)",
-        "id": "portrait-hethor-fixed.png"
-      },
-      {
         "label": "Empowered Temple",
         "id": "location-xyndrasis-empowered.jpg"
       },
@@ -1189,14 +1281,6 @@
         "id": "portrait-gravelk.png"
       },
       {
-        "label": "Gydra and Xesom",
-        "id": "portrait-gydra-and-xesom.jpg"
-      },
-      {
-        "label": "Loribelle",
-        "id": "portrait-loribelle.jpg"
-      },
-      {
         "label": "Xyndrasis Temple Secret Entrance",
         "id": "location-xyndrasis-temple-secret-entrance.jpg"
       },
@@ -1215,6 +1299,30 @@
       {
         "label": "Xyndrasis Outpost Interior",
         "id": "location-xyndrasis-outpost-interior.jpg"
+      },
+      {
+        "label": "Touman",
+        "id": "portrait-touman.jpg"
+      },
+      {
+        "label": "Yukha",
+        "id": "portrait-yukha.jpg"
+      },
+      {
+        "label": "Nerxalis",
+        "id": "portrait-nerxalis.jpg"
+      },
+      {
+        "label": "Xovina",
+        "id": "portrait-xovina.jpg"
+      },
+      {
+        "label": "Prince Renu",
+        "id": "portrait-prince-renu.jpg"
+      },
+      {
+        "label": "Omiros",
+        "id": "portrait-omiros.jpg"
       }
     ],
     "rules": []
