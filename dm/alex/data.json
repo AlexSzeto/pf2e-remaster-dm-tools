@@ -1323,6 +1323,10 @@
       {
         "label": "Omiros",
         "id": "portrait-omiros.jpg"
+      },
+      {
+        "label": "Viewing Chamber, Corrupted",
+        "id": "location-viewing-chamber,-corrupted.jpg"
       }
     ],
     "rules": []
