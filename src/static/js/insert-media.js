@@ -7,7 +7,8 @@ const defaultState = {
       name: '',
       subtypes:[],
       tags:[],
-      preview: ''
+      preview: '',
+      docName: ''
 }
 
 class InsertMediaForm extends Component {
@@ -118,6 +119,26 @@ class InsertMediaForm extends Component {
     })
   }
 
+  submitDocument(e) {
+    e.preventDefault()
+    this.setState({ saving: true })
+    const { docName } = this.state
+    const filename = docName.toLowerCase().replace(/\s+/g, '-') + '.md'
+    const blob = new Blob([''], { type: 'text/markdown' })
+    const formData = new FormData()
+    formData.set('name', docName)
+    formData.set('file', blob, filename)
+    formData.set('subtype', 'docs')
+    formData.set('tags', 'docs')
+    fetch('./campaign/media', {
+      method: 'POST',
+      body: formData
+    }).then(() => {
+      this.setState(defaultState)
+      e.target.reset()
+    })
+  }
+
   render() {
     return html`
     <div class="flat-page">
@@ -169,6 +190,14 @@ class InsertMediaForm extends Component {
           <img id="image-preview" src=${this.state.preview}/>
         `}
       </div>
+      <h1>Create Campaign Document</h1>
+      <form id="document-form" onSubmit=${e => this.submitDocument(e)}>
+        <div>
+          <label for="name">Name</label>
+          <input disabled=${this.state.saving} type="text" name="name" placeholder="Name" value=${this.state.docName} onInput=${e => this.setState({ docName: e.target.value })}/>
+        </div>
+        <button disabled=${this.state.saving} type="submit">Save</button>
+      </form>
     </div>
     `
   }

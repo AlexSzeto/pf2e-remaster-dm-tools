@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 
-#media-form {
+#media-form, #document-form {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
