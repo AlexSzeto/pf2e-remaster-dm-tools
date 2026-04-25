@@ -1293,17 +1293,17 @@
         "id": "portrait-elara.jpg"
       },
       {
-        "label": "Viewing Chamber, Corrupted",
-        "id": "location-viewing-chamber,-corrupted.webp"
+        "label": "Ritual Chamber Animated",
+        "id": "location-ritual-chamber-animated.webp"
       }
     ],
     "rules": []
   },
   "sessionData": {
     "images": {
-      "background": "location-viewing-chamber,-corrupted.webp",
-      "left": "",
-      "right": "",
+      "background": "location-ritual-chamber-animated.webp",
+      "left": "portrait-elara.jpg",
+      "right": "portrait-prince-renu.jpg",
       "cover": true
     },
     "combat": {
