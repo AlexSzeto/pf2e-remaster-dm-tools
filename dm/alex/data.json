@@ -1291,15 +1291,19 @@
       {
         "label": "Elara",
         "id": "portrait-elara.jpg"
+      },
+      {
+        "label": "Viewing Chamber, Corrupted",
+        "id": "location-viewing-chamber,-corrupted.webp"
       }
     ],
     "rules": []
   },
   "sessionData": {
     "images": {
-      "background": "location-viewing-chamber,-corrupted.jpg",
+      "background": "location-viewing-chamber,-corrupted.webp",
       "left": "",
-      "right": "portrait-tear-of-xovina.jpg",
+      "right": "",
       "cover": true
     },
     "combat": {
