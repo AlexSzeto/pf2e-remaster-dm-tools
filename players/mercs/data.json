@@ -19,12 +19,6 @@
       "perception": 8
     },
     {
-      "class": "Rogue",
-      "hp": 36,
-      "name": "Fayla",
-      "perception": 8
-    },
-    {
       "class": "Fighter",
       "hp": 39,
       "name": "Hatherien",

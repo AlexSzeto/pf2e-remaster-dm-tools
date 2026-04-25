@@ -1215,6 +1215,18 @@
       {
         "label": "Arcane Guardian",
         "id": "Arcane Guardian"
+      },
+      {
+        "label": "Oathkeeper Nyzassa",
+        "id": "Oathkeeper Nyzassa"
+      },
+      {
+        "label": "Skeleton Guard",
+        "id": "Skeleton Guard"
+      },
+      {
+        "label": "Brown Maggots",
+        "id": "Brown Maggots"
       }
     ],
     "docs": [
@@ -1289,7 +1301,7 @@
         "id": "location-viewing-chamber,-corrupted.jpg"
       },
       {
-        "label": "Elara",
+        "label": "Nyzassa",
         "id": "portrait-elara.jpg"
       },
       {
@@ -1328,14 +1340,6 @@
           "name": "Lemmy",
           "initiative": 0,
           "hp": 32,
-          "notes": "PER 8",
-          "consumables": [],
-          "isPC": true
-        },
-        {
-          "name": "Fayla",
-          "initiative": 0,
-          "hp": 36,
           "notes": "PER 8",
           "consumables": [],
           "isPC": true
