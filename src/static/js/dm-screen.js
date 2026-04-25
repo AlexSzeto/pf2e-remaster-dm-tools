@@ -241,7 +241,7 @@ class App extends Component {
           ...this.state.notes,
           docs: this.state.notes.docs.map(doc => doc.path === path ? { ...doc, loaded: true } : doc)
         }
-      })
+      }, () => this.saveSessionData())
       return
     }
 
@@ -253,7 +253,7 @@ class App extends Component {
             ...this.state.notes,
             docs: [...this.state.notes.docs, { label, path, text, loaded: true }],
           },
-        })
+        }, () => this.saveSessionData())
       })
   }
 
@@ -279,7 +279,7 @@ class App extends Component {
         ...this.state.notes,
         docs: this.state.notes.docs.map((d) => d.path === path ? { ...d, loaded: false } : d),
       },
-    })
+    }, () => this.saveSessionData())
   }
 
   closeAllDocuments() {
@@ -288,7 +288,7 @@ class App extends Component {
         ...this.state.notes,
         docs: [],
       },
-    })
+    }, () => this.saveSessionData())
   }
 
   //
@@ -304,7 +304,7 @@ class App extends Component {
         ...this.state.notes,
         cards: [...this.state.notes.cards, card],
       },
-    })
+    }, () => this.saveSessionData())
   }
 
   addRule(id) {
@@ -315,7 +315,7 @@ class App extends Component {
           ...this.state.notes,
           cards: [...this.state.notes.cards, data],
         },
-      })
+      }, () => this.saveSessionData())
     })
   }
 
@@ -325,7 +325,7 @@ class App extends Component {
         ...this.state.notes,
         cards,
       },
-    })
+    }, () => this.saveSessionData())
   }
 
   removeNotesCard(card) {
@@ -334,7 +334,7 @@ class App extends Component {
         ...this.state.notes,
         cards: this.state.notes.cards.filter((c) => c !== card),
       },
-    })
+    }, () => this.saveSessionData())
   }
 
   //
@@ -527,6 +527,28 @@ class App extends Component {
         }, () => {
           console.log('state',this.state)
           this.addPlayersToInitiativeList(this.state.players.characters)
+
+          // Restore open documents
+          const openDocs = sessionData?.openDocs ?? []
+          openDocs.forEach(({ label, id }) => {
+            if (campaign.docs.some(d => d.path === id)) {
+              this.loadDocument(label, id)
+            }
+          })
+
+          // Restore open campaign cards
+          const openCards = sessionData?.openCards ?? []
+          openCards.forEach(({ id }) => {
+            if (campaign.cards.some(c => c.name === id)) {
+              this.addCard(id)
+            }
+          })
+
+          // Restore open rule cards (ignore missing entries silently)
+          const openRules = sessionData?.openRules ?? []
+          openRules.forEach(({ id }) => {
+            this.addRule(id)
+          })
         })
       })
       .catch((error) => {
@@ -592,12 +614,16 @@ class App extends Component {
     }
 
     const combat = { ...this.state.combat }
+    const cardHp = Number(card.stats.find((stat) => stat.name === 'HP').text ?? '0')
     combat.list.push(
       new InitiativeListItem(
         card.name,
         0,
-        Number(card.stats.find((stat) => stat.name === 'HP').text ?? '0'),
-        [...getConsumables('Items'), ...getSpells()]
+        cardHp,
+        [...getConsumables('Items'), ...getSpells()],
+        '',
+        false,
+        cardHp
       )
     )
     this.setState({
@@ -606,11 +632,9 @@ class App extends Component {
   }
 
   addPlayersToInitiativeList(characters) {
+    const existingNames = new Set(this.state.combat.list.map((item) => item.name))
     const insert = characters
-      .filter(
-        (player) =>
-          !this.state.combat.list.find((item) => item.name === player.name)
-      )
+      .filter((player) => !existingNames.has(player.name))
       .map(
         (player) =>
           new InitiativeListItem(
@@ -619,12 +643,20 @@ class App extends Component {
             player.hp,
             [],
             `PER ${player.perception}`,
-            true
+            true,
+            player.hp
           )
       )
+    // Backfill maxHp for existing PC entries that are missing it (e.g. loaded from a saved session)
+    const updatedList = this.state.combat.list.map((item) => {
+      if (!item.isPC) return item
+      const match = characters.find((p) => p.name === item.name)
+      if (match && !item.maxHp) return { ...item, maxHp: match.hp }
+      return item
+    })
     const combat = {
       ...this.state.combat,
-      list: [...this.state.combat.list, ...insert],
+      list: [...updatedList, ...insert],
     }
     this.setState({
       combat,
@@ -632,12 +664,27 @@ class App extends Component {
   }
 
   saveSessionData() {
+    const openDocs = this.state.notes.docs
+      .filter(doc => doc.loaded)
+      .map(doc => ({ label: doc.label, id: doc.path }))
+
+    const openCards = this.state.notes.cards
+      .filter(card => !card.ref)
+      .map(card => ({ label: card.name, id: card.name }))
+
+    const openRules = this.state.notes.cards
+      .filter(card => card.ref)
+      .map(card => ({ label: card.name, id: `${card.ref.type}/${card.ref.rule}` }))
+
     fetch('/dm/session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         images: this.state.screen.images,
         combat: this.state.combat,
+        openDocs,
+        openCards,
+        openRules,
       }),
     })
   }

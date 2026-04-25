@@ -11,11 +11,13 @@ export class InitiativeListItem {
     hp = 0,
     consumables = [],
     notes = '',
-    isPC = false
+    isPC = false,
+    maxHp = 0
   ) {
     this.name = name
     this.initiative = initiative
     this.hp = hp
+    this.maxHp = maxHp
     this.notes = notes
     this.consumables = consumables
     this.isPC = isPC
@@ -177,6 +179,7 @@ export class InitiativeTracker extends Component {
               <div class="header-item">Name</div>
               <div class="header-item">PC</div>
               <div class="header-item">HP</div>
+              <div class="header-item">Max HP</div>
               <div class="header-item"></div>
               <div class="header-item">Initiative</div>
               <div class="header-item">Notes</div>
@@ -225,6 +228,7 @@ export class InitiativeTracker extends Component {
             value=${item.hp}
             onInput=${(e) => this.handleListItemChange(index, e)}
           ></input>
+          <div class="max-hp-label">${item.maxHp ?? 0}</div>
           <button class="square"
             onClick=${() => this.dealDamage(index)}>
             <${Icon} icon="zap" type="solid"/>

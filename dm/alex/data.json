@@ -1333,7 +1333,7 @@
   },
   "sessionData": {
     "images": {
-      "background": "location-infinite-ocean.jpg",
+      "background": "location-viewing-chamber,-corrupted.jpg",
       "left": "",
       "right": "",
       "cover": true
@@ -1346,7 +1346,8 @@
           "hp": 40,
           "notes": "PER 9",
           "consumables": [],
-          "isPC": true
+          "isPC": true,
+          "maxHp": 40
         },
         {
           "name": "Typha",
@@ -1354,7 +1355,8 @@
           "hp": 35,
           "notes": "PER 7",
           "consumables": [],
-          "isPC": true
+          "isPC": true,
+          "maxHp": 35
         },
         {
           "name": "Lemmy",
@@ -1362,7 +1364,8 @@
           "hp": 32,
           "notes": "PER 8",
           "consumables": [],
-          "isPC": true
+          "isPC": true,
+          "maxHp": 32
         },
         {
           "name": "Hatherien",
@@ -1370,12 +1373,14 @@
           "hp": 39,
           "notes": "PER 7",
           "consumables": [],
-          "isPC": true
+          "isPC": true,
+          "maxHp": 39
         },
         {
           "name": "Yi'tha",
           "initiative": 0,
           "hp": 39,
+          "maxHp": 39,
           "notes": "",
           "consumables": [
             "half plate",
@@ -1388,11 +1393,32 @@
             "bt 3)",
             "long sword"
           ],
-          "isPC": false
+          "isPC": true
         }
       ],
       "active": 0,
       "inUse": false
-    }
+    },
+    "openDocs": [
+      {
+        "label": "Xyndrasis",
+        "id": "xyndrasis.md"
+      },
+      {
+        "label": "Session Plan",
+        "id": "events.md"
+      },
+      {
+        "label": "Dm Cheatsheet",
+        "id": "dm-cheatsheet.md"
+      }
+    ],
+    "openCards": [
+      {
+        "label": "Purple Slime",
+        "id": "Purple Slime"
+      }
+    ],
+    "openRules": []
   }
 }
