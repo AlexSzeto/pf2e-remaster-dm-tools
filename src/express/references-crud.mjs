@@ -73,6 +73,32 @@ export const deleteReference = async (config, source, subtype, id) => {
 }
 
 export const addReferenceEndpoints = (app, config) => {
+  app.get('/dm/session', (req, res) => {
+    const dataPath = dataPathOf(config, 'dm')
+    loadJSON(dataPath)
+      .then((data) => {
+        res.json(data.sessionData ?? { images: null, combat: null })
+      })
+      .catch((err) => {
+        res.status(500).send({ error: 'Failed to load session data' })
+      })
+  })
+
+  app.post('/dm/session', (req, res) => {
+    const dataPath = dataPathOf(config, 'dm')
+    loadJSON(dataPath)
+      .then((data) => {
+        data.sessionData = req.body
+        return saveJSON(dataPath, data)
+      })
+      .then(() => {
+        res.status(200).send(successResponse('Saved session data'))
+      })
+      .catch((err) => {
+        res.status(500).send({ error: 'Failed to save session data' })
+      })
+  })
+
   app.get('/:source/data', (req, res) => {
     const source = req.params.source
     const dataPath = dataPathOf(config, source)

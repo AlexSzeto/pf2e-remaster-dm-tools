@@ -1201,16 +1201,8 @@
         "id": "Yi'tha"
       },
       {
-        "label": "Grevik",
-        "id": "Grevik"
-      },
-      {
         "label": "Void Zombie",
         "id": "Void Zombie"
-      },
-      {
-        "label": "Zombie Brute",
-        "id": "Zombie Brute"
       },
       {
         "label": "Animated Armor",
@@ -1219,6 +1211,10 @@
       {
         "label": "Purple Slime",
         "id": "Purple Slime"
+      },
+      {
+        "label": "Arcane Guardian",
+        "id": "Arcane Guardian"
       }
     ],
     "docs": [
@@ -1241,34 +1237,6 @@
         "id": "portrait-yitha.jpeg"
       },
       {
-        "label": "Xyndrasis Overlook",
-        "id": "location-xyndrasis-overlook.jpg"
-      },
-      {
-        "label": "Map Xyndrasis",
-        "id": "map-xyndrasis.jpg"
-      },
-      {
-        "label": "Xyndrasis Outskirts",
-        "id": "location-xyndrasis-outskirts.jpeg"
-      },
-      {
-        "label": "Xyndrasis Streets 2",
-        "id": "location-xyndrasis-streets-2.jpeg"
-      },
-      {
-        "label": "Xyndrasis Streets",
-        "id": "location-xyndrasis-streets.jpeg"
-      },
-      {
-        "label": "Empowered Temple",
-        "id": "location-xyndrasis-empowered.jpg"
-      },
-      {
-        "label": "Xyndrasis Lab",
-        "id": "location-xyndrasis-lab.jpeg"
-      },
-      {
         "label": "Tighis",
         "id": "portrait-xyndrasis-truthseeker.png"
       },
@@ -1277,40 +1245,8 @@
         "id": "portrait-gravelk.jpg"
       },
       {
-        "label": "Gravelk",
-        "id": "portrait-gravelk.png"
-      },
-      {
-        "label": "Xyndrasis Temple Secret Entrance",
-        "id": "location-xyndrasis-temple-secret-entrance.jpg"
-      },
-      {
-        "label": "Artifact Viewing Chamber",
-        "id": "location-artifact-viewing-chamber.jpg"
-      },
-      {
-        "label": "Xyndrasis Hidden Bunker",
-        "id": "location-xyndrasis-hidden-bunker.jpg"
-      },
-      {
         "label": "Tear of Xovina",
         "id": "portrait-tear-of-xovina.jpg"
-      },
-      {
-        "label": "Xyndrasis Outpost Interior",
-        "id": "location-xyndrasis-outpost-interior.jpg"
-      },
-      {
-        "label": "Touman",
-        "id": "portrait-touman.jpg"
-      },
-      {
-        "label": "Yukha",
-        "id": "portrait-yukha.jpg"
-      },
-      {
-        "label": "Nerxalis",
-        "id": "portrait-nerxalis.jpg"
       },
       {
         "label": "Xovina",
@@ -1321,14 +1257,114 @@
         "id": "portrait-prince-renu.jpg"
       },
       {
-        "label": "Omiros",
-        "id": "portrait-omiros.jpg"
+        "label": "Loribelle",
+        "id": "portrait-loribelle.jpg"
+      },
+      {
+        "label": "Portrait Nerkith",
+        "id": "portrait-nerkith.jpg"
+      },
+      {
+        "label": "Hethor (Fixed)",
+        "id": "portrait-hethor-fixed.png"
+      },
+      {
+        "label": "Xovina Child Form",
+        "id": "portrait-xovina-child-form.jpg"
+      },
+      {
+        "label": "Shadow Labs",
+        "id": "location-shadow-labs.jpg"
+      },
+      {
+        "label": "Ritual Chamber",
+        "id": "location-ritual-chamber.jpg"
+      },
+      {
+        "label": "Geomancy Tunnel",
+        "id": "location-geomancy-tunnel.jpg"
       },
       {
         "label": "Viewing Chamber, Corrupted",
         "id": "location-viewing-chamber,-corrupted.jpg"
+      },
+      {
+        "label": "Elara",
+        "id": "portrait-elara.jpg"
       }
     ],
     "rules": []
+  },
+  "sessionData": {
+    "images": {
+      "background": "location-viewing-chamber,-corrupted.jpg",
+      "left": "",
+      "right": "portrait-tear-of-xovina.jpg",
+      "cover": true
+    },
+    "combat": {
+      "list": [
+        {
+          "name": "Grom",
+          "initiative": 0,
+          "hp": 40,
+          "notes": "PER 9",
+          "consumables": [],
+          "isPC": true
+        },
+        {
+          "name": "Typha",
+          "initiative": 0,
+          "hp": 35,
+          "notes": "PER 7",
+          "consumables": [],
+          "isPC": true
+        },
+        {
+          "name": "Lemmy",
+          "initiative": 0,
+          "hp": 32,
+          "notes": "PER 8",
+          "consumables": [],
+          "isPC": true
+        },
+        {
+          "name": "Fayla",
+          "initiative": 0,
+          "hp": 36,
+          "notes": "PER 8",
+          "consumables": [],
+          "isPC": true
+        },
+        {
+          "name": "Hatherien",
+          "initiative": 0,
+          "hp": 39,
+          "notes": "PER 7",
+          "consumables": [],
+          "isPC": true
+        },
+        {
+          "name": "Yi'tha",
+          "initiative": 0,
+          "hp": 39,
+          "notes": "",
+          "consumables": [
+            "half plate",
+            "healing potion (minor) ",
+            "healing potion (minor) ",
+            "healing potion (minor) ",
+            "healing potion (lesser)",
+            "buckler (hardness 3",
+            "hp 6",
+            "bt 3)",
+            "long sword"
+          ],
+          "isPC": false
+        }
+      ],
+      "active": 0,
+      "inUse": false
+    }
   }
 }

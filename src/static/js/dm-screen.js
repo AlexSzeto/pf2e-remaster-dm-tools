@@ -63,9 +63,10 @@ class App extends Component {
         ...this.state.screen,
         images,
       },
+    }, () => {
+      setCookie('screenImages', JSON.stringify(images))
+      this.saveSessionData()
     })
-
-    setCookie('screenImages', JSON.stringify(images))
   }
 
   toggleBackgroundCover() {
@@ -79,7 +80,10 @@ class App extends Component {
           },
         },
       },
-      () => setCookie('screenImages', JSON.stringify(this.state.screen.images))
+      () => {
+        setCookie('screenImages', JSON.stringify(this.state.screen.images))
+        this.saveSessionData()
+      }
     )
   }
 
@@ -493,17 +497,23 @@ class App extends Component {
       fetch(`/campaign/data`),
       fetch(`/dm/data`),
       fetch(`/players/data`),
+      fetch(`/dm/session`),
     ])
       .then(responses => Promise.all(responses.map(response => response.json())))
-      .then(([campaign, dm, players]) => {
+      .then(([campaign, dm, players, sessionData]) => {
 
         console.log('Campaign loaded:', campaign)
         console.log('DM loaded:', dm)
         console.log('Players loaded:', players)
+        console.log('Session data loaded:', sessionData)
 
-        // Update state with loaded data
+        // Prefer server sessionData over cookies
         const savedImages = getCookie('screenImages')
         const initiatives = getCookie('initiativeTracker')
+        const images = sessionData?.images
+          ?? (savedImages ? JSON.parse(savedImages) : this.state.screen.images)
+        const combat = sessionData?.combat
+          ?? (initiatives ? JSON.parse(initiatives) : this.state.combat)
 
         this.setState({
           campaign,
@@ -511,11 +521,9 @@ class App extends Component {
           players,
           screen: {
             ...this.state.screen,
-            images: savedImages
-              ? JSON.parse(savedImages)
-              : this.state.screen.images,
+            images,
           },
-          combat: initiatives ? JSON.parse(initiatives) : this.state.combat,
+          combat,
         }, () => {
           console.log('state',this.state)
           this.addPlayersToInitiativeList(this.state.players.characters)
@@ -623,10 +631,19 @@ class App extends Component {
     })
   }
 
-  updateInitiateTracker(data) {
-    this.setState({
-      combat: data,
+  saveSessionData() {
+    fetch('/dm/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        images: this.state.screen.images,
+        combat: this.state.combat,
+      }),
     })
+  }
+
+  updateInitiateTracker(data) {
+    this.setState({ combat: data }, () => this.saveSessionData())
   }
 
   render() {
