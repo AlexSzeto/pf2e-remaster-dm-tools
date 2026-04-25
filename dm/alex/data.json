@@ -1167,28 +1167,32 @@
         "id": "xyndrasis-wakes.mp3"
       },
       {
-        "label": "Renu: First Reckoning",
-        "id": "renu-first-reckoning.mp3"
-      },
-      {
-        "label": "Voided Tears (Desecration)",
-        "id": "bgm-voided-tears-desecration.mp3"
-      },
-      {
-        "label": "Voided Tears (Echoes)",
-        "id": "bgm-voided-tears-echoes.mp3"
-      },
-      {
-        "label": "A Waltz Of Regrets",
-        "id": "bgm-a-waltz-of-regrets.mp3"
-      },
-      {
         "label": "Blind Terror",
         "id": "bgm-blind-terror.mp3"
       },
       {
-        "label": "Desert's Bounty",
-        "id": "bgm-desert-bounty.mp3"
+        "label": "Proof In Suffering",
+        "id": "proof-in-suffering.mp3"
+      },
+      {
+        "label": "Ritual Of Dominance",
+        "id": "ritual-of-dominance.mp3"
+      },
+      {
+        "label": "Xovina's Wish",
+        "id": "xovinas-wish.mp3"
+      },
+      {
+        "label": "Xyndrasis Sleeps",
+        "id": "xyndrasis-sleeps.mp3"
+      },
+      {
+        "label": "Ode To Stormhaven",
+        "id": "ode-to-stormhaven-bgm.mp3"
+      },
+      {
+        "label": "Fireball Lightning Repeat",
+        "id": "fireball-lightning-repeat-bgm.mp3"
       }
     ],
     "cards": [
