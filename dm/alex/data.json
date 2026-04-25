@@ -1159,6 +1159,10 @@
       {
         "label": "Army Of Zombies",
         "id": "army-of-zombies.mp3"
+      },
+      {
+        "label": "Heartbeat",
+        "id": "heartbeat.mp3"
       }
     ],
     "bgm": [
@@ -1311,15 +1315,27 @@
       {
         "label": "Ritual Chamber Animated",
         "id": "location-ritual-chamber-animated.webp"
+      },
+      {
+        "label": "Keroc at Night",
+        "id": "location-keroc-at-night.jpg"
+      },
+      {
+        "label": "Xyndrasis Survives",
+        "id": "location-xyndrasis-survives.jpg"
+      },
+      {
+        "label": "Infinite Ocean",
+        "id": "location-infinite-ocean.jpg"
       }
     ],
     "rules": []
   },
   "sessionData": {
     "images": {
-      "background": "location-ritual-chamber-animated.webp",
-      "left": "portrait-elara.jpg",
-      "right": "portrait-prince-renu.jpg",
+      "background": "location-infinite-ocean.jpg",
+      "left": "",
+      "right": "",
       "cover": true
     },
     "combat": {
